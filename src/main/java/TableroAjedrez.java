@@ -5,6 +5,9 @@ import Piezas.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class TableroAjedrez {
 	private final static int casillasFilas = 9;
@@ -13,6 +16,8 @@ public class TableroAjedrez {
 	public static JFrame tablero = null;
 	public static JButton casilla = null;
 	public static JButton[][] casillas = null;
+	private static boolean seguimientoActivo = false;
+	private static JButton botonOrigen;
 
 	public static void main(String[] args) {
 		tablero = new JFrame("Tablero de Ajedrez Interactivo");
@@ -50,7 +55,7 @@ public class TableroAjedrez {
 				if (fila == 2 && columna == 1) {
 					casilla.setText("wT");
 				}
-				
+
 				if (fila == 0 && columna == 5) {
 					casilla.setText("wT");
 				}
@@ -59,10 +64,10 @@ public class TableroAjedrez {
 				}
 
 				// Asignar el ActionListener externo
-                casilla.addActionListener(new CasillaClickListener());
-                
-                casillas[fila][columna] = casilla;
-                tablero.add(casilla);
+				casilla.addActionListener(new CasillaClickListener());
+
+				casillas[fila][columna] = casilla;
+				tablero.add(casilla);
 			}
 		}
 
@@ -75,35 +80,67 @@ public class TableroAjedrez {
 
 	public static String identificarPiezaParaMover(String ficha, String posicion, JButton[][] casillas) {
 		Piezas pieza;
-	    if (ficha.contains("T")) {
-	    	pieza = new Torre();
-	    	return pieza.calcularMovimientos(posicion,casillas,ficha);
-	    }
-	    else
-	    	return "No";	    
+		if (ficha.contains("T")) {
+			pieza = new Torre();
+			return pieza.calcularMovimientos(posicion, casillas, ficha);
+		} else
+			return "No";
+	}
+
+	// Clase interna para manejar los clicks
+	// Variables de clase para mantener el estado
+	private static String posicionOrigen = null;
+	private static String fichaSeleccionada = null;
+
+	private static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha) {
+		// Convertir coordenadas
+		int filaOrigen = Integer.parseInt(origen.substring(0, 1));
+		int colOrigen = Integer.parseInt(origen.substring(1, 2));
+		int filaDestino = Integer.parseInt(destino.substring(0, 1));
+		int colDestino = Integer.parseInt(destino.substring(1, 2));
+
+		// Obtener movimientos permitidos
+		String movimientos = identificarPiezaParaMover(ficha, origen, casillas);
+		String[] movimientosValidos = movimientos.split(" ");
+
+		// Verificar si el destino es válido
+		for (String movimiento : movimientosValidos) {
+			if (movimiento.equals(destino)) {
+				// Realizar movimiento
+				casillas[filaDestino][colDestino].setText(ficha);
+				casillas[filaOrigen][colOrigen].setText("");
+			}
+		}
+
+	}
+
+	private static class CasillaClickListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			for (int i = 0; i < casillasFilas; i++) {
+				for (int j = 0; j < casillasColumnas; j++) {
+					if (casillas[i][j] == e.getSource()) {
+						String posicionActual = "" + i + j;
+
+						if (posicionOrigen == null) {
+							// Primera selección: guardar posición y ficha original
+							posicionOrigen = posicionActual;
+							fichaSeleccionada = casillas[i][j].getText();
+							identificarPiezaParaMover(fichaSeleccionada, posicionOrigen, casillas);
+						} else {
+							// Segunda selección: intentar mover
+							moverPiezas(posicionOrigen, posicionActual, casillas, fichaSeleccionada);
+							Piezas.resetColores(casillas);
+							// Resetear selección
+							posicionOrigen = null;
+							fichaSeleccionada = null;
+						}
+						return;
+					}
+				}
+			}
+		}
 	}
 	
-	// Clase interna para manejar los clicks
-    private static class CasillaClickListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String ficha = "";
-            String posicion = "";
-            
-            for (int i = 0; i < casillasFilas; i++) {
-                for (int j = 0; j < casillasColumnas; j++) {
-                    if (casillas[i][j] == e.getSource()) {
-                        ficha = casillas[i][j].getText();
-                        posicion = "" + i + j;
-                        System.out.println(identificarPiezaParaMover(ficha, posicion, casillas));
-                        System.out.println("Pieza: " + casillas[i][j].getText() + "[" + i + "][" + j + "]");
-                        break;
-                    }
-                }
-            }
-        }
-    }
-	
-	
-	
+
 }
