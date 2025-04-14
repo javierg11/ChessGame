@@ -1,4 +1,7 @@
 import javax.swing.*;
+
+import Piezas.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,10 +73,12 @@ public class TableroAjedrez {
 		tablero.setResizable(false);
 	}
 
-	public static String moverPiezas(String ficha, String posicion, JButton[][] casillas) {
-		Piezas.resetColores(casillas);
-	    if (ficha.contains("T")) 
-	    	return Piezas.casillasTorre(posicion,casillas,ficha);
+	public static String identificarPiezaParaMover(String ficha, String posicion, JButton[][] casillas) {
+		Piezas pieza;
+	    if (ficha.contains("T")) {
+	    	pieza = new Torre();
+	    	return pieza.calcularMovimientos(posicion,casillas,ficha);
+	    }
 	    else
 	    	return "No";	    
 	}
@@ -90,7 +95,7 @@ public class TableroAjedrez {
                     if (casillas[i][j] == e.getSource()) {
                         ficha = casillas[i][j].getText();
                         posicion = "" + i + j;
-                        System.out.println(moverPiezas(ficha, posicion, casillas));
+                        System.out.println(identificarPiezaParaMover(ficha, posicion, casillas));
                         System.out.println("Pieza: " + casillas[i][j].getText() + "[" + i + "][" + j + "]");
                         break;
                     }
