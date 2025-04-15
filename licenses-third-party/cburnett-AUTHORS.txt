@@ -1,0 +1,16 @@
+Autor de las piezas de ajedrez "cburnett":
+-------------------------------------------
+Colin M.L. Burnett
+https://en.wikipedia.org/wiki/User:Cburnett
+https://github.com/lichess-org/lila/tree/master/public/piece/cburnett
+
+Licencia aplicable:
+--------------------
+GNU General Public License v2 (GPLv2)
+Texto completo en: GPL-2.0.txt
+
+Notas adicionales:
+------------------
+- Este set de piezas es ampliamente usado en plataformas como Lichess.
+- La GPLv2 permite uso comercial, pero exige liberar el código fuente
+  si distribuyes el software.

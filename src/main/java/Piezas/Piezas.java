@@ -48,9 +48,9 @@ public abstract class Piezas {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if ((i + j) % 2 == 0) {
-					casillas[i][j].setBackground(Color.WHITE);
+				    casillas[i][j].setBackground(new Color(240, 217, 181)); // Beige cálido (marfil)
 				} else {
-					casillas[i][j].setBackground(Color.BLACK);
+					casillas[i][j].setBackground(new Color(181, 136, 99));  // Marrón terracota
 				}
 			}
 		}
