@@ -14,6 +14,8 @@ public abstract class Piezas {
 	public abstract String calcularMovimientos(String posicion, JButton[][] casillas, String ficha);
 
 	
+	
+	
     protected void inicializarPosicion(String posicion) {
         filaActual = Integer.parseInt(posicion.substring(0, 1));
         columnaActual = Integer.parseInt(posicion.substring(1, 2));
