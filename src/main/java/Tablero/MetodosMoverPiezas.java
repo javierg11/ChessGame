@@ -14,9 +14,21 @@ public class MetodosMoverPiezas {
 		Piezas pieza;
 		if (ficha.contains("T")) {
 			pieza = new Torre();
-			return pieza.calcularMovimientos(posicion, casillas, ficha);
+			return pieza.calcularMovimientos(posicion, casillas, ficha); 
 		}else if (ficha.contains("P")) {
 			pieza = new Peon();
+			return pieza.calcularMovimientos(posicion, casillas, ficha);
+		}else if (ficha.contains("A")) {
+			pieza = new Alfil();
+			return pieza.calcularMovimientos(posicion, casillas, ficha);
+		}else if (ficha.contains("D")) {
+			pieza = new Dama();
+			return pieza.calcularMovimientos(posicion, casillas, ficha);
+		}else if (ficha.contains("C")) {
+			pieza = new Caballo();
+			return pieza.calcularMovimientos(posicion, casillas, ficha);
+		}else if (ficha.contains("R")) {
+			pieza = new Rey();
 			return pieza.calcularMovimientos(posicion, casillas, ficha);
 		} 
 		else
@@ -49,7 +61,7 @@ public class MetodosMoverPiezas {
 	            
 	            ImageIcon iconoOriginal = new ImageIcon(
 	                TableroAjedrez.class.getResource("/imagesPiezas/" + ficha + ".png"));
-	            Image imagen = iconoOriginal.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+	            Image imagen = iconoOriginal.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 	            casillas[filaDestino][colDestino].setIcon(new ImageIcon(imagen));
 	            casillas[filaDestino][colDestino].setText(ficha);
 	            casillas[filaDestino][colDestino].setHorizontalTextPosition(JButton.CENTER);
@@ -59,7 +71,8 @@ public class MetodosMoverPiezas {
 	            casillas[filaOrigen][colOrigen].setText("");
 	            casillas[filaOrigen][colOrigen].setIcon(null);
 	            //Esto llama a una funcion que lleva la cuenta del numero de movimientos de la partida
-			    ContarMovimientos.sumarMovimientos();
+			    CalculosEnPartida.sumarMovimientos();
+			    CalculosEnPartida.guardarMovimientos(origen,destino,ficha);
 	            return true; 
 	        }
 	    }
@@ -69,7 +82,8 @@ public class MetodosMoverPiezas {
 	
 	
 	
-	static void intentarMover(String origenPos, String destinoPos, JButton origenBtn, JButton destinoBtn, JButton [][] casillas, String fichaSeleccionada) {
+	public static void intentarMover(String origenPos, String destinoPos, JButton origenBtn, JButton destinoBtn, JButton [][] casillas,
+			String fichaSeleccionada) {
 	    boolean movimientoExitoso = MetodosMoverPiezas.moverPiezas(origenPos, destinoPos, casillas, fichaSeleccionada);
 
 	    if (movimientoExitoso) {

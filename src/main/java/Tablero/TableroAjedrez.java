@@ -2,11 +2,10 @@ package Tablero;
 
 import javax.swing.*;
 
+
 import Piezas.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -137,8 +136,8 @@ public class TableroAjedrez {
 		    fichaSeleccionada = origen.getText();
 		    posicionOrigen = obtenerPosicion(origen);
 		    //Mirar a quien le toca mover
-			if (ContarMovimientos.colorAMover() && fichaSeleccionada.contains("w"));
-			else if (!(ContarMovimientos.colorAMover()) && fichaSeleccionada.contains("b"));
+			if (CalculosEnPartida.colorAMover() && fichaSeleccionada.contains("w"));
+			else if (!(CalculosEnPartida.colorAMover()) && fichaSeleccionada.contains("b"));
 			//Si se toca una pieza del color al que no le toca mover el programa no hace nada
 			else return; 
 			
@@ -183,7 +182,7 @@ public class TableroAjedrez {
 				Component destino = tablero.getContentPane().getComponentAt(puntoEnFrame);
 
 				// Si el destino es un botón y no es el mismo que el origen
-				if (destino != origen) {
+				if (destino != origen && destino!=null) {
 					// Convertimos el destino a un JButton
 					JButton botonDestino = (JButton) destino;
 

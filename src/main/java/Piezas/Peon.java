@@ -6,47 +6,59 @@ public class Peon extends Piezas {
 
 	@Override
 	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha) {
-		resetColores(casillas);
-		inicializarPosicion(posicion);
-		
+	    resetColores(casillas);
+	    inicializarPosicion(posicion);
 
-		// Mover los peones de color negros
-		if (ficha.contains("b")) {
-			// System.out.println("fila: "+filaActual+" Columna: "+columnaActual);
-			if (filaActual == 1) {
-				for (int i = filaActual + 1; i < 4; i++) {
-					pintarCasilla(i, casillas, ficha);
-				}
-			} else {
-				pintarCasilla(filaActual + 1, casillas, ficha);
-			}
-		}
+	    // Peón negro
+	    if (ficha.contains("b")) {
+	        // Movimiento de dos casillas desde la posición inicial
+	        if (filaActual == 1 && casillas[filaActual + 1][columnaActual].getText().isEmpty() 
+	            && casillas[filaActual + 2][columnaActual].getText().isEmpty()) {
+	            resaltarCasilla(filaActual + 2, columnaActual, casillas);
+	        }
+	        // Movimiento de una casilla hacia adelante
+	        if (filaActual + 1 < 8 && casillas[filaActual + 1][columnaActual].getText().isEmpty()) {
+	            resaltarCasilla(filaActual + 1, columnaActual, casillas);
+	        }
+	        // Capturas diagonales
+	        marcarCapturas(filaActual + 1, columnaActual, casillas, ficha);
+	    }
 
-		if (ficha.contains("w")) {
-			// System.out.println("fila: "+filaActual+" Columna: "+columnaActual);
-			if (filaActual == 6) {
-				for (int i = filaActual - 1; i > 3; i--) {
-					pintarCasilla(i, casillas, ficha);
-				}
-			} else {
-				pintarCasilla(filaActual - 1, casillas, ficha);
-			}
-		}
+	    // Peón blanco
+	    if (ficha.contains("w")) {
+	        // Movimiento de dos casillas desde la posición inicial
+	        if (filaActual == 6 && casillas[filaActual - 1][columnaActual].getText().isEmpty() 
+	            && casillas[filaActual - 2][columnaActual].getText().isEmpty()) {
+	            resaltarCasilla(filaActual - 2, columnaActual, casillas);
+	        }
+	        // Movimiento de una casilla hacia adelante
+	        if (filaActual - 1 >= 0 && casillas[filaActual - 1][columnaActual].getText().isEmpty()) {
+	            resaltarCasilla(filaActual - 1, columnaActual, casillas);
+	        }
+	        // Capturas diagonales
+	        marcarCapturas(filaActual - 1, columnaActual, casillas, ficha);
+	    }
 
-		return jugadasTotales + "\n";
+	    return jugadasTotales + "\n";
 	}
 
-	private void pintarCasilla(int fila, JButton[][] casillas, String ficha) {
-		if (casillas[fila][columnaActual].getText().isEmpty())
-			resaltarCasilla(fila, columnaActual, casillas);
-		// Estos if son para que el peon pueda comer en diagonal cuando la pieza sea del
-		// color contrario al peon
-		if (!(casillas[fila][columnaActual + 1].getText().isEmpty())
-				&& mismoColor(casillas, fila, columnaActual + 1, ficha))
-			;
-		if (!(casillas[fila][columnaActual - 1].getText().isEmpty())
-				&& mismoColor(casillas, fila, columnaActual - 1, ficha))
-			;
+	/**
+	 * Marca las casillas de captura diagonal para el peón.
+	 */
+	private void marcarCapturas(int fila, int columna, JButton[][] casillas, String ficha) {
+	    // Izquierda diagonal
+	    if (columna - 1 >= 0 && fila >= 0 && fila < 8) {
+	        if (!casillas[fila][columna - 1].getText().isEmpty() && !mismoColor(casillas, fila, columna - 1, ficha)) {
+	            resaltarCasilla(fila, columna - 1, casillas);
+	        }
+	    }
+	    // Derecha diagonal
+	    if (columna + 1 < 8 && fila >= 0 && fila < 8) {
+	        if (!casillas[fila][columna + 1].getText().isEmpty() && !mismoColor(casillas, fila, columna + 1, ficha)) {
+	            resaltarCasilla(fila, columna + 1, casillas);
+	        }
+	    }
 	}
+
 
 }

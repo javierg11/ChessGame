@@ -8,51 +8,29 @@ public class Torre extends Piezas {
 	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha) {
 		resetColores(casillas);
 		inicializarPosicion(posicion);
-		boolean a = true;
 
-		// Mira las casillas horozontales de la izquierda
-		for (int j = columnaActual + 1; j <= 8 && a; j++) {
-			if (casillas[filaActual][j].getText().isEmpty()) {
-				resaltarCasilla(filaActual, j, casillas);
-			} else {
-				if (!mismoColor(casillas, filaActual, j, ficha))
-					resaltarCasilla(filaActual, j, casillas);
-				a = false;
-			}
-		}
-		// Mira las casillas horozontales de la derecha
-		for (int j = columnaActual - 1; j >= 0; j--) {
-			if (casillas[filaActual][j].getText().isEmpty()) {
-				resaltarCasilla(filaActual, j, casillas);
-			} else {
-				if (!mismoColor(casillas, filaActual, j, ficha))
-					resaltarCasilla(filaActual, j, casillas);
-				break;
-			}
-		}
+		calcularMovimientosTorre(0, -1, casillas, ficha);  // Izquierda (oeste)
+		calcularMovimientosTorre(0, +1, casillas, ficha);  // Derecha (este)
+		calcularMovimientosTorre(+1, 0, casillas, ficha);  // Abajo (sur)
+		calcularMovimientosTorre(-1, 0, casillas, ficha);  // Arriba (norte)
 
-		// Movimientos verticales de abajo
-		a = true;
-		for (int j = filaActual + 1; j <= 8 && a; j++) {
-			if (casillas[j][columnaActual].getText().isEmpty()) {
-				resaltarCasilla(j, columnaActual, casillas);
-			} else {
-				if (!mismoColor(casillas, j, columnaActual, ficha))
-					resaltarCasilla(j, columnaActual, casillas);
-				a = false;
-			}
-		}
-
-		for (int j = filaActual - 1; j >= 0; j--) {
-			if (casillas[j][columnaActual].getText().isEmpty()) {
-				resaltarCasilla(j, columnaActual, casillas);
-			} else {
-				if (!mismoColor(casillas, j, columnaActual, ficha))
-					resaltarCasilla(j, columnaActual, casillas);
-				break; // Rompe el bucle al encontrar cualquier pieza
-			}
-		}
 
 		return jugadasTotales + "\n";
+	}
+	
+	protected static void calcularMovimientosTorre(int direccionFila, int direccionColumna, JButton[][] casillas, String ficha) {
+		int fila = filaActual + direccionFila;
+		int columna = columnaActual + direccionColumna;
+		while (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
+			if (casillas[fila][columna].getText().isEmpty()) {
+				resaltarCasilla(fila, columna, casillas);
+			} else {
+				if (!mismoColor(casillas, fila, columna, ficha))
+					;
+				break;
+			}
+			fila += direccionFila;
+			columna += direccionColumna;
+		}
 	}
 }
