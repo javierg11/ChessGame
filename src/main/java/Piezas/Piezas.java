@@ -3,7 +3,6 @@ package Piezas;
 import java.awt.Color;
 
 import javax.swing.JButton;
-
 public abstract class Piezas {
 	protected static String jugadasTotales = "";
 	protected static int filaActual = 0;
@@ -13,7 +12,6 @@ public abstract class Piezas {
 
 	public abstract String calcularMovimientos(String posicion, JButton[][] casillas, String ficha);
 
-	
 	
 	
     protected void inicializarPosicion(String posicion) {

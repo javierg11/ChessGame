@@ -2,6 +2,7 @@ package Tablero;
 
 import java.awt.Color;
 
+
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -44,9 +45,12 @@ public class MetodosMoverPiezas {
 	    
 	    String movimientos = identificarPiezaParaMover(ficha, origen, casillas);
 	    String[] movimientosValidos = movimientos.split(" ");
-
+	    JugadaEspecialPeon a;
 	    for (String movimiento : movimientosValidos) {
 	        if (movimiento.equals(destino)) {
+	        	
+	        	a = new JugadaEspecialPeon();
+	        	ficha = a.coronarPeon(filaDestino,ficha);
 	        	
 	        	
 	        	String jugadaBonita = ficha.substring(1, 2);
@@ -62,6 +66,17 @@ public class MetodosMoverPiezas {
 	            ImageIcon iconoOriginal = new ImageIcon(
 	                TableroAjedrez.class.getResource("/imagesPiezas/" + ficha + ".png"));
 	            Image imagen = iconoOriginal.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+	            
+	            //Esta parte solo es para ver si se puede comer al paso con el peon (porque tiene que actualizar otras casillas)
+	            if (casillas[filaDestino][colDestino].getText().equals("bPa") ) {
+	            	casillas[filaDestino-1][colDestino].setText("");
+	            	casillas[filaDestino-1][colDestino].setIcon(null);
+	            }else if (casillas[filaDestino][colDestino].getText().equals("wPa")) {
+	            	casillas[filaDestino+1][colDestino].setText("");
+	            	casillas[filaDestino+1][colDestino].setIcon(null);
+	            }
+
+	            //Aqui ya sigue con normalidad
 	            casillas[filaDestino][colDestino].setIcon(new ImageIcon(imagen));
 	            casillas[filaDestino][colDestino].setText(ficha);
 	            casillas[filaDestino][colDestino].setHorizontalTextPosition(JButton.CENTER);
@@ -73,6 +88,15 @@ public class MetodosMoverPiezas {
 	            //Esto llama a una funcion que lleva la cuenta del numero de movimientos de la partida
 			    CalculosEnPartida.sumarMovimientos();
 			    CalculosEnPartida.guardarMovimientos(origen,destino,ficha);
+			    
+			    //Este metodo sirve para comprobar si un peon ha llegado a su casilla de coronacion
+	        	//Si ha llegado cornona si no, no hace nada
+	        	
+	        		
+	        	a.comerAlPaso(filaOrigen,filaDestino,ficha,casillas,colDestino,CalculosEnPartida.getJugadas());
+			    
+			    
+			    
 	            return true; 
 	        }
 	    }

@@ -2,8 +2,12 @@ package Piezas;
 
 import javax.swing.JButton;
 
+
 public class Peon extends Piezas {
 
+	String ficha;
+	int filaDestino;
+	
 	@Override
 	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha) {
 	    resetColores(casillas);
@@ -45,20 +49,21 @@ public class Peon extends Piezas {
 	/**
 	 * Marca las casillas de captura diagonal para el peón.
 	 */
-	private void marcarCapturas(int fila, int columna, JButton[][] casillas, String ficha) {
-	    // Izquierda diagonal
+	static void marcarCapturas(int fila, int columna, JButton[][] casillas, String ficha) {
+	    // Izquierda diagonal ademas de comprobar si se puede comer al paso
 	    if (columna - 1 >= 0 && fila >= 0 && fila < 8) {
-	        if (!casillas[fila][columna - 1].getText().isEmpty() && !mismoColor(casillas, fila, columna - 1, ficha)) {
+	        if ((!casillas[fila][columna - 1].getText().isEmpty() && !mismoColor(casillas, fila, columna - 1, ficha)) || casillas[fila][columna - 1].getText().contains(ficha)) {
 	            resaltarCasilla(fila, columna - 1, casillas);
 	        }
 	    }
-	    // Derecha diagonal
+	    // Derecha diagonal ademas de comprobar si se puede comer al paso
 	    if (columna + 1 < 8 && fila >= 0 && fila < 8) {
-	        if (!casillas[fila][columna + 1].getText().isEmpty() && !mismoColor(casillas, fila, columna + 1, ficha)) {
+	        if ((!casillas[fila][columna + 1].getText().isEmpty() && !mismoColor(casillas, fila, columna + 1, ficha)) || casillas[fila][columna + 1].getText().contains(ficha)) {
 	            resaltarCasilla(fila, columna + 1, casillas);
 	        }
 	    }
 	}
+	
 
 
 }
