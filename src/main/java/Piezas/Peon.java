@@ -9,20 +9,25 @@ public class Peon extends Piezas {
 	int filaDestino;
 	
 	@Override
-	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha) {
+	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha,boolean verMovimientos) {
 	    resetColores(casillas);
-	    inicializarPosicion(posicion);
-
+	    inicializarPosicion(posicion, verMovimientos);
+	    if (verMovimientos)
+	    
 	    // Peón negro
 	    if (ficha.contains("b")) {
 	        // Movimiento de dos casillas desde la posición inicial
 	        if (filaActual == 1 && casillas[filaActual + 1][columnaActual].getText().isEmpty() 
 	            && casillas[filaActual + 2][columnaActual].getText().isEmpty()) {
-	            resaltarCasilla(filaActual + 2, columnaActual, casillas);
+	            resaltarCasilla(filaActual + 2, columnaActual, casillas,ficha);
+            	conseguirJugadasLogicas(filaActual+2, columnaActual);
+
 	        }
 	        // Movimiento de una casilla hacia adelante
 	        if (filaActual + 1 < 8 && casillas[filaActual + 1][columnaActual].getText().isEmpty()) {
-	            resaltarCasilla(filaActual + 1, columnaActual, casillas);
+	            resaltarCasilla(filaActual + 1, columnaActual, casillas,ficha);
+            	conseguirJugadasLogicas(filaActual+1, columnaActual);
+
 	        }
 	        // Capturas diagonales
 	        marcarCapturas(filaActual + 1, columnaActual, casillas, ficha);
@@ -33,16 +38,20 @@ public class Peon extends Piezas {
 	        // Movimiento de dos casillas desde la posición inicial
 	        if (filaActual == 6 && casillas[filaActual - 1][columnaActual].getText().isEmpty() 
 	            && casillas[filaActual - 2][columnaActual].getText().isEmpty()) {
-	            resaltarCasilla(filaActual - 2, columnaActual, casillas);
+	            resaltarCasilla(filaActual - 2, columnaActual, casillas,ficha);
+            	conseguirJugadasLogicas(filaActual-2, columnaActual);
+
 	        }
 	        // Movimiento de una casilla hacia adelante
 	        if (filaActual - 1 >= 0 && casillas[filaActual - 1][columnaActual].getText().isEmpty()) {
-	            resaltarCasilla(filaActual - 1, columnaActual, casillas);
+	            resaltarCasilla(filaActual - 1, columnaActual, casillas,ficha);
+            	conseguirJugadasLogicas(filaActual-1, columnaActual);
+
 	        }
 	        // Capturas diagonales
 	        marcarCapturas(filaActual - 1, columnaActual, casillas, ficha);
 	    }
-
+	    
 	    return jugadasTotales + "\n";
 	}
 
@@ -53,13 +62,15 @@ public class Peon extends Piezas {
 	    // Izquierda diagonal ademas de comprobar si se puede comer al paso
 	    if (columna - 1 >= 0 && fila >= 0 && fila < 8) {
 	        if ((!casillas[fila][columna - 1].getText().isEmpty() && !mismoColor(casillas, fila, columna - 1, ficha)) || casillas[fila][columna - 1].getText().contains(ficha)) {
-	            resaltarCasilla(fila, columna - 1, casillas);
+            	conseguirJugadasLogicas(fila, columna);
+	        	resaltarCasilla(fila, columna - 1, casillas,ficha);
 	        }
 	    }
 	    // Derecha diagonal ademas de comprobar si se puede comer al paso
 	    if (columna + 1 < 8 && fila >= 0 && fila < 8) {
 	        if ((!casillas[fila][columna + 1].getText().isEmpty() && !mismoColor(casillas, fila, columna + 1, ficha)) || casillas[fila][columna + 1].getText().contains(ficha)) {
-	            resaltarCasilla(fila, columna + 1, casillas);
+            	conseguirJugadasLogicas(fila, columna);
+	        	resaltarCasilla(fila, columna + 1, casillas,ficha);
 	        }
 	    }
 	}

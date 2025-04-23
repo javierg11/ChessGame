@@ -16,6 +16,8 @@ import javax.swing.SwingUtilities;
 import Piezas.Piezas;
 
 public class ArrastraPieza {
+	private long tiempoUltimoClick = 0;
+	private static final long INTERVALO_MINIMO = 10000; // 500 ms = 0,5 segundos
 	private String textoArrastrado = null;
 	private JButton origen = null;
 	private String posicionOrigen = null;
@@ -30,40 +32,52 @@ public class ArrastraPieza {
 
 	private JFrame tablero = null;
 	private JButton[][] casillas = null;
-	
-	public ArrastraPieza(JFrame tablero,JButton[][] casillas,JLabel textoFlotante) {
-		this.tablero=tablero;
-		this.casillas=casillas;
-		this.textoFlotante=textoFlotante;
+
+	public ArrastraPieza(JFrame tablero, JButton[][] casillas, JLabel textoFlotante) {
+		this.tablero = tablero;
+		this.casillas = casillas;
+		this.textoFlotante = textoFlotante;
 	}
+
 	class BotonMouseListener extends MouseAdapter {
 		@Override
 		public void mousePressed(MouseEvent i) {
+//		    long ahora = System.currentTimeMillis();
+//		    if (ahora - tiempoUltimoClick < INTERVALO_MINIMO) {
+//		        // Si no ha pasado suficiente tiempo, ignorar el click
+//		        return;
+//		    }
+//		    tiempoUltimoClick = ahora; // Actualiza el tiempo del último click
 			origen = (JButton) i.getSource();
-		    textoArrastrado = origen.getActionCommand();
-		    fichaSeleccionada = origen.getText();
-		    posicionOrigen = obtenerPosicion(origen);
-		    //Mirar a quien le toca mover
-			if (CalculosEnPartida.colorAMover() && fichaSeleccionada.contains("w"));
-			else if (!(CalculosEnPartida.colorAMover()) && fichaSeleccionada.contains("b"));
-			//Si se toca una pieza del color al que no le toca mover el programa no hace nada
-			else return; 
-			
-			//Aqui hay un bug (solo me ha salido una vez) puedo mover una pieza que no deberia por color
-			
-			//Aqui se le añade la funcion de poder arrastrar la pieza al
-		    origen.addMouseMotionListener(new BotonMouseMotionListener());
-		    MetodosMoverPiezas.identificarPiezaParaMover(fichaSeleccionada, posicionOrigen, casillas);
+			textoArrastrado = origen.getActionCommand();
+			fichaSeleccionada = origen.getText();
+			posicionOrigen = obtenerPosicion(origen);
+			// Mirar a quien le toca mover
+			if (CalculosEnPartida.colorAMover() && fichaSeleccionada.contains("w"))
+				;
+			else if (!(CalculosEnPartida.colorAMover()) && fichaSeleccionada.contains("b"))
+				;
+			// Si se toca una pieza del color al que no le toca mover el programa no hace
+			// nada
+			else
+				return;
 
-		    puntoInicialClick = i.getPoint();
-		    arrastreEnProgreso = false;
+			// Aqui hay un bug (solo me ha salido una vez) puedo mover una pieza que no
+			// deberia por color
 
-		    textoFlotante.setText(null);
-		    textoFlotante.setIcon(origen.getIcon());
-		    textoFlotante.setOpaque(false);
-		    textoFlotante.setBorder(null);
-		    textoFlotante.setSize(textoFlotante.getPreferredSize());
-		    
+			// Aqui se le añade la funcion de poder arrastrar la pieza
+			origen.addMouseMotionListener(new BotonMouseMotionListener());
+			MetodosMoverPiezas.identificarPiezaParaMover(fichaSeleccionada, posicionOrigen, casillas);
+
+			puntoInicialClick = i.getPoint();
+			arrastreEnProgreso = false;
+
+			textoFlotante.setText(null);
+			textoFlotante.setIcon(origen.getIcon());
+			textoFlotante.setOpaque(false);
+			textoFlotante.setBorder(null);
+			textoFlotante.setSize(textoFlotante.getPreferredSize());
+
 		}
 
 		@Override
@@ -79,7 +93,8 @@ public class ArrastraPieza {
 			// Verificamos si el arrastre de una pieza está en progreso y si la pieza
 			// original (origen) no es nula
 			// También verificamos que el textoArrastrado no sea nulo
-			if ((arrastreEnProgreso && origen != null && textoArrastrado != null && textoFlotante != null) && (dx > 5 || dy > 5)) {
+			if ((arrastreEnProgreso && origen != null && textoArrastrado != null && textoFlotante != null)
+					&& (dx > 5 || dy > 5)) {
 				// Convertimos la posición del ratón en el marco a la posición en el contenedor
 				// principal
 				Point puntoEnFrame = SwingUtilities.convertPoint((Component) a.getSource(), a.getPoint(),
@@ -90,7 +105,7 @@ public class ArrastraPieza {
 				Component destino = tablero.getContentPane().getComponentAt(puntoEnFrame);
 
 				// Si el destino es un botón y no es el mismo que el origen
-				if (destino != origen && destino!=null) {
+				if (destino != origen && destino != null) {
 					// Convertimos el destino a un JButton
 					JButton botonDestino = (JButton) destino;
 
@@ -100,11 +115,11 @@ public class ArrastraPieza {
 					// Intentamos mover la pieza desde la posición de origen a la de destino
 					MetodosMoverPiezas.intentarMover(posicionOrigen, posicionDestino, origen, botonDestino, casillas,
 							fichaSeleccionada);
-				textoFlotante.setVisible(false);
-				textoFlotante.setIcon(null);
-				origen = null;
-				posicionOrigen = null;
-				fichaSeleccionada = null;
+					textoFlotante.setVisible(false);
+					textoFlotante.setIcon(null);
+					origen = null;
+					posicionOrigen = null;
+					fichaSeleccionada = null;
 				} else {
 					fichaSeleccionada = null;
 				}
@@ -146,19 +161,16 @@ public class ArrastraPieza {
 		@Override
 		public void mouseDragged(MouseEvent c) {
 
-			
-
 			// Arreglo muy poco bonito
 			Point puntoEnFrame = SwingUtilities.convertPoint((Component) c.getSource(), c.getPoint(),
 					tablero.getContentPane());
 			Component destino = tablero.getContentPane().getComponentAt(puntoEnFrame);
 
-			if ((origen == destino || puntoInicialClick == null || origen==null)) {
+			if ((origen == destino || puntoInicialClick == null || origen == null)) {
 				textoFlotante.setVisible(false);
 
 				return;
-			}
-			else if (textoFlotante==null)
+			} else if (textoFlotante == null)
 				return;
 
 			// Hacer algo despues de preguntar

@@ -39,14 +39,16 @@ public class TableroAjedrez {
 				if (fila == 8 && columna == 8)
 					casilla.setEnabled(false);
 				else if (fila == 8) {
-					casilla.setEnabled(false);
-					letraColumna = (char) ('a' + columna);
-					casilla.setText("" + letraColumna);
+//					casilla.setEnabled(false);
+//					letraColumna = (char) ('a' + columna);
+//					casilla.setText("" + letraColumna);
+					casilla.setText(""+columna);
 				} else if (columna == 8) {
-					casilla.setEnabled(false);
-					numeroFila = 8 - fila;
-					nombreCoordenadas = "" + numeroFila;
-					casilla.setText(nombreCoordenadas);
+//					casilla.setEnabled(false);
+//					numeroFila = 8 - fila;
+//					nombreCoordenadas = "" + numeroFila;
+//					casilla.setText(nombreCoordenadas);
+					casilla.setText(""+fila);
 				}
 				// Pintar las casillas
 				else if ((fila + columna) % 2 == 0)

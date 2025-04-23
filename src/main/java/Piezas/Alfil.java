@@ -5,15 +5,15 @@ import javax.swing.JButton;
 public class Alfil extends Piezas {
 
 	@Override
-	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha) {
+	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha,boolean verMovimientos) {
 		resetColores(casillas);
-		inicializarPosicion(posicion);
-
+		inicializarPosicion(posicion, verMovimientos);
+	    
 		calcularMovimientosAlfil(+1, +1, casillas, ficha);  // Diagonal abajo-derecha (sudeste)
 		calcularMovimientosAlfil(-1, -1, casillas, ficha);  // Diagonal arriba-izquierda (noroeste)
 		calcularMovimientosAlfil(+1, -1, casillas, ficha);  // Diagonal abajo-izquierda (sudoeste)
 		calcularMovimientosAlfil(-1, +1, casillas, ficha);  // Diagonal arriba-derecha (noreste)
-
+	    
 		return jugadasTotales + "\n";
 	}
 
@@ -22,10 +22,13 @@ public class Alfil extends Piezas {
 		int columna = columnaActual + direccionColumna;
 		while (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
 			if (casillas[fila][columna].getText().isEmpty()) {
-				resaltarCasilla(fila, columna, casillas);
+				conseguirJugadasLogicas(fila, columna);
+			    resaltarCasilla(fila, columna, casillas,ficha);
 			} else {
-				if (!mismoColor(casillas, fila, columna, ficha))
-					;
+				if (!mismoColor(casillas, fila, columna, ficha)) {
+	            	conseguirJugadasLogicas(fila, columna);
+				    resaltarCasilla(fila, columna, casillas,ficha);
+				}
 				break;
 			}
 			fila += direccionFila;

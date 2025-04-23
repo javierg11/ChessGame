@@ -5,12 +5,12 @@ import javax.swing.JButton;
 public class Caballo extends Piezas{
 
 	@Override
-	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha) {
+	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha,boolean verMovimientos) {
 	    resetColores(casillas);
-	    inicializarPosicion(posicion);
+	    inicializarPosicion(posicion, verMovimientos);
 
 	 // Movimientos posibles para el caballo como una "L"
-	    movimientosCaballo(casillas,ficha);
+	    	movimientosCaballo(casillas,ficha);
 	    
 
 
@@ -28,7 +28,8 @@ public class Caballo extends Piezas{
 	        if (nuevaFila >= 0 && nuevaFila < 8 && nuevaColumna >= 0 && nuevaColumna < 8) {
 	            String texto = casillas[nuevaFila][nuevaColumna].getText();
 	            if (texto.isEmpty() || !mismoColor(casillas, nuevaFila, nuevaColumna, ficha)) {
-	                resaltarCasilla(nuevaFila, nuevaColumna, casillas);
+	            	conseguirJugadasLogicas(nuevaFila, nuevaColumna);
+	        	    resaltarCasilla(nuevaFila, nuevaColumna, casillas,ficha);
 	            }
 	        }
 	    }

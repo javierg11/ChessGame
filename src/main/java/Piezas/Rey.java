@@ -2,13 +2,15 @@ package Piezas;
 
 import javax.swing.JButton;
 
+import Tablero.CalculosEnPartida;
+
 public class Rey extends Piezas {
 
 	@Override
-	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha) {
+	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha, boolean verMovimientos) {
 		resetColores(casillas);
-		inicializarPosicion(posicion);
-		movimientosRey(casillas, ficha);
+		inicializarPosicion(posicion,verMovimientos);
+	    movimientosRey(casillas, ficha);
 		return jugadasTotales + "\n";
 	}
 
@@ -16,17 +18,20 @@ public class Rey extends Piezas {
 		for (int i = filaActual + 1; i > filaActual - 2; i--) {
 			for (int a = columnaActual + 1; a > columnaActual - 2; a--) {
 				if (i >= 0 && i < 8 && a >= 0 && a < 8) {
-					System.out.println(i + " " + a);
 					if (casillas[i][a].getText().isEmpty()) {
-						resaltarCasilla(i, a, casillas);
+						conseguirJugadasLogicas(i, a);
+					    resaltarCasilla(i, a, casillas,ficha);
 					} else {
-						if (!mismoColor(casillas, i, a, ficha))
-							;
+						if (!mismoColor(casillas, i, a, ficha)) {
+							conseguirJugadasLogicas(i, a);
+						    resaltarCasilla(i, a, casillas,ficha);
+						}
 
 					}
 				}
 			}
 		}
+		enroqueRey.enroque(ficha, CalculosEnPartida.getJugadas(),casillas);
 
 	}
 }

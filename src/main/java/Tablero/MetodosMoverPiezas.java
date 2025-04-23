@@ -12,28 +12,32 @@ import Piezas.*;
 
 public class MetodosMoverPiezas {
 	public static String identificarPiezaParaMover(String ficha, String posicion, JButton[][] casillas) {
-		Piezas pieza;
-		if (ficha.contains("T")) {
-			pieza = new Torre();
-			return pieza.calcularMovimientos(posicion, casillas, ficha); 
-		}else if (ficha.contains("P")) {
-			pieza = new Peon();
-			return pieza.calcularMovimientos(posicion, casillas, ficha);
-		}else if (ficha.contains("A")) {
-			pieza = new Alfil();
-			return pieza.calcularMovimientos(posicion, casillas, ficha);
-		}else if (ficha.contains("D")) {
+		Piezas pieza=null;
+		String tipo = ficha.substring(1, 2); // "D", "T", "A", "C", "P", "R"
+
+		switch (tipo) {
+		case "D":
 			pieza = new Dama();
-			return pieza.calcularMovimientos(posicion, casillas, ficha);
-		}else if (ficha.contains("C")) {
+			break;
+		case "T":
+			pieza = new Torre();
+			break;
+		case "A":
+			pieza = new Alfil();
+			break;
+		case "C":
 			pieza = new Caballo();
-			return pieza.calcularMovimientos(posicion, casillas, ficha);
-		}else if (ficha.contains("R")) {
+			break;
+		case "P":
+			pieza = new Peon();
+			break;
+		case "R":
 			pieza = new Rey();
-			return pieza.calcularMovimientos(posicion, casillas, ficha);
-		} 
-		else
-			return "No";
+			break;
+		}
+
+		return pieza.calcularMovimientos(posicion, casillas, ficha, true);
+			
 	}
 
 
@@ -45,12 +49,13 @@ public class MetodosMoverPiezas {
 	    
 	    String movimientos = identificarPiezaParaMover(ficha, origen, casillas);
 	    String[] movimientosValidos = movimientos.split(" ");
-	    JugadaEspecialPeon a;
+
 	    for (String movimiento : movimientosValidos) {
 	        if (movimiento.equals(destino)) {
 	        	
-	        	a = new JugadaEspecialPeon();
-	        	ficha = a.coronarPeon(filaDestino,ficha);
+			    //Este metodo sirve para comprobar si un peon ha llegado a su casilla de coronacion
+	        	//Si ha llegado cornona si no, no hace nada
+	        	ficha = JugadaEspecialPeon.coronarPeon(filaDestino,ficha);
 	        	
 	        	
 	        	String jugadaBonita = ficha.substring(1, 2);
@@ -68,15 +73,22 @@ public class MetodosMoverPiezas {
 	            Image imagen = iconoOriginal.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 	            
 	            //Esta parte solo es para ver si se puede comer al paso con el peon (porque tiene que actualizar otras casillas)
-	            if (casillas[filaDestino][colDestino].getText().equals("bPa") ) {
+	            if (casillas[filaDestino][colDestino].getText().equals("wJa") ) {
 	            	casillas[filaDestino-1][colDestino].setText("");
 	            	casillas[filaDestino-1][colDestino].setIcon(null);
-	            }else if (casillas[filaDestino][colDestino].getText().equals("wPa")) {
+	            }else if (casillas[filaDestino][colDestino].getText().equals("bJa")) {
 	            	casillas[filaDestino+1][colDestino].setText("");
 	            	casillas[filaDestino+1][colDestino].setIcon(null);
 	            }
-
 	            //Aqui ya sigue con normalidad
+	            
+	            //Esto es para el enroque
+	         // Detectar si es un movimiento de rey de enroque (dos columnas de diferencia)
+	            
+	            mirarMoverEnroque(casillas,filaOrigen, colDestino, colOrigen);
+	            
+	            //Fin de esto
+	            
 	            casillas[filaDestino][colDestino].setIcon(new ImageIcon(imagen));
 	            casillas[filaDestino][colDestino].setText(ficha);
 	            casillas[filaDestino][colDestino].setHorizontalTextPosition(JButton.CENTER);
@@ -89,14 +101,12 @@ public class MetodosMoverPiezas {
 			    CalculosEnPartida.sumarMovimientos();
 			    CalculosEnPartida.guardarMovimientos(origen,destino,ficha);
 			    
-			    //Este metodo sirve para comprobar si un peon ha llegado a su casilla de coronacion
-	        	//Si ha llegado cornona si no, no hace nada
-	        	
+			    
 	        		
-	        	a.comerAlPaso(filaOrigen,filaDestino,ficha,casillas,colDestino,CalculosEnPartida.getJugadas());
+			    JugadaEspecialPeon.comerAlPaso(filaOrigen,filaDestino,ficha,casillas,colDestino,CalculosEnPartida.getJugadas());
+			    //Comer al paso en proceso
 			    
-			    
-			    
+			    JugadasEspecialRey.darJaque(casillas);
 	            return true; 
 	        }
 	    }
@@ -119,6 +129,36 @@ public class MetodosMoverPiezas {
 	        origenBtn.setIcon(origenBtn.getIcon());
 	        origenBtn.setActionCommand(fichaSeleccionada);
 	    }
+	}
+	
+	private static void mirarMoverEnroque(JButton[][] casillas, int filaOrigen, int colDestino, int colOrigen) {
+		if (casillas[filaOrigen][colOrigen].getText().contains("R") && Math.abs(colOrigen - colDestino) == 2) {
+            String color = casillas[filaOrigen][colOrigen].getText().substring(0, 1); // "w" o "b"
+            int fila = filaOrigen; // Para blancas y negras es la misma fila de origen del rey
+
+            // Determinar si es enroque corto o largo
+            boolean enroqueCorto = (colDestino > colOrigen);
+
+            // Coordenadas de las torres y destino según el tipo de enroque
+            int torreColOrigen = enroqueCorto ? 7 : 0;
+            int torreColDestino = enroqueCorto ? colDestino - 1 : colDestino + 1;
+
+            // Cargar el icono de la torre correspondiente
+            String iconoTorre = "/imagesPiezas/" + color + "T.png";
+            ImageIcon iconoOriginal = new ImageIcon(TableroAjedrez.class.getResource(iconoTorre));
+            Image imagenTorre = iconoOriginal.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+
+            // Mover la torre
+            casillas[fila][torreColDestino].setIcon(new ImageIcon(imagenTorre));
+            casillas[fila][torreColDestino].setText(color + "T");
+            casillas[fila][torreColDestino].setHorizontalTextPosition(JButton.CENTER);
+            casillas[fila][torreColDestino].setVerticalTextPosition(JButton.CENTER);
+            casillas[fila][torreColDestino].setForeground(new Color(0, 0, 0, 0));
+
+            // Limpiar la casilla original de la torre
+            casillas[fila][torreColOrigen].setText("");
+            casillas[fila][torreColOrigen].setIcon(null);
+        }
 	}
 	
 	
