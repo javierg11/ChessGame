@@ -13,14 +13,13 @@ public abstract class Piezas {
 	public abstract String calcularMovimientos(String posicion, JButton[][] casillas, String ficha, boolean verMovimientos);
 
 	
-	protected void verPeonesAlPaso(JButton[][] casillas, String ficha) {
-//		for (int i =0;i<8;i++) {
-//			for (int j = 0;j<8;j++) {
-//				if (!ficha.contains("P") && casillas[i][j].getText().equals("wJa") || casillas[i][j].getText().equals("bJa")) {
-//					casillas[i][j].setText("");
-//				}
-//			}
-//		}
+	protected static boolean verPeonesAlPaso(JButton[][] casillas, int fila, int columna) {
+		if ((casillas[fila][columna].getText().equals("wJa"))
+				||
+				(casillas[fila][columna].getText().equals("bJa"))) {
+			return false; //Si se ve un peon temporal (para comer al paso) devuelve true
+		}
+		return true;
 			
 	}
 	
@@ -47,7 +46,6 @@ public abstract class Piezas {
 	// Ver casillas para mover
 	protected static void resaltarCasilla(int fila, int columna, JButton[][] casillas, String ficha) {
 	    if (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
-	        // Aquí SIEMPRE false para validación
 	        //if (JugadasEspecialRey.quitarJaque(casillas, fila, columna, ficha, false)) {
 	            // Aquí sí puedes mostrar visualmente
 	          
@@ -60,7 +58,9 @@ public abstract class Piezas {
 	}
 	
 	protected static void conseguirJugadasLogicas(int fila, int columna) {
+		if (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
 		  jugadasTotales += fila + "" + columna + " ";
+		}
 	}
 
 	

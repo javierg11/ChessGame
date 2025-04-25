@@ -2,6 +2,7 @@ package Piezas;
 
 
 
+import java.awt.Color;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -16,8 +17,13 @@ public class JugadaEspecialPeon {
 		}
 		else
 			return ficha;
+		
+		
+		
 		}
-	public static boolean comerAlPaso(int filaOrigen, int filaDestino, String ficha, JButton [][] casillas, int columna,HashMap<Integer, String> jugadas) {
+	
+	
+	public static void comerAlPaso(int filaOrigen, int filaDestino, String ficha, JButton [][] casillas, int columna,HashMap<Integer, String> jugadas) {
 		
 		
         Integer claveMasNueva = jugadas.size();
@@ -29,43 +35,47 @@ public class JugadaEspecialPeon {
 
         //Este comprueba si el regex es correcto, y si hay un peon de color contrario al aldo del peon (esto se hace para ver si es posible ejecutar 
         //el comer al paso)
-        if (valorMasNuevo.matches(regexBlancas) && (casillas[filaDestino][columna-1].getText().equals("bP") || 
-				casillas[filaDestino][columna+1].getText().equals("bP"))
-        ||
-        valorMasNuevo.matches(regexNegras) && (casillas[filaDestino][columna+1].getText().equals("wP") || 
-				casillas[filaDestino][columna-1].getText().equals("wP"))
         
-        ){
-        	//Este if sirve para saber a que color se la hace el comer al paso, creando un peon temporal que si no se come en ese turno desaparace
-        	//Si al que le hacen comer al paso es un peon negro se crea un peon temporal negro (porque asi se controla que solo se lo 
-        	//pueda comer un peon blaco)
+        boolean puedeComerAlPaso = false;
+
+        if (valorMasNuevo.matches(regexBlancas)) {
+            // Peón blanco: busca peón negro a izquierda o derecha
+            boolean izquierda = (columna - 1 >= 0) && casillas[filaDestino][columna - 1].getText().equals("bP");
+            boolean derecha   = (columna + 1 < 8) && casillas[filaDestino][columna + 1].getText().equals("bP");
+            puedeComerAlPaso = izquierda || derecha;
+        } else if (valorMasNuevo.matches(regexNegras)) {
+            // Peón negro: busca peón blanco a derecha o izquierda
+            boolean derecha   = (columna + 1 < 8) && casillas[filaDestino][columna + 1].getText().equals("wP");
+            boolean izquierda = (columna - 1 >= 0) && casillas[filaDestino][columna - 1].getText().equals("wP");
+            puedeComerAlPaso = derecha || izquierda;
+        }
+
+        if (puedeComerAlPaso) {
+            //Este if sirve para saber a qué color se le hace el comer al paso, creando un peon temporal que si no se come en ese turno desaparece
             if (ficha.equals("wP")) {
-            	casillas[filaOrigen-1][columna].setText("wJa");
-//            	casillas[filaOrigen-1][columna].setHorizontalTextPosition(JButton.CENTER);
-//	            casillas[filaOrigen-1][columna].setVerticalTextPosition(JButton.CENTER);
-//	            casillas[filaOrigen-1][columna].setForeground(new Color(0, 0, 0, 0));
+                if (filaOrigen - 1 >= 0) { // Control de límites
+                    casillas[filaOrigen - 1][columna].setText("wJa");
+                    casillas[filaOrigen - 1][columna].setHorizontalTextPosition(JButton.CENTER);
+                    casillas[filaOrigen - 1][columna].setVerticalTextPosition(JButton.CENTER);
+                    casillas[filaOrigen - 1][columna].setForeground(new Color(0, 0, 0, 0));
+                }
+            } else {
+                if (filaOrigen + 1 < 8) { // Control de límites
+                    casillas[filaOrigen + 1][columna].setText("bJa");
+                    casillas[filaOrigen + 1][columna].setHorizontalTextPosition(JButton.CENTER);
+                    casillas[filaOrigen + 1][columna].setVerticalTextPosition(JButton.CENTER);
+                    casillas[filaOrigen + 1][columna].setForeground(new Color(0, 0, 0, 0));
+                }
             }
-            else {
-            	casillas[filaOrigen+1][columna].setText("bJa");
-//            	casillas[filaOrigen+1][columna].setHorizontalTextPosition(JButton.CENTER);
-//	            casillas[filaOrigen+1][columna].setVerticalTextPosition(JButton.CENTER);
-//	            casillas[filaOrigen+1][columna].setForeground(new Color(0, 0, 0, 0));
-            }
-        } 
-        
-        else {
-            for (int i =0;i<8;i++) {
-            	for (int j =0;j<8;j++) {
-            		//Compruaba pasado un movimiento desde que se ha activado "comer al paso" que si no se ha comido el peon borra 
-            		//la posibilidad de comer al paso
-            		if (casillas[i][j].getText().equals("wJa") || casillas[i][j].getText().equals("bJa"))
-            			casillas[i][j].setText("");
-            	}
+        } else {
+            // Si no se puede comer al paso, limpia los peones temporales
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (casillas[i][j].getText().equals("wJa") || casillas[i][j].getText().equals("bJa"))
+                        casillas[i][j].setText("");
+                }
             }
         }
-		
-
-		return false;
 
 	}
 }

@@ -52,6 +52,7 @@ public class enroqueRey {
 
 	}
 
+	
 	private static void enroqueCorto(JButton[][] casillas, String ficha) {
 		int fila;
 		if (ficha.contains("b"))

@@ -3,6 +3,7 @@ package Tablero;
 import java.awt.Color;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -42,12 +43,6 @@ public class ArrastraPieza {
 	class BotonMouseListener extends MouseAdapter {
 		@Override
 		public void mousePressed(MouseEvent i) {
-//		    long ahora = System.currentTimeMillis();
-//		    if (ahora - tiempoUltimoClick < INTERVALO_MINIMO) {
-//		        // Si no ha pasado suficiente tiempo, ignorar el click
-//		        return;
-//		    }
-//		    tiempoUltimoClick = ahora; // Actualiza el tiempo del último click
 			origen = (JButton) i.getSource();
 			textoArrastrado = origen.getActionCommand();
 			fichaSeleccionada = origen.getText();
@@ -113,7 +108,7 @@ public class ArrastraPieza {
 					String posicionDestino = obtenerPosicion(botonDestino);
 
 					// Intentamos mover la pieza desde la posición de origen a la de destino
-					MetodosMoverPiezas.intentarMover(posicionOrigen, posicionDestino, origen, botonDestino, casillas,
+					MetodosMoverPiezas.moverPiezas(posicionOrigen, posicionDestino, casillas,
 							fichaSeleccionada);
 					textoFlotante.setVisible(false);
 					textoFlotante.setIcon(null);
@@ -135,6 +130,14 @@ public class ArrastraPieza {
 				origen = null;
 				posicionOrigen = null;
 				fichaSeleccionada = null;
+				
+			    long ahora = System.currentTimeMillis();
+			    if (ahora - tiempoUltimoClick < INTERVALO_MINIMO) {
+			        // Si no ha pasado suficiente tiempo, ignorar el click
+			        return;
+			    }
+			    tiempoUltimoClick = ahora; // Actualiza el tiempo del último click
+
 			}
 
 			// Si no hay arrastre en progreso y no se ha seleccionado una casilla con el
@@ -153,6 +156,7 @@ public class ArrastraPieza {
 			// Restablecemos las variables que controlan el estado del arrastre y el clic
 			arrastreEnProgreso = false;
 			// puntoInicialClick = null;
+			tablero.setCursor(Cursor.getDefaultCursor());
 		}
 
 	}
@@ -160,7 +164,7 @@ public class ArrastraPieza {
 	private class BotonMouseMotionListener extends MouseMotionAdapter {
 		@Override
 		public void mouseDragged(MouseEvent c) {
-
+			tablero.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			// Arreglo muy poco bonito
 			Point puntoEnFrame = SwingUtilities.convertPoint((Component) c.getSource(), c.getPoint(),
 					tablero.getContentPane());

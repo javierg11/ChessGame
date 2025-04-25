@@ -22,7 +22,7 @@ public class Torre extends Piezas {
 		int fila = filaActual + direccionFila;
 		int columna = columnaActual + direccionColumna;
 		while (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
-			if (casillas[fila][columna].getText().isEmpty()) {
+			if (casillas[fila][columna].getText().isEmpty() || !verPeonesAlPaso(casillas,fila,columna)) {
 				conseguirJugadasLogicas(fila, columna);
 			    resaltarCasilla(fila, columna, casillas, ficha);
 			} else {

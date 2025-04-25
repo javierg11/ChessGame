@@ -8,7 +8,6 @@ public class Dama extends Piezas{
 	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha, boolean verMovimientos) {
 		resetColores(casillas);
 		inicializarPosicion(posicion, verMovimientos);
-		verPeonesAlPaso(casillas,ficha);
 		Alfil.calcularMovimientosAlfil(+1, +1, casillas, ficha);  // Diagonal abajo-derecha (sudeste)
 		Alfil.calcularMovimientosAlfil(-1, -1, casillas, ficha);  // Diagonal arriba-izquierda (noroeste)
 		Alfil.calcularMovimientosAlfil(+1, -1, casillas, ficha);  // Diagonal abajo-izquierda (sudoeste)

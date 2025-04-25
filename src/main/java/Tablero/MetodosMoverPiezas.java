@@ -57,38 +57,25 @@ public class MetodosMoverPiezas {
 	        	//Si ha llegado cornona si no, no hace nada
 	        	ficha = JugadaEspecialPeon.coronarPeon(filaDestino,ficha);
 	        	
-	        	
-	        	String jugadaBonita = ficha.substring(1, 2);
-	        	if (!casillas[filaDestino][colDestino].getText().equals("")) {
-	                jugadaBonita += "x";
-	            }
-	            char columna = (char) ('a' + colDestino);
-	            int fila = 8-filaDestino;
-	            jugadaBonita += "" + columna + fila;
-	            System.out.println(jugadaBonita); 
-	            
-	            
+
 	            ImageIcon iconoOriginal = new ImageIcon(
 	                TableroAjedrez.class.getResource("/imagesPiezas/" + ficha + ".png"));
 	            Image imagen = iconoOriginal.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 	            
 	            //Esta parte solo es para ver si se puede comer al paso con el peon (porque tiene que actualizar otras casillas)
-	            if (casillas[filaDestino][colDestino].getText().equals("wJa") ) {
+	            if (casillas[filaDestino][colDestino].getText().equals("wJa") && casillas[filaOrigen][colOrigen].getText().equals("wP")) {
 	            	casillas[filaDestino-1][colDestino].setText("");
 	            	casillas[filaDestino-1][colDestino].setIcon(null);
-	            }else if (casillas[filaDestino][colDestino].getText().equals("bJa")) {
+	            }else if (casillas[filaDestino][colDestino].getText().equals("bJa") && casillas[filaOrigen][colOrigen].getText().equals("bP")) {
 	            	casillas[filaDestino+1][colDestino].setText("");
 	            	casillas[filaDestino+1][colDestino].setIcon(null);
 	            }
 	            //Aqui ya sigue con normalidad
 	            
 	            //Esto es para el enroque
-	         // Detectar si es un movimiento de rey de enroque (dos columnas de diferencia)
-	            
+	            // Detectar si es un movimiento de rey de enroque (dos columnas de diferencia)
 	            mirarMoverEnroque(casillas,filaOrigen, colDestino, colOrigen);
-	            
-	            //Fin de esto
-	            
+	            	            
 	            casillas[filaDestino][colDestino].setIcon(new ImageIcon(imagen));
 	            casillas[filaDestino][colDestino].setText(ficha);
 	            casillas[filaDestino][colDestino].setHorizontalTextPosition(JButton.CENTER);
@@ -97,14 +84,10 @@ public class MetodosMoverPiezas {
 
 	            casillas[filaOrigen][colOrigen].setText("");
 	            casillas[filaOrigen][colOrigen].setIcon(null);
-	            //Esto llama a una funcion que lleva la cuenta del numero de movimientos de la partida
-			    CalculosEnPartida.sumarMovimientos();
+
 			    CalculosEnPartida.guardarMovimientos(origen,destino,ficha);
-			    
-			    
 	        		
 			    JugadaEspecialPeon.comerAlPaso(filaOrigen,filaDestino,ficha,casillas,colDestino,CalculosEnPartida.getJugadas());
-			    //Comer al paso en proceso
 			    
 			    JugadasEspecialRey.darJaque(casillas);
 	            return true; 
@@ -116,20 +99,7 @@ public class MetodosMoverPiezas {
 	
 	
 	
-	public static void intentarMover(String origenPos, String destinoPos, JButton origenBtn, JButton destinoBtn, JButton [][] casillas,
-			String fichaSeleccionada) {
-	    boolean movimientoExitoso = MetodosMoverPiezas.moverPiezas(origenPos, destinoPos, casillas, fichaSeleccionada);
-
-	    if (movimientoExitoso) {
-	        // Solo si el movimiento fue válido, actualizamos la info lógica
-	        destinoBtn.setActionCommand(origenBtn.getActionCommand());
-	        origenBtn.setActionCommand("");
-	    } else {
-	        // Si el movimiento es inválido, dejamos la pieza donde estaba
-	        origenBtn.setIcon(origenBtn.getIcon());
-	        origenBtn.setActionCommand(fichaSeleccionada);
-	    }
-	}
+	
 	
 	private static void mirarMoverEnroque(JButton[][] casillas, int filaOrigen, int colDestino, int colOrigen) {
 		if (casillas[filaOrigen][colOrigen].getText().contains("R") && Math.abs(colOrigen - colDestino) == 2) {

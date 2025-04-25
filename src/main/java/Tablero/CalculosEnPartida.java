@@ -26,6 +26,7 @@ public class CalculosEnPartida {
 	}
 	
 	public static void guardarMovimientos(String posInicial, String posDestino, String ficha) {
+		sumarMovimientos();
 		String jugada=ficha+"-"+posInicial+"-"+posDestino; //Con un .split ya tengo un array del nº de movimiento, origen, final y ficha
 		jugadas.put(jugadasTotales,jugada);
 		System.out.println(jugadas);
