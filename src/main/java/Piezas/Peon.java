@@ -19,7 +19,7 @@ public class Peon extends Piezas {
             casillas[filaActual + direccion][columnaActual].getText().isEmpty() &&
             casillas[filaActual + 2 * direccion][columnaActual].getText().isEmpty()) {
             
-            resaltarCasilla(filaActual + 2 * direccion, columnaActual, casillas, ficha);
+            resaltarCasilla(filaActual + 2 * direccion, columnaActual, casillas);
             conseguirJugadasLogicas(filaActual + 2 * direccion, columnaActual);
         }
 
@@ -27,7 +27,7 @@ public class Peon extends Piezas {
         if (dentroTablero(filaActual + direccion, columnaActual) &&
             casillas[filaActual + direccion][columnaActual].getText().isEmpty()) {
             
-            resaltarCasilla(filaActual + direccion, columnaActual, casillas, ficha);
+            resaltarCasilla(filaActual + direccion, columnaActual, casillas);
             conseguirJugadasLogicas(filaActual + direccion, columnaActual);
         }
 
@@ -46,7 +46,7 @@ public class Peon extends Piezas {
             String texto = casillas[fila][columna - 1].getText();
             if (!texto.isEmpty() && !mismoColor(casillas, fila, columna - 1, ficha)) {
                 conseguirJugadasLogicas(fila, columna - 1);
-                resaltarCasilla(fila, columna - 1, casillas, ficha);
+                resaltarCasilla(fila, columna - 1, casillas);
             }
             
         }
@@ -55,7 +55,7 @@ public class Peon extends Piezas {
             String texto = casillas[fila][columna + 1].getText();
             if (!texto.isEmpty() && !mismoColor(casillas, fila, columna + 1, ficha)) {
                 conseguirJugadasLogicas(fila, columna + 1);
-                resaltarCasilla(fila, columna + 1, casillas, ficha);
+                resaltarCasilla(fila, columna + 1, casillas);
             }
             
         }

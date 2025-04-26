@@ -23,11 +23,11 @@ public class Alfil extends Piezas {
 		while (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
 			if (casillas[fila][columna].getText().isEmpty() || !verPeonesAlPaso(casillas,fila,columna)) {
 				conseguirJugadasLogicas(fila, columna);
-			    resaltarCasilla(fila, columna, casillas,ficha);
+			    resaltarCasilla(fila, columna, casillas);
 			} else {
 				if (!mismoColor(casillas, fila, columna, ficha)) {
 	            	conseguirJugadasLogicas(fila, columna);
-				    resaltarCasilla(fila, columna, casillas,ficha);
+				    resaltarCasilla(fila, columna, casillas);
 				}
 				break;
 			}

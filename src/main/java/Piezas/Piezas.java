@@ -44,22 +44,30 @@ public abstract class Piezas {
 	}
 
 	// Ver casillas para mover
-	protected static void resaltarCasilla(int fila, int columna, JButton[][] casillas, String ficha) {
+	protected static void resaltarCasilla(int fila, int columna, JButton[][] casillas) {
+		
 	    if (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
-	        //if (JugadasEspecialRey.quitarJaque(casillas, fila, columna, ficha, false)) {
-	            // Aquí sí puedes mostrar visualmente
-	          
-	            if (verMov) {
+        	//jugadasTotales += fila + "" + columna + " ";
+
+//	        if (JugadasEspecialRey.quitarJaque(casillas, fila, columna, ficha, false)) {
+//	            // Aquí sí puedes mostrar visualmente
+//	            if (verMov) {
+//	                casillas[fila][columna].setBackground(new Color(144, 238, 144));
+//	                casillas[fila][columna].setEnabled(true);
+//	            }
+//	        }
+    }
+	}
+	
+	protected static void resaltarCasilla2(int fila, int columna, JButton[][] casillas) {
 	                casillas[fila][columna].setBackground(new Color(144, 238, 144));
 	                casillas[fila][columna].setEnabled(true);
-	            }
-	       // }
-	    }
 	}
 	
 	protected static void conseguirJugadasLogicas(int fila, int columna) {
 		if (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
-		  jugadasTotales += fila + "" + columna + " ";
+        	jugadasTotales += fila + "" + columna + " ";
+
 		}
 	}
 

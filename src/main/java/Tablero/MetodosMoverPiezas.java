@@ -13,7 +13,10 @@ import Piezas.*;
 public class MetodosMoverPiezas {
 	public static String identificarPiezaParaMover(String ficha, String posicion, JButton[][] casillas) {
 		Piezas pieza=null;
-		String tipo = ficha.substring(1, 2); // "D", "T", "A", "C", "P", "R"
+		String tipo="";
+		if (ficha.length()==0)
+			return "";
+		tipo = ficha.substring(1, 2); // "D", "T", "A", "C", "P", "R"
 
 		switch (tipo) {
 		case "D":
@@ -34,22 +37,29 @@ public class MetodosMoverPiezas {
 		case "R":
 			pieza = new Rey();
 			break;
+		default:
+			break;
 		}
-
-		return pieza.calcularMovimientos(posicion, casillas, ficha, true);
+		String hola=pieza.calcularMovimientos(posicion, casillas, ficha, true);
+	    hola=JugadasEspecialRey.controlJugadasPorJaque(hola,casillas,ficha,posicion);
+		return hola;
 			
 	}
 
 
-	public static boolean moverPiezas(String origen, String destino, JButton[][] casillas, String ficha) {
+	public static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha) {
 	    int filaOrigen = Integer.parseInt(origen.substring(0, 1));
 	    int colOrigen = Integer.parseInt(origen.substring(1, 2));
 	    int filaDestino = Integer.parseInt(destino.substring(0, 1));
 	    int colDestino = Integer.parseInt(destino.substring(1, 2));
 	    
 	    String movimientos = identificarPiezaParaMover(ficha, origen, casillas);
+	    
+	    
+	    
 	    String[] movimientosValidos = movimientos.split(" ");
 
+	    
 	    for (String movimiento : movimientosValidos) {
 	        if (movimiento.equals(destino)) {
 	        	
@@ -84,17 +94,14 @@ public class MetodosMoverPiezas {
 
 	            casillas[filaOrigen][colOrigen].setText("");
 	            casillas[filaOrigen][colOrigen].setIcon(null);
-
 			    CalculosEnPartida.guardarMovimientos(origen,destino,ficha);
 	        		
 			    JugadaEspecialPeon.comerAlPaso(filaOrigen,filaDestino,ficha,casillas,colDestino,CalculosEnPartida.getJugadas());
 			    
-			    JugadasEspecialRey.darJaque(casillas);
-	            return true; 
+			    JugadasEspecialRey.detertarPosicionJaque(casillas);
+			    movimientos="";
 	        }
 	    }
-
-	    return false; 
 	}
 	
 	

@@ -29,7 +29,7 @@ public class Caballo extends Piezas{
 	            String texto = casillas[nuevaFila][nuevaColumna].getText();
 	            if ((texto.isEmpty() || !mismoColor(casillas, nuevaFila, nuevaColumna, ficha) || !verPeonesAlPaso(casillas,nuevaFila,nuevaColumna))) {
 	            	conseguirJugadasLogicas(nuevaFila, nuevaColumna);
-	        	    resaltarCasilla(nuevaFila, nuevaColumna, casillas,ficha);
+	        	    resaltarCasilla(nuevaFila, nuevaColumna, casillas);
 	            }
 	        }
 	    }

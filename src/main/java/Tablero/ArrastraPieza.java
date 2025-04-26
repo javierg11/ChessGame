@@ -17,8 +17,6 @@ import javax.swing.SwingUtilities;
 import Piezas.Piezas;
 
 public class ArrastraPieza {
-	private long tiempoUltimoClick = 0;
-	private static final long INTERVALO_MINIMO = 10000; // 500 ms = 0,5 segundos
 	private String textoArrastrado = null;
 	private JButton origen = null;
 	private String posicionOrigen = null;
@@ -26,7 +24,6 @@ public class ArrastraPieza {
 	public final static int casillasColumnas = 9;
 
 	private String fichaSeleccionada = null;
-	private boolean arrastreEnProgreso = false;
 	private Point puntoInicialClick = null;
 
 	private JLabel textoFlotante;
@@ -43,7 +40,10 @@ public class ArrastraPieza {
 	class BotonMouseListener extends MouseAdapter {
 		@Override
 		public void mousePressed(MouseEvent i) {
-			origen = (JButton) i.getSource();
+			origen=(JButton) i.getSource();
+			if (origen.getText().equals(""))
+				return;
+			
 			textoArrastrado = origen.getActionCommand();
 			fichaSeleccionada = origen.getText();
 			posicionOrigen = obtenerPosicion(origen);
@@ -65,7 +65,6 @@ public class ArrastraPieza {
 			MetodosMoverPiezas.identificarPiezaParaMover(fichaSeleccionada, posicionOrigen, casillas);
 
 			puntoInicialClick = i.getPoint();
-			arrastreEnProgreso = false;
 
 			textoFlotante.setText(null);
 			textoFlotante.setIcon(origen.getIcon());
@@ -88,7 +87,7 @@ public class ArrastraPieza {
 			// Verificamos si el arrastre de una pieza está en progreso y si la pieza
 			// original (origen) no es nula
 			// También verificamos que el textoArrastrado no sea nulo
-			if ((arrastreEnProgreso && origen != null && textoArrastrado != null && textoFlotante != null)
+			if ((origen != null && textoArrastrado != null && textoFlotante != null)
 					&& (dx > 5 || dy > 5)) {
 				// Convertimos la posición del ratón en el marco a la posición en el contenedor
 				// principal
@@ -131,31 +130,16 @@ public class ArrastraPieza {
 				posicionOrigen = null;
 				fichaSeleccionada = null;
 				
-			    long ahora = System.currentTimeMillis();
-			    if (ahora - tiempoUltimoClick < INTERVALO_MINIMO) {
-			        // Si no ha pasado suficiente tiempo, ignorar el click
-			        return;
-			    }
-			    tiempoUltimoClick = ahora; // Actualiza el tiempo del último click
 
 			}
 
 			// Si no hay arrastre en progreso y no se ha seleccionado una casilla con el
 			// clic
-			if (!arrastreEnProgreso) {
-				// Limpiamos todas las variables de estado
-				textoArrastrado = null;
-				origen = null;
-				posicionOrigen = null;
-				fichaSeleccionada = null;
 
-				// Restablecemos los colores de las casillas
-				Piezas.resetColores(casillas);
-			}
+			
 
 			// Restablecemos las variables que controlan el estado del arrastre y el clic
-			arrastreEnProgreso = false;
-			// puntoInicialClick = null;
+			puntoInicialClick = null;
 			tablero.setCursor(Cursor.getDefaultCursor());
 		}
 
@@ -164,24 +148,22 @@ public class ArrastraPieza {
 	private class BotonMouseMotionListener extends MouseMotionAdapter {
 		@Override
 		public void mouseDragged(MouseEvent c) {
+			if (origen == null||origen.getText().equals(""))
+				return;
 			tablero.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			// Arreglo muy poco bonito
+
 			Point puntoEnFrame = SwingUtilities.convertPoint((Component) c.getSource(), c.getPoint(),
 					tablero.getContentPane());
 			Component destino = tablero.getContentPane().getComponentAt(puntoEnFrame);
 
-			if ((origen == destino || puntoInicialClick == null || origen == null)) {
+			if ((origen == destino || puntoInicialClick == null || origen == null || textoFlotante == null)) {
 				textoFlotante.setVisible(false);
-
 				return;
-			} else if (textoFlotante == null)
-				return;
+			} 
 
-			// Hacer algo despues de preguntar
 			int dx = Math.abs(c.getX() - puntoInicialClick.x);
 			int dy = Math.abs(c.getY() - puntoInicialClick.y);
 			if (dx > 5 || dy > 5) {
-				arrastreEnProgreso = true;
 				if (origen.isEnabled())
 					origen.setBackground(Color.ORANGE);
 

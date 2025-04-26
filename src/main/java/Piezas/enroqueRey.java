@@ -60,7 +60,7 @@ public class enroqueRey {
 		else
 			fila = 7;
 		if (casillas[fila][5].getText().isEmpty() && casillas[fila][6].getText().isEmpty()) {
-			Piezas.resaltarCasilla(fila, 6, casillas,ficha);
+			Piezas.resaltarCasilla(fila, 6, casillas);
         	Piezas.conseguirJugadasLogicas(fila, 6);
 
 		}
@@ -74,7 +74,7 @@ public class enroqueRey {
 			fila = 7;
 		if (casillas[fila][1].getText().isEmpty() && casillas[fila][2].getText().isEmpty()
 				&& casillas[fila][3].getText().isEmpty()) {
-			Piezas.resaltarCasilla(fila, 2, casillas,ficha);
+			Piezas.resaltarCasilla(fila, 2, casillas);
         	Piezas.conseguirJugadasLogicas(fila, 2);
 
 		}

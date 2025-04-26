@@ -20,11 +20,11 @@ public class Rey extends Piezas {
 				if (i >= 0 && i < 8 && a >= 0 && a < 8) {
 					if (casillas[i][a].getText().isEmpty() || !verPeonesAlPaso(casillas,filaActual,columnaActual)) {
 						conseguirJugadasLogicas(i, a);
-					    resaltarCasilla(i, a, casillas,ficha);
+					    resaltarCasilla(i, a, casillas);
 					} else {
 						if (!mismoColor(casillas, i, a, ficha)) {
 							conseguirJugadasLogicas(i, a);
-						    resaltarCasilla(i, a, casillas,ficha);
+						    resaltarCasilla(i, a, casillas);
 						}
 
 					}
