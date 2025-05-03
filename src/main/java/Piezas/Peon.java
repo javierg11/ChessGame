@@ -5,9 +5,8 @@ import javax.swing.JButton;
 public class Peon extends Piezas {
 
     @Override
-    public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha, boolean verMovimientos) {
-        resetColores(casillas);
-        inicializarPosicion(posicion, verMovimientos);
+    public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha, boolean movEspecial) {
+        inicializarPosicion(posicion);
 
         int direccion = ficha.contains("b") ? 1 : -1; 
         int filaInicial = ficha.contains("b") ? 1 : 6;
@@ -19,7 +18,6 @@ public class Peon extends Piezas {
             casillas[filaActual + direccion][columnaActual].getText().isEmpty() &&
             casillas[filaActual + 2 * direccion][columnaActual].getText().isEmpty()) {
             
-            resaltarCasilla(filaActual + 2 * direccion, columnaActual, casillas);
             conseguirJugadasLogicas(filaActual + 2 * direccion, columnaActual);
         }
 
@@ -27,7 +25,6 @@ public class Peon extends Piezas {
         if (dentroTablero(filaActual + direccion, columnaActual) &&
             casillas[filaActual + direccion][columnaActual].getText().isEmpty()) {
             
-            resaltarCasilla(filaActual + direccion, columnaActual, casillas);
             conseguirJugadasLogicas(filaActual + direccion, columnaActual);
         }
 
@@ -46,7 +43,6 @@ public class Peon extends Piezas {
             String texto = casillas[fila][columna - 1].getText();
             if (!texto.isEmpty() && !mismoColor(casillas, fila, columna - 1, ficha)) {
                 conseguirJugadasLogicas(fila, columna - 1);
-                resaltarCasilla(fila, columna - 1, casillas);
             }
             
         }
@@ -55,7 +51,6 @@ public class Peon extends Piezas {
             String texto = casillas[fila][columna + 1].getText();
             if (!texto.isEmpty() && !mismoColor(casillas, fila, columna + 1, ficha)) {
                 conseguirJugadasLogicas(fila, columna + 1);
-                resaltarCasilla(fila, columna + 1, casillas);
             }
             
         }

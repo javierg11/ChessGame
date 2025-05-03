@@ -5,9 +5,8 @@ import javax.swing.JButton;
 public class Dama extends Piezas{
 
 	@Override
-	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha, boolean verMovimientos) {
-		resetColores(casillas);
-		inicializarPosicion(posicion, verMovimientos);
+	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha, boolean movEspecial) {
+		inicializarPosicion(posicion);
 		Alfil.calcularMovimientosAlfil(+1, +1, casillas, ficha);  // Diagonal abajo-derecha (sudeste)
 		Alfil.calcularMovimientosAlfil(-1, -1, casillas, ficha);  // Diagonal arriba-izquierda (noroeste)
 		Alfil.calcularMovimientosAlfil(+1, -1, casillas, ficha);  // Diagonal abajo-izquierda (sudoeste)

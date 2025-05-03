@@ -1,7 +1,5 @@
 package Tablero;
 
-import java.awt.Color;
-
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Point;
@@ -14,7 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import Piezas.Piezas;
+import ConstantesComunes.Colores;
+import Partida.CalculosEnPartida;
+import Piezas.FuncionesVisualesTablero;
 
 public class ArrastraPieza {
 	private String textoArrastrado = null;
@@ -40,6 +40,8 @@ public class ArrastraPieza {
 	class BotonMouseListener extends MouseAdapter {
 		@Override
 		public void mousePressed(MouseEvent i) {
+			FuncionesVisualesTablero.resetColores(casillas);
+
 			origen=(JButton) i.getSource();
 			if (origen.getText().equals(""))
 				return;
@@ -47,22 +49,17 @@ public class ArrastraPieza {
 			textoArrastrado = origen.getActionCommand();
 			fichaSeleccionada = origen.getText();
 			posicionOrigen = obtenerPosicion(origen);
-			// Mirar a quien le toca mover
-			if (CalculosEnPartida.colorAMover() && fichaSeleccionada.contains("w"))
-				;
-			else if (!(CalculosEnPartida.colorAMover()) && fichaSeleccionada.contains("b"))
-				;
-			// Si se toca una pieza del color al que no le toca mover el programa no hace
-			// nada
-			else
-				return;
+			// Si no es el turno del color de la ficha seleccionada, no hacer nada
+			if ((CalculosEnPartida.colorAMover() && !fichaSeleccionada.contains("w")) ||
+			    (!CalculosEnPartida.colorAMover() && !fichaSeleccionada.contains("b"))) {
+			    return;
+			}
 
-			// Aqui hay un bug (solo me ha salido una vez) puedo mover una pieza que no
-			// deberia por color
+
 
 			// Aqui se le añade la funcion de poder arrastrar la pieza
 			origen.addMouseMotionListener(new BotonMouseMotionListener());
-			MetodosMoverPiezas.identificarPiezaParaMover(fichaSeleccionada, posicionOrigen, casillas);
+			MetodosMoverPiezas.identificarMovimientosDePieza(fichaSeleccionada, posicionOrigen, casillas);
 
 			puntoInicialClick = i.getPoint();
 
@@ -76,7 +73,6 @@ public class ArrastraPieza {
 
 		@Override
 		public void mouseReleased(MouseEvent a) {
-
 			// Esto es para arreglar el bug visual de la pieza que cuando no salia de la
 			// casilla se duplicaba en su misma casilla
 			if ((puntoInicialClick == null))
@@ -99,7 +95,7 @@ public class ArrastraPieza {
 				Component destino = tablero.getContentPane().getComponentAt(puntoEnFrame);
 
 				// Si el destino es un botón y no es el mismo que el origen
-				if (destino != origen && destino != null) {
+				if (destino != origen && destino != null && destino instanceof JButton && destino.isEnabled()) {
 					// Convertimos el destino a un JButton
 					JButton botonDestino = (JButton) destino;
 
@@ -116,13 +112,12 @@ public class ArrastraPieza {
 					fichaSeleccionada = null;
 				} else {
 					fichaSeleccionada = null;
+					
 				}
-
-				// Ocultamos el texto flotante que muestra la pieza mientras se arrastra
 
 				// Restablecemos los colores de las casillas (en caso de haber resaltado
 				// algunas)
-				Piezas.resetColores(casillas);
+				FuncionesVisualesTablero.resetColores(casillas);
 
 				// Limpiamos las variables que controlan el arrastre
 				textoArrastrado = null;
@@ -132,12 +127,7 @@ public class ArrastraPieza {
 				
 
 			}
-
-			// Si no hay arrastre en progreso y no se ha seleccionado una casilla con el
-			// clic
-
 			
-
 			// Restablecemos las variables que controlan el estado del arrastre y el clic
 			puntoInicialClick = null;
 			tablero.setCursor(Cursor.getDefaultCursor());
@@ -164,8 +154,8 @@ public class ArrastraPieza {
 			int dx = Math.abs(c.getX() - puntoInicialClick.x);
 			int dy = Math.abs(c.getY() - puntoInicialClick.y);
 			if (dx > 5 || dy > 5) {
-				if (origen.isEnabled())
-					origen.setBackground(Color.ORANGE);
+				if (origen.isEnabled() && !origen.getBackground().equals(Colores.JAQUE_ROJO))
+					origen.setBackground(Colores.ARRASTRAR_PIEZA);
 
 				Point p = SwingUtilities.convertPoint(origen, c.getPoint(), tablero.getLayeredPane());
 				int x = p.x - textoFlotante.getWidth() / 2;

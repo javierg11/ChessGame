@@ -3,18 +3,23 @@ package Tablero;
 import javax.swing.*;
 
 
+
 public class TableroAjedrez {
 	public final static int casillasFilas = 9;
 	public final static int casillasColumnas = 9;
 
 	private static JLabel textoFlotante;
 
-	public static JFrame tablero = null;
+	private static JFrame tablero = null;
 	public static JButton casilla = null;
 	public static JButton[][] casillas = null;
 
+	
 	public static void main(String[] args) {
-
+		CrearTablero.crearTableroBasico(tablero, casillas,casilla, casillasFilas,casillasColumnas,textoFlotante);
+	}
+	
+	public static void crearTipoTablero(boolean tipoDeJuego) {
 		CrearTablero.crearTableroBasico(tablero, casillas,casilla, casillasFilas,casillasColumnas,textoFlotante);
 	}
 

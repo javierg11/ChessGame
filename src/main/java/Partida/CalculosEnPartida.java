@@ -1,4 +1,4 @@
-package Tablero;
+package Partida;
 import java.util.HashMap; 
 public class CalculosEnPartida {
 	private static int jugadasTotales=0;

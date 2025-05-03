@@ -1,8 +1,7 @@
 package Tablero;
 
-import java.awt.Color;
+import ConstantesComunes.Colores;
 import java.awt.GridLayout;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,9 +43,9 @@ public class CrearTablero {
 				
 				// Pintar las casillas
 				else if ((fila + columna) % 2 == 0)
-					casilla.setBackground(new Color(240, 217, 181)); // Beige cálido (marfil)
+					casilla.setBackground(Colores.CASILLAS_BLANCAS); // Beige cálido (marfil)
 				else
-					casilla.setBackground(new Color(181, 136, 99)); // Marrón terracota
+					casilla.setBackground(Colores.CASILLAS_NEGRAS); // Marrón terracota
 
 				// Colocar las piezas en el tablero
 				PonerPiezasTablero.colocarPiezas(casillas, casilla, fila, columna);

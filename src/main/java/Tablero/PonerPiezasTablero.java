@@ -1,7 +1,8 @@
 package Tablero;
 
-import java.awt.Color;
+
 import java.awt.Image;
+import ConstantesComunes.Colores;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,59 +23,42 @@ public class PonerPiezasTablero {
 
 		// Configuración de piezas negras (fila 0)
 		casillas[fila][columna] = casilla;
-		if (fila == 0 && columna < 8) {
-			switch (columna) {
-			case 0:
-			case 7: // Torres
-				crearPieza(casilla, "bT");
-				break;
-			case 1:
-			case 6: // Caballos
-				crearPieza(casilla, "bC");
-				break;
-			case 2:
-			case 5: // Alfiles
-				crearPieza(casilla, "bA");
-				break;
-			case 3: // Reina
-				crearPieza(casilla, "bD");
-				break;
-			case 4: // Rey
-				crearPieza(casilla, "bR");
-				break;
-			}
-		}
+		String pieza="";
+		if (fila==0)
+			pieza="b";
+		else if (fila==7)
+			pieza="w";
+		if (columna < 8) {
+		    // Filas principales (0 y 7)
+		    if (fila == 0 || fila == 7) {
+		    	if (!pieza.equals("")) {
+		            // Añade color según la fila
+		            pieza = (fila == 0 ? "b" : "w");
+		        }
+		        switch (columna) {
+		            case 0:
+		            case 7: pieza += "T"; break; // Torres
+		            case 1:
+		            case 6: pieza += "C"; break; // Caballos
+		            case 2:
+		            case 5: pieza += "A"; break; // Alfiles
+		            case 3: pieza += "D"; break; // Dama
+		            case 4: pieza += "R"; break; // Rey
+		        }
+		        
+		    }
+		    // Peones
+		    else if (fila == 1) {
+		        pieza = "bP";
+		    }
+		    else if (fila == 6) {
+		        pieza = "wP";
+		    }
 
-		// Configuración de piezas blancas (fila 7)
-		if (fila == 7 && columna < 8) {
-			switch (columna) {
-			case 0:
-			case 7: // Torres
-				crearPieza(casilla, "wT");
-				break;
-			case 1:
-			case 6: // Caballos
-				crearPieza(casilla, "wC");
-				break;
-			case 2:
-			case 5: // Alfiles
-				crearPieza(casilla, "wA");
-				break;
-			case 3: // Reina
-				crearPieza(casilla, "wD");
-				break;
-			case 4: // Rey
-				crearPieza(casilla, "wR");
-				break;
-			}
-		}
-
-		// Peones (filas 1 para negros y 6 para blancos)
-		if (fila == 1 && columna < 8) {
-			crearPieza(casilla, "bP");
-		}
-		if (fila == 6 && columna < 8) {
-			crearPieza(casilla, "wP");
+		    // Solo llamas a crearPieza si hay una pieza para colocar
+		    if (!pieza.equals("")) {
+		        crearPieza(casilla, pieza);
+		    }
 		}
 	}
 
@@ -82,7 +66,7 @@ public class PonerPiezasTablero {
 		casilla.setText(pieza); // Texto lógico (no visible)
 		casilla.setHorizontalTextPosition(JButton.CENTER); // Alinear texto
 		casilla.setVerticalTextPosition(JButton.CENTER); // en el centro
-		casilla.setForeground(new Color(0, 0, 0, 0)); // Texto transparente
+		casilla.setForeground(Colores.SIN_COLOR); // Texto transparente
 		ImageIcon iconoOriginal = new ImageIcon(TableroAjedrez.class.getResource("/imagesPiezas/" + pieza + ".png"));
 		Image imagen = iconoOriginal.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		casilla.setIcon(new ImageIcon(imagen));
