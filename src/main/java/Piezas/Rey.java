@@ -33,7 +33,6 @@ public class Rey extends Piezas {
 					}
 				}
 			}
-			//VerconseguirJugadasLogicas();
 		}
 		 
 	    // Añade enroque si es posible
@@ -52,16 +51,15 @@ public class Rey extends Piezas {
 
 		// Añade enroque SOLO si es válido
 		if (!h.isEmpty()) {
-		    System.out.println("Intentando enroque para " + ficha + " resultado: " + h);
-		    int filaDestino = Integer.parseInt(h.substring(0, 1));
-		    int colDestino = Integer.parseInt(h.substring(1, 2));
-		    conseguirJugadasLogicas(filaDestino, colDestino);
+		    String[] destinos = h.split(" "); // Divide por uno o más espacios (Por si se puede enrocar a los dos lados)
+		    for (String destino : destinos) {
+		        if (!destino.isEmpty()) {
+		            int filaDestino = Integer.parseInt(destino.substring(0, 1));
+		            int colDestino = Integer.parseInt(destino.substring(1, 2));
+		            conseguirJugadasLogicas(filaDestino, colDestino);
+		        }
+		    }
 		}
-
-
-
-	    // Solo una vez, al final
-	    //VerconseguirJugadasLogicas();
 
 }
 }

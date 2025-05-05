@@ -22,7 +22,7 @@ public class PonerPiezasTablero {
 //		Este proyecto utiliza piezas de ajedrez "cburnett" convertidas de SVG a PNG.
 
 		// Configuración de piezas negras (fila 0)
-		casillas[fila][columna] = casilla;
+		//casillas[fila][columna] = casilla;
 		String pieza="";
 		if (fila==0)
 			pieza="b";

@@ -29,13 +29,14 @@ public class DetectarJaqueEnPartida {
 	}
 	
 	public static boolean mirarReyEnJaque(JButton[][] casillas, String color) {
+        String colorPropio = color.substring(0, 1); // "w" o "b"
+        String rey = colorPropio + "R";
+        int reyFila = -1, reyCol = -1;
+
 		 // Recalcula jaques y colorea
         detertarPosicionJaque(casillas);
 
      // Busca la posición del propio rey tras el movimiento
-        String colorPropio = color.substring(0, 1); // "w" o "b"
-        String rey = colorPropio + "R";
-        int reyFila = -1, reyCol = -1;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (casillas[i][j].getText().equals(rey)) {

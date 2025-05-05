@@ -64,7 +64,7 @@ public class JugadaEspecialPeon {
 	    	    }
 
 	    	    // Crear diálogo modal
-	    	    JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(casilla), "Coronación de peón", Dialog.ModalityType.APPLICATION_MODAL);
+	    	    JDialog dialog = new JDialog(SwingUtilities.getWindowAncestor(casilla), "Coronación", Dialog.ModalityType.APPLICATION_MODAL);
 	    	    dialog.getContentPane().add(panel);
 	    	    dialog.pack();
 	    	    dialog.setLocationRelativeTo(casilla);

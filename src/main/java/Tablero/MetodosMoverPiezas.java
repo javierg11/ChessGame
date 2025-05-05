@@ -109,7 +109,7 @@ public class MetodosMoverPiezas {
 			    JugadaEspecialPeon.comerAlPaso(filaOrigen,filaDestino,ficha,casillas,colDestino,CalculosEnPartida.getJugadas());
 			    
 			    DetectarJaqueEnPartida.detertarPosicionJaque(casillas);
-			    FinPartida.IdentificarFinPartida(casillas);
+			    FinPartida.IdentificarFinPartida(casillas,CalculosEnPartida.getJugadas());
 			    
 			    
 
