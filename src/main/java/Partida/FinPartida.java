@@ -1,5 +1,6 @@
 package Partida;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class FinPartida {
     static String texto="";
 
 	public static void IdentificarFinPartida(JButton[][] casillas, HashMap<Integer, String> jugadas) {
+		
 		if (!MovimientosPosibles.tenerMovimientosPosibles(casillas, CalculosEnPartida.colorAMover())) {
 	        // Crea un Timer que espera 1000 ms (1 segundo) antes de ejecutar la acción
 	    	
@@ -78,7 +80,7 @@ public class FinPartida {
 	        String jugada = jugadas.get(k);
 	        if (jugada == null) continue;
 
-	        // Parseo igual que antes...
+
 	        String[] partes = jugada.split("-");
 	        String ficha = partes[0];
 	        int filaInicial = Integer.parseInt(partes[1].substring(0, 1));
@@ -117,10 +119,6 @@ public class FinPartida {
 	    for (int fila = 0; fila < 8; fila++) {
 	        for (int columna = 0; columna < 8; columna++) {
 	            JButton casilla = new JButton();
-	            // Si quieres simular el color del tablero, puedes hacerlo aquí
-	            // casilla.setBackground(...);
-
-	            // Coloca la pieza (esto pone el texto y la imagen)
 	            PonerPiezasTablero.colocarPiezas(tablero, casilla, fila, columna);
 
 	            tablero[fila][columna] = casilla;

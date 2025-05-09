@@ -16,7 +16,13 @@ public class TableroAjedrez {
 
 	
 	public static void main(String[] args) {
-		CrearTablero.crearTableroBasico(tablero, casillas,casilla, casillasFilas,casillasColumnas,textoFlotante);
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		        CrearTablero.crearTableroBasico(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante);
+		    }
+		});
+
+		//CrearTablero.crearTableroBasico(tablero, casillas,casilla, casillasFilas,casillasColumnas,textoFlotante);
 	}
 	
 	public static void crearTipoTablero(boolean tipoDeJuego) {

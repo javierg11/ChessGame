@@ -36,11 +36,11 @@ public class Rey extends Piezas {
 		}
 		 
 	    // Añade enroque si es posible
-		String a = VerconseguirJugadasLogicas(); // Jugadas normales
-		String h = enroqueRey.enroque(ficha, CalculosEnPartida.getJugadas(), casillas, pos, movimientoEspecial);
+		String jugadasNormales = VerconseguirJugadasLogicas(); // Jugadas normales
+		String jugadasEnroque = EnroqueRey.enroque(ficha, CalculosEnPartida.getJugadas(), casillas, pos, movimientoEspecial);
 		jugadasTotales = ""; // Vacía el string de jugadas legales
 		// Añade jugadas normales
-		String[] jugadas = a.split(" ");
+		String[] jugadas = jugadasNormales.split(" ");
 		for (String jugada : jugadas) {
 		    if (jugada.length() == 2) {
 		        int filaA = Integer.parseInt(jugada.substring(0, 1));
@@ -50,8 +50,8 @@ public class Rey extends Piezas {
 		}
 
 		// Añade enroque SOLO si es válido
-		if (!h.isEmpty()) {
-		    String[] destinos = h.split(" "); // Divide por uno o más espacios (Por si se puede enrocar a los dos lados)
+		if (!jugadasEnroque.isEmpty()) {
+		    String[] destinos = jugadasEnroque.split(" "); // Divide por uno o más espacios (Por si se puede enrocar a los dos lados)
 		    for (String destino : destinos) {
 		        if (!destino.isEmpty()) {
 		            int filaDestino = Integer.parseInt(destino.substring(0, 1));

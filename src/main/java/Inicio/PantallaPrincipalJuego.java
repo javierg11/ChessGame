@@ -123,16 +123,19 @@ public class PantallaPrincipalJuego {
 
     public static void main(String[] args) {
         // Cargar el look and feel Nimbus para que los colores personalizados funcionen bien
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            // Si Nimbus no está disponible, se usa el predeterminado
-        }
+//    	try {
+//    	    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//    	        if ("Nimbus".equals(info.getName())) {
+//    	            UIManager.setLookAndFeel(info.getClassName());
+//    	            break;
+//    	        }
+//    	    }
+//    	    // ¡SOLUCIÓN! Forzar el valor correcto para Button.margin
+//    	    UIManager.put("Button.margin", new java.awt.Insets(2, 2, 2, 2));
+//    	} catch (Exception e) {
+//    	    // Si Nimbus no está disponible, se usa el predeterminado
+//    	}
+
 
         SwingUtilities.invokeLater(() -> {
             PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();

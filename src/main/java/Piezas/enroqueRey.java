@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import javax.swing.JButton;
 
-public class enroqueRey {
+public class EnroqueRey {
 	public static String enroque(String ficha, HashMap<Integer, String> jugadas, JButton[][] casillas, String pos, boolean verEnroque) {
-		String prueba="";
-;		if (!verEnroque)
+		String movimiento="";
+		if (!verEnroque)
 			return "";
 		boolean torreCortaMovidaBlancas = false;
 		boolean torreLargaMovidaBlancas = false;
@@ -31,26 +31,26 @@ public class enroqueRey {
 		}
 
 		if (!reyMovidoBlancas && !torreLargaMovidaBlancas) {
-		    String res = enroqueLargo(casillas, ficha, pos);
-		    if (!res.isEmpty())
-			    prueba +=res+" ";
+		    String movimietoEnroque = enroqueLargo(casillas, ficha, pos);
+		    if (!movimietoEnroque.isEmpty())
+			    movimiento +=movimietoEnroque+" ";
 		}
 		else if (!reyMovidoNegras && !torreLargaMovidaNegras) {
-		    String res = enroqueLargo(casillas, ficha, pos);
-		    if (!res.isEmpty())
-			    prueba +=res+" ";
+		    String movimietoEnroque = enroqueLargo(casillas, ficha, pos);
+		    if (!movimietoEnroque.isEmpty())
+			    movimiento +=movimietoEnroque+" ";
 		}
 		if (!reyMovidoBlancas && !torreCortaMovidaBlancas) {
-		    String res = enroqueCorto(casillas, ficha, pos);
-		    if (!res.isEmpty())
-			    prueba +=res+" ";
+		    String movimietoEnroque = enroqueCorto(casillas, ficha, pos);
+		    if (!movimietoEnroque.isEmpty())
+			    movimiento +=movimietoEnroque+" ";
 		}
 		else if (!reyMovidoNegras && !torreCortaMovidaNegras) {
-		    String res = enroqueCorto(casillas, ficha, pos);
-		    if (!res.isEmpty())
-		    prueba +=res+" ";
+		    String movimietoEnroque = enroqueCorto(casillas, ficha, pos);
+		    if (!movimietoEnroque.isEmpty())
+		    	movimiento +=movimietoEnroque+" ";
 		}
-		return prueba;
+		return movimiento;
 
 	}
 

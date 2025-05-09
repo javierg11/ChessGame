@@ -26,7 +26,8 @@ public class Caballo extends Piezas{
 	        // Verifica que esté dentro del tablero
 	        if (nuevaFila >= 0 && nuevaFila < 8 && nuevaColumna >= 0 && nuevaColumna < 8) {
 	            String texto = casillas[nuevaFila][nuevaColumna].getText();
-	            if ((texto.isEmpty() || !mismoColor(casillas, nuevaFila, nuevaColumna, ficha) || !verPeonesAlPaso(casillas,nuevaFila,nuevaColumna))) {
+	            if ((texto.isEmpty() || !mismoColor(casillas, nuevaFila, nuevaColumna, ficha) 
+	            		|| !verPeonesAlPaso(casillas,nuevaFila,nuevaColumna))) {
 	            	conseguirJugadasLogicas(nuevaFila, nuevaColumna);
 	            }
 	        }

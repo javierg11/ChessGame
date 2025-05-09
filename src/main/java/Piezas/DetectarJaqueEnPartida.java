@@ -14,13 +14,14 @@ public class DetectarJaqueEnPartida {
 	public static JButton[][] crearTableroDePrueba(JButton[][] casillas, int fila, int columna, String ficha,int filaInicial, int ColumnaACtual) {
 		JButton[][] casillasCopia = new JButton[8][8];
 
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    casillasCopia[i][j] = new JButton();
-                    casillasCopia[i][j].setText(casillas[i][j].getText());
-                    casillasCopia[i][j].setBackground(casillas[i][j].getBackground());
-                }
-            }
+		for (int i = 0; i < 8; i++) {
+		    for (int j = 0; j < 8; j++) {
+		        casillasCopia[i][j] = new JButton();
+		        casillasCopia[i][j].setText(casillas[i][j].getText());
+		        // Copia el color usando un nuevo objeto Color para evitar referencias a recursos UI
+		    }
+		}
+
 
             // Simula el movimiento
             casillasCopia[filaInicial][ColumnaACtual].setText("");
@@ -46,13 +47,14 @@ public class DetectarJaqueEnPartida {
             }
         }
 
-        // Si el propio rey está en jaque (casilla roja), el movimiento es inválido
+        
         if (reyFila != -1 && reyCol != -1) {
             Color bg = casillas[reyFila][reyCol].getBackground();
             if (bg != null && bg.equals(Colores.JAQUE_ROJO)) {
                 return false;
             }
         }
+        FuncionesVisualesTablero.resetFullColores(casillas);
 	return true;
 	}
 
