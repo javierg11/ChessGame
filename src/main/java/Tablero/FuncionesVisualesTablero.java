@@ -1,11 +1,11 @@
-package Piezas;
+package Tablero;
 
 import javax.swing.JButton;
 import ConstantesComunes.Colores;
 
 public class FuncionesVisualesTablero {
 	// Ver casillas para mover
-	protected static void resaltarCasilla(int fila, int columna, JButton[][] casillas) {
+	public static void resaltarCasilla(int fila, int columna, JButton[][] casillas) {
 		if (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
 			casillas[fila][columna].setBackground(Colores.RESALTAR_VERDE); // Verde
 			casillas[fila][columna].setEnabled(true);

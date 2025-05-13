@@ -9,7 +9,6 @@ import javax.swing.JButton;
 
 public class PonerPiezasTablero {
 	public static void colocarPiezas(JButton[][] casillas, JButton casilla, int fila, int columna) {
-
 		String pieza="";
 		if (fila==0)
 			pieza="b";
@@ -69,5 +68,9 @@ public class PonerPiezasTablero {
 		casilla.setIcon(new ImageIcon(imagen));
 		casilla.revalidate(); // Actualizar la interfaz gráfica
 	}
+	
+	
+
+
 	
 }

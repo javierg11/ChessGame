@@ -15,7 +15,6 @@ import javax.swing.SwingUtilities;
 
 import ConstantesComunes.Colores;
 import Partida.CalculosEnPartida;
-import Piezas.FuncionesVisualesTablero;
 
 public class ArrastraPieza {
     private String textoArrastrado = null;

@@ -1,6 +1,7 @@
 package Tablero;
 
 import ConstantesComunes.Colores;
+
 import Partida.TiempoPartida;
 
 import java.awt.*;
@@ -9,16 +10,23 @@ import javax.swing.*;
 /**
  * Clase que crea el tablero de ajedrez en un hilo.
  */
+
 public class CrearTablero implements Runnable {
-    private JFrame tablero;
-    private JButton[][] casillas;
+    
+
+
+	private static JFrame tablero;
+    
+
+
+	private JButton[][] casillas;
     private JButton casilla;
     private int casillasFilas;
     private int casillasColumnas;
     private JLabel textoFlotante;
-    private static JLabel labelDeMovimientosPartida;
+    public static JLabel labelDeMovimientosPartida;
 	private static JLabel labelTiempo;
-
+	public static TiempoPartida temporizador=null;
     public static JLabel getLabelDeMovimientosPartida() {
 		return labelDeMovimientosPartida;
 	}
@@ -33,26 +41,28 @@ public class CrearTablero implements Runnable {
 
 	
     public CrearTablero() {
-        this.tablero = null;
-        this.casillas = null;
+    	CrearTablero.tablero = null;
+        this.setCasillas(null);
         this.casilla = null;
         this.casillasFilas = 9;
         this.casillasColumnas = 9;
         this.textoFlotante = null;
     }
+    
+    
 
     @Override
     public void run() {
-        crearTableroBasico(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante);
+        crearTableroBasico(tablero, getCasillas(), casilla, casillasFilas, casillasColumnas, textoFlotante);
     }
     public static void crearTableroBasico(JFrame tablero, JButton casillas[][], JButton casilla, int casillasFilas, int casillasColumnas, JLabel textoFlotante) {
         String nombreCoordenadas = null;
         int numeroFila = 0;
         char letraColumna = ' ';
-        tablero = new JFrame("Tablero de Ajedrez");
-        tablero.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        tablero.setLayout(new BorderLayout());
-
+        CrearTablero.tablero = new JFrame("Tablero de Ajedrez");
+        CrearTablero.tablero.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        CrearTablero.tablero.setLayout(new BorderLayout());
+        
         JPanel panelIzquierda = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelIzquierda.setPreferredSize(new Dimension(250, 600)); // Ampliado
         JLabel labelIzquierda = new JLabel("Tiempo");
@@ -128,28 +138,46 @@ public class CrearTablero implements Runnable {
         }
         
         //Esto es para ir actualizando el reloj 
-        TiempoPartida temporizador = new TiempoPartida(CrearTablero.getLabelTiempo(), 1);
-        temporizador.iniciar();
+        temporizador = new TiempoPartida(CrearTablero.getLabelTiempo(),1,casillas);
 
         // Añadir paneles al frame
-        tablero.add(panelIzquierda, BorderLayout.WEST);
-        tablero.add(panelTablero, BorderLayout.CENTER);
-        tablero.add(panelDerecha, BorderLayout.EAST);
+        CrearTablero.tablero.add(panelIzquierda, BorderLayout.WEST);
+        CrearTablero.tablero.add(panelTablero, BorderLayout.CENTER);
+        CrearTablero.tablero.add(panelDerecha, BorderLayout.EAST);
 
         // Añadir texto flotante al LayeredPane
-        tablero.getLayeredPane().setLayout(null);
-        tablero.getLayeredPane().add(textoFlotante, JLayeredPane.DRAG_LAYER);
+        CrearTablero.tablero.getLayeredPane().setLayout(null);
+        CrearTablero.tablero.getLayeredPane().add(textoFlotante, JLayeredPane.DRAG_LAYER);
 
-        tablero.pack();
-        tablero.setLocationRelativeTo(null);
-        tablero.setResizable(false);
-        tablero.setVisible(true);
+        CrearTablero.tablero.pack();
+        CrearTablero.tablero.setLocationRelativeTo(null);
+        CrearTablero.tablero.setResizable(false);
+        CrearTablero.tablero.setVisible(true);
         
         
 
     }
     
-   
+    public static void limpiarTablero(JButton[][] casillas) {
+	    for (int i = 0; i < 8; i++) {
+	        for (int j = 0; j < 8; j++) {
+	            if (casillas[i][j] != null) {
+	                casillas[i][j].setText("");
+	                casillas[i][j].setIcon(null);
+	            }
+	        }
+	    }
+	}
+	public void setCasillas(JButton[][] casillas) {
+		this.casillas = casillas;
+	}
 
-
+	public  JButton[][] getCasillas() {
+		return casillas;
+	}
+	
+	public static JFrame getTablero() {
+		return tablero;
+	}
+	
 }

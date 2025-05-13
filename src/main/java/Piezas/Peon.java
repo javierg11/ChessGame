@@ -11,25 +11,42 @@ public class Peon extends Piezas {
         int direccion = ficha.contains("b") ? 1 : -1; 
         int filaInicial = ficha.contains("b") ? 1 : 6;
 
-        // Movimiento de dos casillas desde la posición inicial
+     // Movimiento de dos casillas desde la posición inicial
+        int nuevaFila = filaActual + direccion;
+        int nuevaFila2 = filaActual + 2 * direccion;
+        int nuevaColumna = columnaActual;
+
         if (filaActual == filaInicial &&
-            dentroTablero(filaActual + direccion, columnaActual) &&
-            dentroTablero(filaActual + 2 * direccion, columnaActual) &&
-            casillas[filaActual + direccion][columnaActual].getText().isEmpty() &&
-            casillas[filaActual + 2 * direccion][columnaActual].getText().isEmpty()) {
-            
-            conseguirJugadasLogicas(filaActual + 2 * direccion, columnaActual);
+            dentroTablero(nuevaFila, nuevaColumna) &&
+            dentroTablero(nuevaFila2, nuevaColumna) &&
+            casillas[nuevaFila][nuevaColumna].getText().isEmpty() &&
+            casillas[nuevaFila2][nuevaColumna].getText().isEmpty()) {
+                
+            conseguirJugadasLogicas(nuevaFila2, nuevaColumna);
         }
 
-        // Movimiento de una casilla hacia adelante
-        if (dentroTablero(filaActual + direccion, columnaActual) &&
-            casillas[filaActual + direccion][columnaActual].getText().isEmpty()) {
-            
-            conseguirJugadasLogicas(filaActual + direccion, columnaActual);
+
+     // Movimiento de una casilla hacia adelante
+
+        if (dentroTablero(nuevaFila, nuevaColumna)) {
+            if (casillas[nuevaFila][nuevaColumna].getText().isEmpty()) {
+                conseguirJugadasLogicas(nuevaFila, nuevaColumna);
+            }
         }
 
         // Capturas diagonales
-        marcarCapturas(filaActual + direccion, columnaActual, casillas, ficha);
+        // Filtro para evitar ArrayIndexOutOfBoundsException en capturas
+        // Diagonal izquierda
+        int diagIzqCol = columnaActual - 1;
+        if (dentroTablero(nuevaFila, diagIzqCol)) {
+            marcarCapturas(nuevaFila, diagIzqCol, casillas, ficha);
+        }
+        // Diagonal derecha
+        int diagDerCol = columnaActual + 1;
+        if (dentroTablero(nuevaFila, diagDerCol)) {
+            marcarCapturas(nuevaFila, diagDerCol, casillas, ficha);
+        }
+
 
         return jugadasTotales + "\n";
     }

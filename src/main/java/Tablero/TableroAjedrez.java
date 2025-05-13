@@ -10,6 +10,8 @@ public class TableroAjedrez {
 
 	private static JLabel textoFlotante;
 
+	
+
 	private static JFrame tablero = null;
 	public static JButton casilla = null;
 	public static JButton[][] casillas = null;

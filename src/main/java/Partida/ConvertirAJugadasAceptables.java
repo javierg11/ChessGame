@@ -1,6 +1,8 @@
 package Partida;
 
+
 import java.util.HashMap;
+
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,13 +18,28 @@ public class ConvertirAJugadasAceptables implements Runnable{
     private String destino;
     private String origen;
     private boolean hayPieza;
-	public static HashMap<Integer, String> jugadasBonitas = new HashMap<Integer, String>();
+	private static HashMap<Integer, String> jugadasBonitas = new HashMap<Integer, String>();
+
+	public static HashMap<Integer, String> getJugadasBonitas() {
+		return jugadasBonitas;
+	}
+
 
 	
 	public static void actualizarJugadasEnTablero(JLabel labelDerechaArriba) {
 	    int jugadaActual = CalculosEnPartida.getJugadasTotales(); // Empieza en 1
-	    String jugada = jugadasBonitas.get(jugadaActual);
+	    String jugada="";
+	        try {
+	            Thread.sleep(150); // Espera 100 ms para que otras partes del codigo terminen
+	    	    jugada = jugadasBonitas.get(jugadaActual);
 
+	    	    System.out.println(jugada);
+
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	            return; 
+	        }
+	    
 	    String texto = labelDerechaArriba.getText();
 
 	    // Encuentra dónde termina la tabla para insertar la nueva fila antes de </table>
@@ -90,7 +107,7 @@ public class ConvertirAJugadasAceptables implements Runnable{
 		if (!DetectarJaqueEnPartida.mirarReyEnJaque(casillas, fichaContraria)) {
 			destinoBonito += "+";
 		}
-		if (!MovimientosPosibles.tenerMovimientosPosibles(casillas, !CalculosEnPartida.colorAMover())) {
+		if (!MovimientosPosibles.tenerMovimientosPosibles(casillas, CalculosEnPartida.colorAMover())) {
 			destinoBonito += "+";
 		}
 		generarMovimientosBonitosDesdeJugadas(destinoBonito, ficha,hayPieza, origen);
@@ -99,7 +116,7 @@ public class ConvertirAJugadasAceptables implements Runnable{
 	private static void generarMovimientosBonitosDesdeJugadas(String destino, String ficha,boolean hayPieza, String origen) {
 		String jugada = "";
 
-		// Convertir destino a notación algebraica (soporta coronación y jaque/mate)
+		// Convertir destino a notación algebraica (soporta coronación y jaque/mate
 		String destinoAlgebraico = convertirACoordenadaAlgebraica(destino);
 		
 		if (ficha.substring(1, 2).equals("P")) {
@@ -124,6 +141,7 @@ public class ConvertirAJugadasAceptables implements Runnable{
 		}
 		jugadasBonitas.put(CalculosEnPartida.getJugadasTotales(), jugada);
 		System.out.println(jugadasBonitas);
+
 	}
 
 	// Convierte "44" a "d4" y "44+" a "d4+"

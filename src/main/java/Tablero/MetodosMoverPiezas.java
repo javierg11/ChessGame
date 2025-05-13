@@ -3,6 +3,7 @@ package Tablero;
 import Partida.CalculosEnPartida;
 import Partida.ConvertirAJugadasAceptables;
 import Partida.FinPartida;
+import Partida.TiempoPartida;
 
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
@@ -10,6 +11,11 @@ import javax.swing.SwingUtilities;
 import Piezas.*;
 
 public class MetodosMoverPiezas {
+
+	private static boolean jugando=false;
+	public static void setJugando(boolean jugando) {
+		MetodosMoverPiezas.jugando = jugando;
+	}
 
 	public static Piezas identificarFuncionPieza(String ficha) {
 		Piezas pieza = null;
@@ -45,6 +51,10 @@ public class MetodosMoverPiezas {
 	}
 
 	public static String identificarMovimientosDePieza(String ficha, String posicion, JButton[][] casillas) {
+		if (!jugando) {
+			TiempoPartida.iniciarTiempo();
+			jugando=true;
+		}
 		Piezas pieza = null;
 		pieza = identificarFuncionPieza(ficha);
 		String movimientosPosibles = pieza.calcularMovimientos(posicion, casillas, ficha, true); // Aqui consigo todos
@@ -115,6 +125,7 @@ public class MetodosMoverPiezas {
 				ConvertirAJugadasAceptables tarea = new ConvertirAJugadasAceptables(ficha, fichaOriginal, casillas, destino, origen,hayPieza);
 				Thread hilo = new Thread(tarea);
 				hilo.start();
+
 				FinPartida.IdentificarFinPartida(casillas, CalculosEnPartida.getJugadas());
 
 				JugadaEspecialPeon.comerAlPaso(filaOrigen, filaDestino, ficha, casillas, colDestino,
@@ -124,6 +135,7 @@ public class MetodosMoverPiezas {
 				SwingUtilities.invokeLater(() -> {
 				    ConvertirAJugadasAceptables.actualizarJugadasEnTablero(CrearTablero.getLabelDeMovimientosPartida());
 				});
+				imprimirTablero(casillas);
 				movimientos = "";
 			}
 		}
@@ -154,5 +166,22 @@ public class MetodosMoverPiezas {
 		casillas[fila][torreColOrigen].setText("");
 		casillas[fila][torreColOrigen].setIcon(null);
 	}
+	
+	public static void imprimirTablero(JButton[][] casillas) {
+	    System.out.println("Estado del tablero:");
+	    for (int fila = 0; fila < 8; fila++) {
+	        for (int columna = 0; columna < 8; columna++) {
+	            String texto = casillas[fila][columna].getText();
+	            if (texto.isEmpty()) {
+	                System.out.print("-- ");
+	            } else {
+	                System.out.print(texto + " ");
+	            }
+	        }
+	        System.out.println(); // Nueva línea por fila
+	    }
+	    System.out.println("------------------------");
+	}
+
 
 }

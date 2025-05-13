@@ -1,23 +1,28 @@
 package Partida;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 public class TiempoPartida {
-    private volatile int tiempoBlancas;
-    private volatile int tiempoNegras;
-    private volatile boolean enPartida;
-    private final JLabel label;
-    private Thread hilo;
+    private static int tiempoBlancas;
+    private static int tiempoNegras;
+    private static boolean enPartida;
+    private static JLabel label = new JLabel();
+    private static Thread hilo;
+    static JButton [][] casillas =null;
 
-    public TiempoPartida(JLabel label, int minutosIniciales) {
-        this.label = label;
-        this.tiempoBlancas = minutosIniciales * 60;
-        this.tiempoNegras = minutosIniciales * 60;
-        this.enPartida = true;
+    public TiempoPartida(JLabel label,int minutosIniciales,JButton [][] casillas) {
+        TiempoPartida.label = label;
+        TiempoPartida.tiempoBlancas = minutosIniciales * 60;
+        TiempoPartida.tiempoNegras = minutosIniciales * 60;
+        TiempoPartida.enPartida = true;
+        TiempoPartida.casillas=casillas;
+        TiempoPartida.enPartida = true;
     }
 
-    public void iniciar() {
+
+    public static void iniciar() {
         hilo = new Thread(() -> {
             while (enPartida) {
                 try {
@@ -43,16 +48,27 @@ public class TiempoPartida {
 
                 if (tiempoBlancas == 0 || tiempoNegras == 0) {
                     enPartida = false;
-                    //Poner fin partida
+                    String texto = "<html><b>¡Victoria!</b><br>El jugador "
+    						+ (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
+    						+ " se le ha acabado el tiempo.<br><i>Caida de bandera.</i></html>";
+                    FinPartida.mensajeTerminarPartida(texto,casillas);
                 }
             }
         });
         hilo.start();
+
     }
 
-    public void detener() {
+    public static void detenerTiempo() {
         enPartida = false;
         if (hilo != null) hilo.interrupt();
+    }
+    public static void iniciarTiempo() {
+    	iniciar();
+    }
+    
+    public static String a() {
+    	return "sd";
     }
 
     

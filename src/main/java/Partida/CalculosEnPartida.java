@@ -5,8 +5,12 @@ import java.util.HashMap;
 
 
 public class CalculosEnPartida {
+	
+
+	
+
 	private static int jugadasTotales = 0;
-	public static HashMap<Integer, String> jugadas = new HashMap<Integer, String>();
+	private static HashMap<Integer, String> jugadas = new HashMap<Integer, String>();
 
 	public static boolean colorAMover() {
 	      
@@ -15,11 +19,15 @@ public class CalculosEnPartida {
 		else // Mueven negras
 			return false;
 	}
-
+	
+	
 	public static void sumarMovimientos() {
 		jugadasTotales++;
 	}
-
+	
+	public static void setJugadasTotales(int jugadasTotales) {
+		CalculosEnPartida.jugadasTotales = jugadasTotales;
+	}
 	public static int getJugadasTotales() {
 		return jugadasTotales;
 	}

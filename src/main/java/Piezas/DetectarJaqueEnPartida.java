@@ -7,6 +7,7 @@ import java.awt.Color;
 
 import javax.swing.JButton;
 import ConstantesComunes.Colores;
+import Tablero.FuncionesVisualesTablero;
 import Tablero.MetodosMoverPiezas;
 
 public class DetectarJaqueEnPartida {

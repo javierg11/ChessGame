@@ -6,7 +6,7 @@ import Piezas.DetectarJaqueEnPartida;
 import Piezas.Piezas;
 
 public class MovimientosPosibles {
-	public static boolean tenerMovimientosPosibles(JButton[][] casillas, boolean color) {
+	public static synchronized boolean tenerMovimientosPosibles(JButton[][] casillas, boolean color) {
 	    // color: true = blancas, false = negras
 	    for (int i = 0; i < 8; i++) {
 	        for (int j = 0; j < 8; j++) {
@@ -21,6 +21,7 @@ public class MovimientosPosibles {
 	                        movimientosPosibles, casillas, ficha, posicion, true
 	                    );
 	                    if (movimientosLegales.length() > 0) {
+	                    	movimientosLegales="";
 	                        // Si hay al menos un movimiento legal, devuelve true
 	                        return true;
 	                    }
@@ -28,6 +29,7 @@ public class MovimientosPosibles {
 	            }
 	        }
 	    }
+	    
 	    // Si ninguna pieza tiene movimientos legales, devuelve false
 	    return false;
 	}
