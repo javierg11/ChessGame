@@ -18,7 +18,7 @@ public class MovimientosPosibles {
 	                    Piezas pieza = MetodosMoverPiezas.identificarFuncionPieza(ficha);
 	                    String movimientosPosibles = pieza.calcularMovimientos(posicion, casillas, ficha,false);
 	                    String movimientosLegales = DetectarJaqueEnPartida.controlJugadasPorJaque(
-	                        movimientosPosibles, casillas, ficha, posicion, true
+	                        movimientosPosibles, casillas, ficha, posicion, FuncionesVisualesTablero.verCasillas
 	                    );
 	                    if (movimientosLegales.length() > 0) {
 	                    	movimientosLegales="";

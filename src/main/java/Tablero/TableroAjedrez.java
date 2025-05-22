@@ -20,17 +20,18 @@ public class TableroAjedrez {
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
-		        CrearTablero.crearTableroBasico(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante);
+		        //CrearTablero.crearTableroBasico(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante);
 		    }
 		});
 
 		//CrearTablero.crearTableroBasico(tablero, casillas,casilla, casillasFilas,casillasColumnas,textoFlotante);
 	}
 	
-	public static void crearTipoTablero(boolean tipoDeJuego) {
-		CrearTablero.crearTableroBasico(tablero, casillas,casilla, casillasFilas,casillasColumnas,textoFlotante);
+	public static void crearTipoTablero(boolean tipoDeJuego,int tiempo, int incremento, boolean blancas, String nombre) {
+		CrearTablero tarea = new CrearTablero(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante, tiempo, incremento, blancas,nombre);
+		Thread hilo = new Thread(tarea);
+		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
 	}
-
 //	private static class CasillaClickListener implements ActionListener {
 //
 //		@Override

@@ -39,12 +39,12 @@ public class Peon extends Piezas {
         // Diagonal izquierda
         int diagIzqCol = columnaActual - 1;
         if (dentroTablero(nuevaFila, diagIzqCol)) {
-            marcarCapturas(nuevaFila, diagIzqCol, casillas, ficha);
+            marcarCapturas(nuevaFila, diagIzqCol, casillas, ficha,ficha.contains("w"));
         }
         // Diagonal derecha
         int diagDerCol = columnaActual + 1;
         if (dentroTablero(nuevaFila, diagDerCol)) {
-            marcarCapturas(nuevaFila, diagDerCol, casillas, ficha);
+            marcarCapturas(nuevaFila, diagDerCol, casillas, ficha,ficha.contains("w"));
         }
 
 
@@ -54,24 +54,16 @@ public class Peon extends Piezas {
     /**
      * Marca las casillas de captura diagonal para el peón.
      */
-    static void marcarCapturas(int fila, int columna, JButton[][] casillas, String ficha) {
-        // Izquierda diagonal
-        if (dentroTablero(fila, columna - 1)) {
-            String texto = casillas[fila][columna - 1].getText();
-            if (!texto.isEmpty() && !mismoColor(casillas, fila, columna - 1, ficha)) {
-                conseguirJugadasLogicas(fila, columna - 1);
+    private void marcarCapturas(int fila, int columna, JButton[][] casillas, String ficha, boolean esBlanco) {
+        if (dentroTablero(fila, columna)) {
+            String texto = casillas[fila][columna].getText();
+            if (!texto.isEmpty() && !mismoColor(casillas, fila, columna, ficha)) {
+                conseguirJugadasLogicas(fila, columna);
             }
-            
-        }
-        // Derecha diagonal
-        if (dentroTablero(fila, columna + 1)) {
-            String texto = casillas[fila][columna + 1].getText();
-            if (!texto.isEmpty() && !mismoColor(casillas, fila, columna + 1, ficha)) {
-                conseguirJugadasLogicas(fila, columna + 1);
-            }
-            
         }
     }
+
+
 
     /**
      * Comprueba si la posición está dentro del tablero.

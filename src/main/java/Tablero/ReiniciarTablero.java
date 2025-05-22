@@ -15,7 +15,7 @@ public class ReiniciarTablero {
 		FuncionesVisualesTablero.resetFullColores(casillas);
 		CrearTablero.limpiarTablero(casillas);
 		//MetodosMoverPiezas.setJugando(false);
-		TiempoPartida temporizador = new TiempoPartida(CrearTablero.getLabelTiempo(),1,casillas);
+		TiempoPartida temporizador = new TiempoPartida(CrearTablero.getLabelTiempo(),1,casillas,0);
 		temporizador.iniciar();
 		for (int fila = 0; fila < 8; fila++) {
 		    for (int columna = 0; columna < 8; columna++) {
@@ -34,9 +34,12 @@ public class ReiniciarTablero {
 		                	    "</table>" +
 		                	    "</html>"
 		                	);
-		        PonerPiezasTablero.colocarPiezas(casillas, casilla, fila, columna); // Coloca la pieza inicial si corresponde
+		        PonerPiezasTablero.colocarPiezas(casilla, fila, columna); // Coloca la pieza inicial si corresponde
 		    }
 		}
+		ArrastraPieza arrastraPieza = new ArrastraPieza(null, null, null);
+		arrastraPieza.reiniciarVariables();
+
 
 		
 	}

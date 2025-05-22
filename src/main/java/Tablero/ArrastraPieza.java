@@ -13,24 +13,34 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import ConexionPartida.Movimientos;
+import ConexionPartida.SalaInfo;
 import ConstantesComunes.Colores;
 import Partida.CalculosEnPartida;
 
 public class ArrastraPieza {
+	public static Movimientos asd;
+
     private String textoArrastrado = null;
     private JButton origen = null;
-    private String posicionOrigen = null;
     public final static int casillasFilas = 9;
     public final static int casillasColumnas = 9;
 
-    private String fichaSeleccionada = null;
     private Point puntoInicialClick = null;
 
     private JLabel textoFlotante;
 
     private JPanel panelTablero = null; // Cambiado de JFrame a JPanel
     private JButton[][] casillas = null;
-    private String movimientos="";
+    
+    public static String posicionOrigen = null;
+    public static String fichaSeleccionada = null;
+
+    public static String movimientos="";
+    public static String posicionDestino;
+    public ArrastraPieza() {
+    	
+    }
     public ArrastraPieza(JPanel panelTablero, JButton[][] casillas, JLabel textoFlotante) {
         this.panelTablero = panelTablero;
         this.casillas = casillas;
@@ -50,15 +60,22 @@ public class ArrastraPieza {
             fichaSeleccionada = origen.getText();
             posicionOrigen = obtenerPosicion(origen);
             // Si no es el turno del color de la ficha seleccionada, no hacer nada
-            if ((CalculosEnPartida.colorAMover() && !fichaSeleccionada.contains("w")) ||
+            if ((CalculosEnPartida.colorAMover() && !fichaSeleccionada.contains("w"))||
                 (!CalculosEnPartida.colorAMover() && !fichaSeleccionada.contains("b"))) {
+            	 
                 return;
             }
+            if (SalaInfo.isColor() != null) {
+            if ((CalculosEnPartida.colorAMover() && !SalaInfo.isColor() )||
+                    (!CalculosEnPartida.colorAMover() && !SalaInfo.isColor())) {
+                System.out.println("!"+SalaInfo.isColor());
 
+                    return;
+                }
+            }
             // Aqui se le añade la funcion de poder arrastrar la pieza
             origen.addMouseMotionListener(new BotonMouseMotionListener());
             movimientos=MetodosMoverPiezas.identificarMovimientosDePieza(fichaSeleccionada, posicionOrigen, casillas);
-
             puntoInicialClick = i.getPoint();
 
             textoFlotante.setText(null);
@@ -76,7 +93,7 @@ public class ArrastraPieza {
             int dy = Math.abs(a.getY() - puntoInicialClick.y);
 
             if ((origen != null && textoArrastrado != null && textoFlotante != null)
-                    && (dx > 8 || dy > 8)) {
+                    && (dx > 5 || dy > 5)) {
                 // Convertimos la posición del ratón al panel del tablero
                 Point puntoEnTablero = SwingUtilities.convertPoint((Component) a.getSource(), a.getPoint(), panelTablero);
 
@@ -89,20 +106,14 @@ public class ArrastraPieza {
                 		|| !destino.isEnabled()
                 		|| destino==origen){
                 	    // Está fuera del tablero
-                	    textoFlotante.setVisible(false);
-                	    textoArrastrado = null;
-                	    origen = null;
-                	    posicionOrigen = null;
-                	    fichaSeleccionada = null;
-                	    puntoInicialClick = null;
-                	    panelTablero.setCursor(Cursor.getDefaultCursor());
+                    	reiniciarVariables();
                 	    return;
                 	}
 
                 // Si el destino es un botón y no es el mismo que el origen
                 if (destino != origen && destino != null && destino instanceof JButton && destino.isEnabled()) {
                     JButton botonDestino = (JButton) destino;
-                    String posicionDestino = obtenerPosicion(botonDestino);
+                    posicionDestino = obtenerPosicion(botonDestino);
 
                     MetodosMoverPiezas.moverPiezas(posicionOrigen, posicionDestino, casillas, fichaSeleccionada,movimientos);
                     textoFlotante.setVisible(false);
@@ -114,15 +125,11 @@ public class ArrastraPieza {
                     fichaSeleccionada = null;
                 }
 
-                FuncionesVisualesTablero.resetColores(casillas);
 
-                textoArrastrado = null;
-                origen = null;
-                posicionOrigen = null;
-                fichaSeleccionada = null;
             }
+            FuncionesVisualesTablero.resetColores(casillas);
 
-            puntoInicialClick = null;
+            reiniciarVariables();
             panelTablero.setCursor(Cursor.getDefaultCursor());
         }
     }
@@ -175,5 +182,23 @@ public class ArrastraPieza {
             }
         }
         return null;
+    }
+    
+    public void reiniciarVariables() {
+    	if (!(textoFlotante==null)) {
+    		textoFlotante.setVisible(false);
+	        textoFlotante.setText(null);
+    	}
+        textoArrastrado = null;
+        origen = null;
+        posicionOrigen = null;
+        fichaSeleccionada = null;
+        puntoInicialClick = null;
+        puntoInicialClick = null;
+
+    }
+    
+    public JButton [][] getCasillas(){
+    	return casillas;
     }
 }

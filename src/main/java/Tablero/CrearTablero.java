@@ -7,26 +7,30 @@ import Partida.TiempoPartida;
 import java.awt.*;
 import javax.swing.*;
 
+import ConexionPartida.Movimientos;
+
 /**
  * Clase que crea el tablero de ajedrez en un hilo.
  */
 
 public class CrearTablero implements Runnable {
     
+public CrearTablero() {
+    this.casillas = new JButton[9][9];
+}
 
-
-	private static JFrame tablero;
-    
-
-
-	private JButton[][] casillas;
+    private static JFrame tablero;
+    private JButton[][] casillas;
     private JButton casilla;
     private int casillasFilas;
     private int casillasColumnas;
     private JLabel textoFlotante;
-    public static JLabel labelDeMovimientosPartida;
+    private int tiempo;
+    private int incremento;
+    private boolean blancas;    public static JLabel labelDeMovimientosPartida;
 	private static JLabel labelTiempo;
 	public static TiempoPartida temporizador=null;
+	private String nombre=null;
     public static JLabel getLabelDeMovimientosPartida() {
 		return labelDeMovimientosPartida;
 	}
@@ -35,31 +39,34 @@ public class CrearTablero implements Runnable {
 	}
     
     
-	static int tiempoBlancas = 180; // en segundos
-	static int tiempoNegras = 180;  // en segundos
-	static boolean enPartida = true;    
 
 	
-    public CrearTablero() {
-    	CrearTablero.tablero = null;
-        this.setCasillas(null);
-        this.casilla = null;
-        this.casillasFilas = 9;
-        this.casillasColumnas = 9;
-        this.textoFlotante = null;
-    }
-    
-    
+    public CrearTablero(JFrame tablero, JButton[][] casillas, JButton casilla, int casillasFilas, int casillasColumnas,
+            JLabel textoFlotante, int tiempo, int incremento, boolean blancas,String nombre) {
+    	CrearTablero.tablero = tablero;
+  this.casillas = casillas;
+  this.casilla = casilla;
+  this.casillasFilas = casillasFilas;
+  this.casillasColumnas = casillasColumnas;
+  this.textoFlotante = textoFlotante;
+  this.tiempo = tiempo;
+  this.incremento = incremento;
+  this.blancas = blancas;
+  this.nombre=nombre;
+}
+
+
 
     @Override
     public void run() {
-        crearTableroBasico(tablero, getCasillas(), casilla, casillasFilas, casillasColumnas, textoFlotante);
+		crearTableroBasico(tablero, casillas,casilla, casillasFilas,casillasColumnas,textoFlotante, tiempo, incremento, blancas,nombre);
     }
-    public static void crearTableroBasico(JFrame tablero, JButton casillas[][], JButton casilla, int casillasFilas, int casillasColumnas, JLabel textoFlotante) {
+    public static void crearTableroBasico(JFrame tablero, JButton casillas[][], JButton casilla, int casillasFilas, 
+    		int casillasColumnas, JLabel textoFlotante,int tiempo, int incremento, boolean blancas,String nombre) {
         String nombreCoordenadas = null;
         int numeroFila = 0;
         char letraColumna = ' ';
-        CrearTablero.tablero = new JFrame("Tablero de Ajedrez");
+        CrearTablero.tablero = new JFrame(nombre);
         CrearTablero.tablero.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CrearTablero.tablero.setLayout(new BorderLayout());
         
@@ -68,11 +75,26 @@ public class CrearTablero implements Runnable {
         JLabel labelIzquierda = new JLabel("Tiempo");
         labelIzquierda.setFont(new Font("Arial", Font.BOLD, 24)); // Fuente Arial, negrita, tamaño 24
 
-        labelTiempo = new JLabel("01:00-01:00");
-        labelTiempo.setFont(new Font("Arial", Font.BOLD, 24)); // Igual tamaño para consistencia
+        if (tiempo<0)
+        	tiempo=0;
+        // Construye el HTML inicial
+        String tiempoReloj = TiempoPartida.tiempoVisual(tiempo*60);
+        String tiempoRelojHTML = "<span style='color: #FFD700; font-size:28px; font-weight:bold;'>" 
+            + tiempoReloj + " <small style='font-size:14px;'>Blancas</small></span>";
+
+        String html = "<html><div style='text-align:center;'>"
+            + tiempoRelojHTML + "<br>" + tiempoRelojHTML +
+            "</div></html>";
+
+        labelTiempo = new JLabel(html, SwingConstants.CENTER);
+        if (!(tiempo==0)) {
+	        //Esto es para ir actualizando el reloj 
+	        temporizador = new TiempoPartida(CrearTablero.getLabelTiempo(),tiempo,casillas,incremento);
+        }
         panelIzquierda.setLayout(new BoxLayout(panelIzquierda, BoxLayout.Y_AXIS));
         panelIzquierda.add(labelIzquierda);
         panelIzquierda.add(labelTiempo);
+
 
         // Panel derecho con JLabel arriba y dos botones abajo
         JPanel panelDerecha = new JPanel();
@@ -116,10 +138,12 @@ public class CrearTablero implements Runnable {
                 if (fila == 8 && columna == 8)
                     casilla.setEnabled(false);
                 else if (fila == 8) {
+                	//casilla.setText(columna+"");
                     casilla.setEnabled(false);
                     letraColumna = (char) ('A' + columna);
                     casilla.setText("" + letraColumna);
                 } else if (columna == 8) {
+                	//casilla.setText(""+fila);
                     casilla.setEnabled(false);
                     numeroFila = 8 - fila;
                     nombreCoordenadas = "" + numeroFila;
@@ -129,16 +153,14 @@ public class CrearTablero implements Runnable {
                 else
                     casilla.setBackground(Colores.CASILLAS_NEGRAS);
 
-                PonerPiezasTablero.colocarPiezas(casillas, casilla, fila, columna);
+                PonerPiezasTablero.colocarPiezas(casilla, fila, columna);
                 casillas[fila][columna] = casilla;
                 arrastraPieza = new ArrastraPieza(panelTablero, casillas, textoFlotante);
                 casilla.addMouseListener(arrastraPieza.new BotonMouseListener());
                 panelTablero.add(casilla);
             }
         }
-        
-        //Esto es para ir actualizando el reloj 
-        temporizador = new TiempoPartida(CrearTablero.getLabelTiempo(),1,casillas);
+        Movimientos.setCasillas(casillas);
 
         // Añadir paneles al frame
         CrearTablero.tablero.add(panelIzquierda, BorderLayout.WEST);

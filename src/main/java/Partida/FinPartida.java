@@ -1,22 +1,26 @@
 package Partida;
 
 import java.awt.event.ActionEvent;
+
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
-import Inicio.PantallaPrincipalJuego;
+import InterfazGrafica.PantallaPrincipalJuego;
 import Piezas.DetectarJaqueEnPartida;
 import Tablero.CrearTablero;
 import Tablero.MovimientosPosibles;
 import Tablero.PonerPiezasTablero;
 import Tablero.ReiniciarTablero;
-import Tablero.TableroAjedrez;
 
 public class FinPartida {
 	static String texto = "";
@@ -49,15 +53,20 @@ public class FinPartida {
 
 	public static void mensajeTerminarPartida(String texto, JButton[][] casillas) {
 		TiempoPartida.detenerTiempo();
-
-		Timer timer = new Timer(10, new ActionListener() {
+		Icon icono = new ImageIcon(FinPartida.class.getResource("/imagesPiezas/wP.png"));
+		Timer timer = new Timer(3, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				try {
+				    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+				} catch (Exception a) {
+				    a.printStackTrace();
+				}
 				// Opciones personalizadas
 				String[] opciones = { "Volver a jugar", "Menú principal", "Salir del juego" };
 				int seleccion = JOptionPane.showOptionDialog(null, texto, // Mensaje
 						"Fin de la partida", // Título
-						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, // Icono
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icono, // Icono
 						opciones, // Botones personalizados
 						opciones[0] // Botón por defecto
 				);
@@ -143,7 +152,7 @@ public class FinPartida {
 		for (int fila = 0; fila < 8; fila++) {
 			for (int columna = 0; columna < 8; columna++) {
 				JButton casilla = new JButton();
-				PonerPiezasTablero.colocarPiezas(tablero, casilla, fila, columna);
+				PonerPiezasTablero.colocarPiezas(casilla, fila, columna);
 
 				tablero[fila][columna] = casilla;
 			}

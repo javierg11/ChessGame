@@ -1,4 +1,4 @@
-package Inicio;
+package InterfazGrafica;
 
 import javax.swing.*;
 
@@ -49,20 +49,72 @@ public class EmpezarAJugar {
 
         // Acción de cada botón
         btnSolo.addActionListener(e ->{
+        	JTextField tiempoField = new JTextField(5);
+            JTextField incrementoField = new JTextField(5);
+
+            // Check para elegir color (por ejemplo, blancas)
+            JCheckBox blancasCheck = new JCheckBox("Jugar con blancas");
+
+            // Panel para organizar los componentes
+            JPanel panel = new JPanel();
+            panel.add(new JLabel("Tiempo (minutos):"));
+            panel.add(tiempoField);
+            panel.add(Box.createHorizontalStrut(15)); // Espacio
+            panel.add(new JLabel("Incremento (segundos):"));
+            panel.add(incrementoField);
+            panel.add(Box.createVerticalStrut(15));
+            panel.add(blancasCheck);
+
+            // Mostrar el diálogo
+            int result = JOptionPane.showConfirmDialog(
+                null, 
+                panel, 
+                "Configura la partida", 
+                JOptionPane.OK_CANCEL_OPTION, 
+                JOptionPane.PLAIN_MESSAGE
+            );
+        	
+        	
+        	if (result == JOptionPane.OK_OPTION) {
+            frame.dispose();
+            
+            //Mirar si el usuario es gracioso
+            int tiempo;
+            try {
+                tiempo = Integer.parseInt(tiempoField.getText());
+            } catch (NumberFormatException a) {
+                tiempo = 0;
+            }
+
+            int incremento;
+            try {
+                incremento = Integer.parseInt(incrementoField.getText());
+            } catch (NumberFormatException a) {
+                incremento = 0;
+            }
+            boolean blancas = blancasCheck.isSelected();
         	frame.dispose();
-        	TableroAjedrez.crearTipoTablero(true);
+        	
+        	TableroAjedrez.crearTipoTablero(true,tiempo,incremento,blancas, "Tablero Ajedrez");
+        	}
         });
         btnAlguien.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "¡Has elegido jugar con alguien!");
+        	frame.dispose();
+        	JugarEnLAN.crearJFrameJugarEnLAN();
         });
         btnProblemas.addActionListener(e -> {
             JOptionPane.showMessageDialog(frame, "¡Has elegido resolver problemas!");
         } );
 
         esquinaButton.addActionListener(e -> {
-            frame.dispose();
+        	
+        	
+        	
+        	
+        	
             PantallaPrincipalJuego pantallaPrincipalJuego = new PantallaPrincipalJuego();
 			pantallaPrincipalJuego.mostrar();
+        	
         });
         // Efecto hover para cada botón
         Botones.addHoverEffect(btnSolo, Colores.CASILLAS_NEGRAS, Colores.CASILLAS_NEGRAS_OSCURO);

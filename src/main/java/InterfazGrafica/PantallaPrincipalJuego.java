@@ -1,4 +1,4 @@
-package Inicio;
+package InterfazGrafica;
 
 import javax.swing.*;
 

@@ -8,11 +8,14 @@ import Partida.TiempoPartida;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
+import ConexionPartida.Movimientos;
 import Piezas.*;
 
 public class MetodosMoverPiezas {
-
+	public static Movimientos datosDeMovimientos;
 	private static boolean jugando=false;
+	public static volatile  boolean sensorDeTurnosDosJugadores=false;
+	private static boolean tiempoIniciado=false;
 	public static void setJugando(boolean jugando) {
 		MetodosMoverPiezas.jugando = jugando;
 	}
@@ -52,22 +55,29 @@ public class MetodosMoverPiezas {
 
 	public static String identificarMovimientosDePieza(String ficha, String posicion, JButton[][] casillas) {
 		if (!jugando) {
-			TiempoPartida.iniciarTiempo();
+			
 			jugando=true;
 		}
 		Piezas pieza = null;
 		pieza = identificarFuncionPieza(ficha);
+		
 		String movimientosPosibles = pieza.calcularMovimientos(posicion, casillas, ficha, true); // Aqui consigo todos
 																									// los movimientos
 																									// posibles de la
 																									// pieza
 		String movimientosLegales = DetectarJaqueEnPartida.controlJugadasPorJaque(movimientosPosibles, casillas, ficha,
-				posicion, true); // Con esto todos los movimientos legales se pasan a la String movimientosLegales
+				posicion, FuncionesVisualesTablero.verCasillas); // Con esto todos los movimientos legales se pasan a la String movimientosLegales
 		return movimientosLegales;
 
 	}
 
 	public static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha, String movimientos) {
+        Movimientos.setCasillas(casillas);
+
+		if(!tiempoIniciado) {
+			TiempoPartida.iniciarTiempo();
+			tiempoIniciado=true;
+		}
 		int filaOrigen = Integer.parseInt(origen.substring(0, 1));
 		int colOrigen = Integer.parseInt(origen.substring(1, 2));
 		int filaDestino = Integer.parseInt(destino.substring(0, 1));
@@ -77,14 +87,15 @@ public class MetodosMoverPiezas {
 		String[] movimientosValidos = movimientos.split(" ");
 
 		for (String movimiento : movimientosValidos) {
+			
 			if (movimiento.equals(destino)) {
-
+				
 				// Este metodo sirve para comprobar si un peon ha llegado a su casilla de
 				// coronacion
 				// Si ha llegado cornona si no, no hace nada
 				String fichaOriginal = ficha;
 
-				ficha = JugadaEspecialPeon.coronarPeon(filaDestino, colDestino, ficha, casillas);
+				//ficha = JugadaEspecialPeon.coronarPeon(filaDestino, colDestino, ficha, casillas);
 
 				
 
@@ -135,10 +146,23 @@ public class MetodosMoverPiezas {
 				SwingUtilities.invokeLater(() -> {
 				    ConvertirAJugadasAceptables.actualizarJugadasEnTablero(CrearTablero.getLabelDeMovimientosPartida());
 				});
-				imprimirTablero(casillas);
+				TiempoPartida.incrementoTiempoPorJugada();
+				//imprimirTablero(casillas);
+				
+				System.out.println("origenM: " + origen);
+				System.out.println("destinoM: " + destino);
+				System.out.println("fichaM: " + ficha);
+				System.out.println("movimientosM: " + movimientos);
+				datosDeMovimientos = new Movimientos(origen, destino, ficha, movimientos);
+				Movimientos.setCasillas(casillas);
+				sensorDeTurnosDosJugadores=true;
 				movimientos = "";
+
+
 			}
 		}
+		movimientos = "";
+
 	}
 
 	

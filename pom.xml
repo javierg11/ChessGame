@@ -3,9 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Identificadores de tu proyecto -->
-    <groupId>com.example</groupId>  <!-- Cambia esto por el groupId de tu proyecto -->
-    <artifactId>mi-proyecto</artifactId> <!-- Cambia esto por el artifactId de tu proyecto -->
+    <groupId>com.example</groupId>
+    <artifactId>mi-proyecto</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -13,23 +12,22 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
-    <!-- Dependencias -->
     <dependencies>
-        <!-- Dependencia de Jackson -->
+        <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.1</version> <!-- Usa una versión estable -->
+            <version>2.13.1</version>
         </dependency>
-    
-            <dependency>
-                <groupId>com.sun.mail</groupId>
-                <artifactId>javax.mail</artifactId>
-                <version>1.6.2</version>
-            </dependency>
-        </dependencies>
+        <!-- Javax Mail -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        
+    </dependencies>
 
-    <!-- Configuración del Build -->
     <build>
         <plugins>
             <plugin>

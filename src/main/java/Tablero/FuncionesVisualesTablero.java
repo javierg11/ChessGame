@@ -3,7 +3,17 @@ package Tablero;
 import javax.swing.JButton;
 import ConstantesComunes.Colores;
 
+
 public class FuncionesVisualesTablero {
+	static boolean verCasillas=true;
+	public static void setVerCasillas(boolean verCasillas) {
+		FuncionesVisualesTablero.verCasillas = verCasillas;
+	}
+
+	public static boolean isVerCasillas() {
+		return verCasillas;
+	}
+
 	// Ver casillas para mover
 	public static void resaltarCasilla(int fila, int columna, JButton[][] casillas) {
 		if (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {

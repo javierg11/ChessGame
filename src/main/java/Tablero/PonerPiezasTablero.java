@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class PonerPiezasTablero {
-	public static void colocarPiezas(JButton[][] casillas, JButton casilla, int fila, int columna) {
+	public static void colocarPiezas(JButton casilla, int fila, int columna) {
 		String pieza="";
 		if (fila==0)
 			pieza="b";
@@ -59,6 +59,7 @@ public class PonerPiezasTablero {
 //				- Licencia: GNU General Public License v2 (GPLv2)
 //				- Más información: Ver archivo `licenses-third-party/GPL-2.0.txt`
 //				Este proyecto utiliza piezas de ajedrez "cburnett" convertidas de SVG a PNG.
+		
 		casilla.setText(pieza); // Texto lógico (no visible)
 		casilla.setHorizontalTextPosition(JButton.CENTER); // Alinear texto
 		casilla.setVerticalTextPosition(JButton.CENTER); // en el centro

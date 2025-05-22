@@ -1,12 +1,14 @@
 package Partida;
 
 
+import java.awt.Color;
 import java.util.HashMap;
 
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import ConstantesComunes.Colores;
 import Piezas.DetectarJaqueEnPartida;
 import Tablero.MovimientosPosibles;
 
@@ -33,7 +35,7 @@ public class ConvertirAJugadasAceptables implements Runnable{
 	            Thread.sleep(150); // Espera 100 ms para que otras partes del codigo terminen
 	    	    jugada = jugadasBonitas.get(jugadaActual);
 
-	    	    System.out.println(jugada);
+	    	    //System.out.println(jugada);
 
 	        } catch (InterruptedException e) {
 	            Thread.currentThread().interrupt();
@@ -49,18 +51,19 @@ public class ConvertirAJugadasAceptables implements Runnable{
 	    // Calcula el número de movimiento
 	    int numMov = (jugadaActual + 1) / 2;
 
+	 // Calcula el color de fondo intercalado
+	    String colorFondo = (numMov % 2 == 0) ? toHexString(Colores.CASILLAS_BLANCAS) : toHexString(Colores.CASILLAS_NEGRAS);
+
 	    // Prepara la nueva fila (centrada)
 	    String nuevaFila = "";
 	    if (jugadaActual % 2 != 0) { // Turno de blancas (impar)
 	        // Nueva fila con blancas, negras vacío
-	        nuevaFila = "<tr>" +
+	        nuevaFila = "<tr style='background-color:" + colorFondo + ";'>" +
 	            "<td style='text-align:center;'>" + numMov + "</td>" +
 	            "<td style='text-align:center;'>" + jugada + "</td>" +
 	            "<td style='text-align:center;'></td></tr>";
-	        // Inserta la fila antes de </table>
 	        texto = texto.substring(0, idx) + nuevaFila + texto.substring(idx);
 	    } else { // Turno de negras (par)
-	        // Busca la última fila con <td style='text-align:center;'></td></tr> y reemplázala
 	        int lastEmptyCell = texto.lastIndexOf("<td style='text-align:center;'></td></tr>");
 	        if (lastEmptyCell != -1) {
 	            texto = texto.substring(0, lastEmptyCell) +
@@ -69,10 +72,14 @@ public class ConvertirAJugadasAceptables implements Runnable{
 	        }
 	    }
 
+
 	    labelDerechaArriba.setText(texto);
 	}
 
 
+	public static String toHexString(Color color) {
+	    return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+	}
 
 
 
@@ -136,11 +143,10 @@ public class ConvertirAJugadasAceptables implements Runnable{
 			int col = origen.charAt(1) - '0'; // 0 a 7 (a-h)
 
 			char columnaLetra = (char) ('a' + col);
-			System.out.println(destinoAlgebraico);
 			jugada =columnaLetra+"x"+ destinoAlgebraico;
 		}
 		jugadasBonitas.put(CalculosEnPartida.getJugadasTotales(), jugada);
-		System.out.println(jugadasBonitas);
+		//System.out.println(jugadasBonitas);
 
 	}
 

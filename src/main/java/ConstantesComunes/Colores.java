@@ -13,4 +13,6 @@ public final class Colores {
 	public static final Color CASILLAS_NEGRAS_OSCURO=new Color(161, 121, 85); // Marrón terracota Un poco más oscuro
 	public static final Color CASILLAS_BLANCAS_OSCURO=new Color(220, 200, 160); // Beige cálido (marfil) Un poco más oscuro
 
+	public static final Color FONDO = new Color(162, 176, 120); // Verde oliva suave
+
 }
