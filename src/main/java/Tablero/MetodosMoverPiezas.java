@@ -95,7 +95,7 @@ public class MetodosMoverPiezas {
 				// Si ha llegado cornona si no, no hace nada
 				String fichaOriginal = ficha;
 
-				//ficha = JugadaEspecialPeon.coronarPeon(filaDestino, colDestino, ficha, casillas);
+				ficha = JugadaEspecialPeon.coronarPeon(filaDestino, colDestino, ficha, casillas);
 
 				
 
@@ -149,10 +149,6 @@ public class MetodosMoverPiezas {
 				TiempoPartida.incrementoTiempoPorJugada();
 				//imprimirTablero(casillas);
 				
-				System.out.println("origenM: " + origen);
-				System.out.println("destinoM: " + destino);
-				System.out.println("fichaM: " + ficha);
-				System.out.println("movimientosM: " + movimientos);
 				datosDeMovimientos = new Movimientos(origen, destino, ficha, movimientos);
 				Movimientos.setCasillas(casillas);
 				sensorDeTurnosDosJugadores=true;

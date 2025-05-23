@@ -1,78 +1,64 @@
 package ConexionPartida;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
 
+import java.io.BufferedWriter;
+import java.net.SocketException;
+
+import Partida.FinPartida;
 import Tablero.FuncionesVisualesTablero;
 import Tablero.MetodosMoverPiezas;
 
 public class ControlDeJugadas {
-	public static void hacerJugadas(BufferedReader in, BufferedWriter out, boolean color){
-		 try {
-//           Thread.sleep(50);
+	public void hacerJugadas(BufferedWriter out){
+		try {
+		System.out.println(
+				"Enviando origen: " + MetodosMoverPiezas.datosDeMovimientos.getOrigen());
+		out.write(MetodosMoverPiezas.datosDeMovimientos.getOrigen() + "\n");
 
-   	   if (color) {
+		System.out.println(
+				"Enviando destino: " + MetodosMoverPiezas.datosDeMovimientos.getDestino());
+		out.write(MetodosMoverPiezas.datosDeMovimientos.getDestino() + "\n");
 
-			if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
-			out.write(MetodosMoverPiezas.datosDeMovimientos.getOrigen() + "\n");
+		System.out.println(
+				"Enviando ficha: " + MetodosMoverPiezas.datosDeMovimientos.getFicha());
+		out.write(MetodosMoverPiezas.datosDeMovimientos.getFicha() + "\n");
 
-			out.write(MetodosMoverPiezas.datosDeMovimientos.getDestino() + "\n");
-
-			out.write(MetodosMoverPiezas.datosDeMovimientos.getFicha() + "\n");
-
-			out.write(MetodosMoverPiezas.datosDeMovimientos.getMovimientos() + "\n");
-  	     
-  	        MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO después de enviar
-
-  	        //out.write(MetodosMoverPiezas.sensorDeTurnosDosJugadores + "\n");
-           color=false;
-           out.flush();
-
-			}
-  	        
+		System.out.println("Enviando movimientos: "
+				+ MetodosMoverPiezas.datosDeMovimientos.getMovimientos());
+		out.write(MetodosMoverPiezas.datosDeMovimientos.getMovimientos() + "\n");
 
 
-			}
-            else {
-				FuncionesVisualesTablero.setVerCasillas(false);
-				String origen = in.readLine();
-
-				String destino = in.readLine();
-
-				String ficha = in.readLine();
-
-				String movimientos = in.readLine();
-//               String a = inFinal.readLine();
-//               MetodosMoverPiezas.sensorDeTurnosDosJugadores = Boolean.parseBoolean(a);
-				MetodosMoverPiezas.moverPiezas(origen, destino, Movimientos.getCasillas(), ficha,
-						movimientos);
-				FuncionesVisualesTablero.resetColores(Movimientos.getCasillas());
-				color = true;
-				MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO después de
-																		// enviar
-
-			}
-			SalaInfo.setColor(color);
-			FuncionesVisualesTablero.setVerCasillas(true);
-
-       
-   } catch (IOException e) {
+		// out.write(MetodosMoverPiezas.sensorDeTurnosDosJugadores + "\n");
+		out.flush();
+	}catch(SocketException  a) {
+		FinPartida.mensajeTerminarPartida("El oponente se ha retirado",Movimientos.getCasillas(),false) ;
+	} catch(Exception e) {
 		e.printStackTrace();
-	} finally {
-		try {
-			if (out != null)
-				out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			if (in != null)
-				in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 	}
+	}
+	
+	public void escucharJugadas(BufferedReader in){
+		try {
+		FuncionesVisualesTablero.setVerCasillas(false);
+		String origen = in.readLine();
+
+		String destino = in.readLine();
+
+		String ficha = in.readLine();
+
+		String movimientos = in.readLine();
+//                 String a = inFinal.readLine();
+//                 MetodosMoverPiezas.sensorDeTurnosDosJugadores = Boolean.parseBoolean(a);
+		MetodosMoverPiezas.moverPiezas(origen, destino, Movimientos.getCasillas(), ficha,
+				movimientos);
+		FuncionesVisualesTablero.resetColores(Movimientos.getCasillas());
+		FuncionesVisualesTablero.setVerCasillas(true);
+
+		}catch(SocketException  a) {
+			FinPartida.mensajeTerminarPartida("El oponente se ha retirado",Movimientos.getCasillas(),false) ;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

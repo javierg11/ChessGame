@@ -72,16 +72,9 @@ public class TiempoPartida {
 				    );
 				});
 
+				comprobarFinPartida();
 
 
-
-				if (tiempoBlancas == 0 || tiempoNegras == 0) {
-					enPartida = false;
-					String texto = "<html><b>¡Victoria!</b><br>El jugador "
-							+ (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
-							+ " se le ha acabado el tiempo.<br><i>Caida de bandera.</i></html>";
-					FinPartida.mensajeTerminarPartida(texto, casillas);
-				}
 			}
 		});
 		hilo.start();
@@ -113,5 +106,16 @@ public class TiempoPartida {
         int segundos = (int)segundosTotales % 60;
         return String.format("%02d:%02d:%02d", horas, minutos, segundos);
     }
+	
+	private static void comprobarFinPartida() {
+		if (tiempoBlancas == 0 || tiempoNegras == 0) {
+			enPartida = false;
+			String texto = "<html><b>¡Victoria!</b><br>El jugador "
+					+ (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
+					+ " se le ha acabado el tiempo.<br><i>Caida de bandera.</i></html>";
+			FinPartida.mensajeTerminarPartida(texto, casillas,true);
+		}
+
+	}
 
 }

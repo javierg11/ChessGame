@@ -10,7 +10,9 @@ public class Movimientos {
     private String movimientos;
     private boolean colorAJugar;
 
-    
+    public Movimientos() {
+    	
+    }
 
 	// Constructor
     public Movimientos(String origen, String destino, String ficha, String movimientos) {
@@ -54,7 +56,7 @@ public class Movimientos {
         this.destino = destino;
     }
     public void setColorAJugar(boolean colorAJugar) {
-		this.colorAJugar = colorAJugar;
+    	this.colorAJugar = colorAJugar;
 	}
     public static void setCasillas(JButton[][] casillas) {
     	Movimientos.casillas = casillas;

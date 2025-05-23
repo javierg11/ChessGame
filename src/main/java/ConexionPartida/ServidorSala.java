@@ -1,6 +1,7 @@
 package ConexionPartida;
 
 import java.awt.Component;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.*;
@@ -8,18 +9,13 @@ import java.net.*;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import InterfazGrafica.JugarEnLAN;
-import Partida.CalculosEnPartida;
-import Tablero.ArrastraPieza;
 import Tablero.FuncionesVisualesTablero;
 import Tablero.MetodosMoverPiezas;
 import Tablero.TableroAjedrez;
@@ -31,7 +27,7 @@ public class ServidorSala {
 	private ServerSocket serverSocket = null;
 	private static String password = "";
 	private float tiempo;
-	private boolean color;
+    public static Movimientos mov = new Movimientos();
 
 	public void crearSala(JPanel Panel, JFrame frame) {
 		try {
@@ -48,7 +44,7 @@ public class ServidorSala {
 			Object[] opcionesColor = { "Blanco (w)", "Negro (b)" };
 			int colorElegido = JOptionPane.showOptionDialog(null, "¿Qué color quieres?", "Color",
 					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opcionesColor, opcionesColor[0]);
-			color = (colorElegido == 0); // true = blanco, false = negro
+			mov.setColorAJugar((colorElegido == 0)); 			// true = blanco, false = negro
 
 			boolean tiempoValido = false;
 			while (!tiempoValido) {
@@ -74,7 +70,7 @@ public class ServidorSala {
 
 			// Puedes mostrar un resumen de los datos
 			String resumen = "Sala: " + nombreSala + "\nContraseña: " + (requierePassword ? password : "No")
-					+ "\nColor: " + (color ? "Blanco" : "Negro") + "\nTiempo: " + tiempo + "\nIncremento: "
+					+ "\nColor: " + (mov.isColorAJugar() ? "Blanco" : "Negro") + "\nTiempo: " + tiempo + "\nIncremento: "
 					+ incrementoTiempo;
 			JOptionPane.showMessageDialog(null, resumen);
 
@@ -112,7 +108,7 @@ public class ServidorSala {
 				}
 			}
 
-			SalaInfo info = new SalaInfo(nombreSala, puertoTCP, requierePassword, color, tiempo, incrementoTiempo);
+			SalaInfo info = new SalaInfo(nombreSala, puertoTCP, requierePassword, mov.isColorAJugar(), tiempo, incrementoTiempo);
 
 			// Hilo para responder broadcasts
 			new Thread(() -> {
@@ -169,67 +165,38 @@ public class ServidorSala {
 						out.flush();
 						frame.dispose();
 						JugarEnLAN.getFrame().dispose();
-						TableroAjedrez.crearTipoTablero(true, (int) tiempo, incrementoTiempo, color,
+						TableroAjedrez.crearTipoTablero(true, (int) tiempo, incrementoTiempo, mov.isColorAJugar(),
 								"Servidor de la sala: " + nombreSala);
 
-//
+						ControlDeJugadas controlDeJugadas = new ControlDeJugadas();
+
 //	                	    // Es tu turno
 						while (true) {
 
-							if (color) {
-
+							if (mov.isColorAJugar()) {
 								if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
-									System.out.println(
-											"Enviando origen: " + MetodosMoverPiezas.datosDeMovimientos.getOrigen());
-									out.write(MetodosMoverPiezas.datosDeMovimientos.getOrigen() + "\n");
-
-									System.out.println(
-											"Enviando destino: " + MetodosMoverPiezas.datosDeMovimientos.getDestino());
-									out.write(MetodosMoverPiezas.datosDeMovimientos.getDestino() + "\n");
-
-									System.out.println(
-											"Enviando ficha: " + MetodosMoverPiezas.datosDeMovimientos.getFicha());
-									out.write(MetodosMoverPiezas.datosDeMovimientos.getFicha() + "\n");
-
-									System.out.println("Enviando movimientos: "
-											+ MetodosMoverPiezas.datosDeMovimientos.getMovimientos());
-									out.write(MetodosMoverPiezas.datosDeMovimientos.getMovimientos() + "\n");
-
+									controlDeJugadas.hacerJugadas(out);
+									mov.setColorAJugar(false);
 									MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
-																							// después de enviar
-
-									// out.write(MetodosMoverPiezas.sensorDeTurnosDosJugadores + "\n");
-									color = false;
-									out.flush();
+									// después de enviar
 
 								}
 
 							} else {
-
-								FuncionesVisualesTablero.setVerCasillas(false);
-								String origen = in.readLine();
-
-								String destino = in.readLine();
-
-								String ficha = in.readLine();
-
-								String movimientos = in.readLine();
-//	                                     String a = inFinal.readLine();
-//	                                     MetodosMoverPiezas.sensorDeTurnosDosJugadores = Boolean.parseBoolean(a);
-								MetodosMoverPiezas.moverPiezas(origen, destino, Movimientos.getCasillas(), ficha,
-										movimientos);
-								FuncionesVisualesTablero.resetColores(Movimientos.getCasillas());
-								color = true;
-								MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO después
-																						// de enviar
+								controlDeJugadas.escucharJugadas(in);
+								mov.setColorAJugar(true);
+								MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
+								// después de enviar
 
 							}
-							SalaInfo.setColor(color);
+							SalaInfo.setColor(mov.isColorAJugar());
 							FuncionesVisualesTablero.setVerCasillas(true);
 						}
-					} catch (IOException e) {
+					}
+					catch (IOException e) {
 						e.printStackTrace();
-					} finally {
+					}
+					finally {
 						try {
 							if (out != null)
 								out.close();

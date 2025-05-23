@@ -13,8 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import ConexionPartida.ClienteSala;
 import ConexionPartida.Movimientos;
 import ConexionPartida.SalaInfo;
+import ConexionPartida.ServidorSala;
 import ConstantesComunes.Colores;
 import Partida.CalculosEnPartida;
 
@@ -66,14 +68,20 @@ public class ArrastraPieza {
                 return;
             }
             if (SalaInfo.isColor() != null) {
-            if ((CalculosEnPartida.colorAMover() && !SalaInfo.isColor() )||
-                    (!CalculosEnPartida.colorAMover() && !SalaInfo.isColor())) {
-                System.out.println("!"+SalaInfo.isColor());
 
-                    return;
-                }
+//            	System.out.println(ServidorSala.mov.isColorAJugar());
+//            	System.out.println(ClienteSala.mov.isColorAJugar());
+//
+//                if (CalculosEnPartida.colorAMover() != ServidorSala.mov.isColorAJugar()) {
+//                    // No es mi turno
+//                    return;
+//                }
+//                if (CalculosEnPartida.colorAMover() != ClienteSala.mov.isColorAJugar()) {
+//                    // No es mi turno
+//                    return;
+//                }
             }
-            // Aqui se le añade la funcion de poder arrastrar la pieza
+                // Aqui se le añade la funcion de poder arrastrar la pieza
             origen.addMouseMotionListener(new BotonMouseMotionListener());
             movimientos=MetodosMoverPiezas.identificarMovimientosDePieza(fichaSeleccionada, posicionOrigen, casillas);
             puntoInicialClick = i.getPoint();

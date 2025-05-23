@@ -7,31 +7,17 @@ public class Torre extends Piezas {
 	@Override
 	public String calcularMovimientos(String posicion, JButton[][] casillas, String ficha, boolean movEspecial) {
 		inicializarPosicion(posicion);
-	    {
-		calcularMovimientosTorre(0, -1, casillas, ficha);  // Izquierda (oeste)
-		calcularMovimientosTorre(0, +1, casillas, ficha);  // Derecha (este)
-		calcularMovimientosTorre(+1, 0, casillas, ficha);  // Abajo (sur)
-		calcularMovimientosTorre(-1, 0, casillas, ficha);  // Arriba (norte)
-	    }
+		calcularMovimientosTorre(casillas,ficha);
 
 		return jugadasTotales + "\n";
 	}
-	
-	protected static void calcularMovimientosTorre(int direccionFila, int direccionColumna, JButton[][] casillas, String ficha) {
-		int fila = filaActual + direccionFila;
-		int columna = columnaActual + direccionColumna;
-		while (fila >= 0 && fila < 8 && columna >= 0 && columna < 8) {
-			if (casillas[fila][columna].getText().isEmpty() || !verPeonesAlPaso(casillas,fila,columna)) {
-				conseguirJugadasLogicas(fila, columna);
-			} else {
-				if (!mismoColor(casillas, fila, columna, ficha)) {
-					conseguirJugadasLogicas(fila, columna);
-				}
+	public static void calcularMovimientosTorre(JButton[][] casillas, String ficha) {
+		MovimientosDeVariasPiezas.calcularMovimientos(0, -1, casillas, ficha);  // Izquierda (oeste)
+		MovimientosDeVariasPiezas.calcularMovimientos(0, +1, casillas, ficha);  // Derecha (este)
+		MovimientosDeVariasPiezas.calcularMovimientos(+1, 0, casillas, ficha);  // Abajo (sur)
+		MovimientosDeVariasPiezas.calcularMovimientos(-1, 0, casillas, ficha);  // Arriba (norte)
 
-				break;
-			}
-			fila += direccionFila;
-			columna += direccionColumna;
-		}
 	}
+	
+	
 }

@@ -1,19 +1,17 @@
 package ConexionPartida;
 
 import java.awt.Color;
+
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -23,13 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import InterfazGrafica.JugarEnLAN;
-import Partida.CalculosEnPartida;
-import Tablero.ArrastraPieza;
-import Tablero.CrearTablero;
-import Tablero.FuncionesVisualesTablero;
 import Tablero.MetodosMoverPiezas;
 import Tablero.TableroAjedrez;
 
@@ -37,10 +30,10 @@ public class ClienteSala {
     private static final int PUERTO_BROADCAST = 8888;
     SalaInfo sala=null;
     private String password = "";
-	private boolean color;
     Socket socket = null;
     BufferedReader in = null;
     BufferedWriter out = null;
+    public static Movimientos mov = new Movimientos();
     public void refrescarSalas(JPanel PanelFull, JPanel PanelMedio, JFrame frame) {
 	    new Thread(() -> unirseASala(PanelFull,PanelMedio,frame)).start();
 	}
@@ -65,7 +58,6 @@ public class ClienteSala {
     	        Datasocket.send(packet);
 
     	        Datasocket.setSoTimeout(2000);
-
     	        byte[] buffer = new byte[1024];
     	        while (true) {
     	            try {
@@ -87,7 +79,7 @@ public class ClienteSala {
     	            Datasocket.close();
     	        }
     	    }
-
+    	    System.out.println(salas);
     	    // Actualiza la interfaz gráfica en el hilo del EDT
     	    SwingUtilities.invokeLater(() -> {
     	        if (salas.isEmpty()) {
@@ -152,7 +144,7 @@ public class ClienteSala {
 
     // Método auxiliar para conectar a la sala seleccionada
     private void conectarASala(SalaInfo sala, InetAddress ipServidor, String password, JFrame frame) {
-        color=!SalaInfo.color;
+    	mov.setColorAJugar(!SalaInfo.color);
 
         try {
             socket = new Socket(ipServidor, sala.puerto);
@@ -182,55 +174,31 @@ public class ClienteSala {
 
             new Thread(() -> {
                 try {
+        			ControlDeJugadas controlDeJugadas = new ControlDeJugadas();
+
 //                        Thread.sleep(50);
                     while (true) {
 
-                	   if (color) {
+                	   if (mov.isColorAJugar()) {
 
-						if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
-						out.write(MetodosMoverPiezas.datosDeMovimientos.getOrigen() + "\n");
+                		   if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
+                			   controlDeJugadas.hacerJugadas(out);
+                			   mov.setColorAJugar(false);
 
-						out.write(MetodosMoverPiezas.datosDeMovimientos.getDestino() + "\n");
+								MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
+								// después de enviar
 
-						out.write(MetodosMoverPiezas.datosDeMovimientos.getFicha() + "\n");
+							}
 
-						out.write(MetodosMoverPiezas.datosDeMovimientos.getMovimientos() + "\n");
-               	     
-               	        MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO después de enviar
-
-               	        //out.write(MetodosMoverPiezas.sensorDeTurnosDosJugadores + "\n");
-                        color=false;
-                        out.flush();
-
-						}
-               	        
-
+						} else {
+							controlDeJugadas.escucharJugadas(in);
+							mov.setColorAJugar(true);
+ 
+							MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
+							// después de enviar
 
 						}
-                         else {
-                        	 FuncionesVisualesTablero.setVerCasillas(false);
-                	String origen = in.readLine();
-
-                	String destino = in.readLine();
-
-                	String ficha = in.readLine();
-
-                	String movimientos = in.readLine();
-//                            String a = inFinal.readLine();
-//                            MetodosMoverPiezas.sensorDeTurnosDosJugadores = Boolean.parseBoolean(a);
-                            MetodosMoverPiezas.moverPiezas(origen, destino, Movimientos.getCasillas(), ficha, movimientos);
-                            FuncionesVisualesTablero.resetColores(Movimientos.getCasillas());
-                            color =true;
-                   	        MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO después de enviar
-
-                            }
-						SalaInfo.setColor(color);
-                   	 FuncionesVisualesTablero.setVerCasillas(true);
-
-                    }
-                } catch (IOException e) {
-					e.printStackTrace();
-				} finally {
+                } } finally {
 					try {
 						if (out != null)
 							out.close();

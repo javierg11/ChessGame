@@ -98,7 +98,8 @@ public class ConvertirAJugadasAceptables implements Runnable{
     }
 	
 
-	private static void pasarJugadasParaGuardar(String ficha, String fichaOriginal, JButton[][] casillas, String destino, String origen, boolean hayPieza) {
+	private static void pasarJugadasParaGuardar(String ficha, String fichaOriginal, JButton[][] casillas, 
+			String destino, String origen, boolean hayPieza) {
 		// Detecta si es JAque para poner un "+" en la lista de movimientos
 		char colorContrario = ficha.charAt(0) == 'w' ? 'b' : 'w';
 		String fichaContraria = "" + colorContrario; // Solo interesa el rey
