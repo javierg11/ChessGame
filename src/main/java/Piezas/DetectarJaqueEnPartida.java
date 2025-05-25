@@ -107,7 +107,7 @@ public class DetectarJaqueEnPartida {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				String pieza = casillas[i][j].getText();
-				if (pieza.equals("") || pieza.equals(null) || pieza.contains("R") || pieza.contains("P"))
+				if (pieza.equals("") || pieza.equals(null))
 					continue; // Casilla vacía
 
 				// Crear las piezas

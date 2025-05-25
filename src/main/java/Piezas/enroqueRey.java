@@ -26,8 +26,8 @@ public class EnroqueRey {
 		    if (jugada.startsWith("bT-00-")) torreLargaMovidaNegras = true;
 
 		    // Reyes
-		    if (jugada.startsWith("wR-74-")) reyMovidoBlancas = true;
-		    if (jugada.startsWith("bR-04-")) reyMovidoNegras = true;
+		    if (jugada.startsWith("wR-")) reyMovidoBlancas = true;
+		    if (jugada.startsWith("bR-")) reyMovidoNegras = true;
 		}
 
 		if (!reyMovidoBlancas && !torreLargaMovidaBlancas) {

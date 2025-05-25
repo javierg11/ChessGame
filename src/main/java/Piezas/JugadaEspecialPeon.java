@@ -88,7 +88,8 @@ public class JugadaEspecialPeon {
 
 		Integer claveMasNueva = jugadas.size();
 		String valorMasNuevo = jugadas.get(claveMasNueva);
-
+		if (valorMasNuevo==null)
+			return;
 		// Regex para saber si blancas o negras han hecho un movimiento doble con el
 		// peon
 		String regexBlancas = "wP-6\\d-4\\d";

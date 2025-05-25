@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class PonerPiezasTablero {
-	public static void colocarPiezas(JButton casilla, int fila, int columna) {
+	public static void colocarPiezasNormal(JButton casilla, int fila, int columna) {
 		String pieza="";
 		if (fila==0)
 			pieza="b";
@@ -48,6 +48,9 @@ public class PonerPiezasTablero {
 		}
 	}
 
+	public static void colocarPiezasProblema() {
+		
+	}
 	public static void crearPieza(JButton casilla, String pieza) {
 		// Piezas de ajedrez diseñadas por Colin M.L. Burnett (cburnett)
 				// Licencia: GNU General Public License v2 (GPLv2)

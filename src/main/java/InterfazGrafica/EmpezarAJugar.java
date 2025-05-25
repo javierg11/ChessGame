@@ -5,16 +5,21 @@ import javax.swing.*;
 import ConstantesComunes.Botones;
 import ConstantesComunes.Colores;
 import ConstantesComunes.JFrames;
+import Partida.CalculosEnPartida;
 import Tablero.TableroAjedrez;
 
 import java.awt.*;
 
 public class EmpezarAJugar {
-	private static JFrame frame;
-	private static JButton btnSolo,btnAlguien,btnProblemas,esquinaButton=null;
+    private static JFrame frame;
+    private static JButton btnSolo, btnAlguien, btnProblemas, btnPartida, esquinaButton = null;
+
     public static void opcionesDeJuego() {
-    	frame=new JFrame();
-    	frame=JFrames.crearJFrameBasicos(frame,"Menú de Ajedrez",420,320);
+        CalculosEnPartida.getJugadas().clear();
+        CalculosEnPartida.setJugadasTotales(0);
+
+        frame = new JFrame();
+        frame = JFrames.crearJFrameBasicos(frame, "Menú de Ajedrez", 420, 360);
 
         // Panel personalizado para el fondo degradado
         JPanel panelFondo = new JPanel() {
@@ -31,103 +36,127 @@ public class EmpezarAJugar {
                 g2d.fillRect(0, 0, w, h);
             }
         };
-        panelFondo.setLayout(null); // Layout absoluto para mayor control
+        panelFondo.setLayout(null); // Para permitir el botón de volver en la esquina
 
+        // Panel central con BoxLayout para los botones
+        JPanel panelCentral = new JPanel();
+        panelCentral.setOpaque(false); // Para que se vea el degradado
+        panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
 
-        // Configuración de botones
-        btnSolo=Botones.crearBotonBasico("Jugar Solo",Colores.CASILLAS_NEGRAS,Color.WHITE,17);
-        btnSolo.setBounds(60, 60, 300, 45);
+        // Espaciador superior
+        panelCentral.add(Box.createVerticalStrut(15));
 
-        btnAlguien=Botones.crearBotonBasico("Jugar con Alguien",Colores.CASILLAS_BLANCAS,Color.BLACK,17);
-        btnAlguien.setBounds(100, 130, 220, 40);
+        btnSolo = Botones.crearBotonBasico("Jugar Solo", Colores.CASILLAS_NEGRAS, Color.WHITE, 17);
+        btnAlguien = Botones.crearBotonBasico("Jugar con Alguien", Colores.CASILLAS_BLANCAS, Color.BLACK, 17);
+        btnProblemas = Botones.crearBotonBasico("Problemas", Colores.CASILLAS_NEGRAS, Color.WHITE, 17);
+        btnPartida = Botones.crearBotonBasico("Partida", Colores.CASILLAS_BLANCAS, Color.BLACK, 17);
 
-        btnProblemas=Botones.crearBotonBasico("Problemas",Colores.CASILLAS_NEGRAS,Color.WHITE,17);
-        btnProblemas.setBounds(140, 200, 140, 35);
+        // Tamaño uniforme
+        Dimension d = new Dimension(240, 42);
+        btnSolo.setMaximumSize(d);
+        btnAlguien.setMaximumSize(d);
+        btnProblemas.setMaximumSize(d);
+        btnPartida.setMaximumSize(d);
 
-        esquinaButton=Botones.crearBotonBasico("←",new Color(44, 36, 24),Color.WHITE,15);
-        esquinaButton.setBounds(4, 10, 50, 40);
+        // Centra los botones
+        btnSolo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnAlguien.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnProblemas.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnPartida.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Acción de cada botón
-        btnSolo.addActionListener(e ->{
-        	JTextField tiempoField = new JTextField(5);
+        // Añade botones y separadores
+        panelCentral.add(btnSolo);
+        panelCentral.add(Box.createVerticalStrut(18));
+        panelCentral.add(btnAlguien);
+        panelCentral.add(Box.createVerticalStrut(18));
+        panelCentral.add(btnProblemas);
+        panelCentral.add(Box.createVerticalStrut(18));
+        panelCentral.add(btnPartida);
+
+        // Botón de volver en la esquina superior izquierda (posición absoluta)
+        esquinaButton = Botones.crearBotonBasico("←", new Color(44, 36, 24), Color.WHITE, 15);
+        esquinaButton.setBounds(10, 10, 50, 40);
+
+        // Coloca el panel central centrado en la ventana
+        panelCentral.setBounds(90, 40, 240, 260);
+        panelFondo.add(panelCentral);
+        panelFondo.add(esquinaButton);
+
+        // Efectos hover
+        Botones.addHoverEffect(btnSolo, Colores.CASILLAS_NEGRAS, Colores.CASILLAS_NEGRAS_OSCURO);
+        Botones.addHoverEffect(btnAlguien, Colores.CASILLAS_BLANCAS, Colores.CASILLAS_BLANCAS_OSCURO);
+        Botones.addHoverEffect(btnProblemas, Colores.CASILLAS_NEGRAS_OSCURO, Colores.CASILLAS_NEGRAS_OSCURO);
+        Botones.addHoverEffect(btnPartida, Colores.CASILLAS_BLANCAS, Colores.CASILLAS_BLANCAS_OSCURO);
+        Botones.addHoverEffect(esquinaButton, new Color(44, 36, 24), Colores.CASILLAS_NEGRAS_OSCURO);
+
+        // Listeners de los botones
+        btnSolo.addActionListener(e -> {
+            JTextField tiempoField = new JTextField(5);
             JTextField incrementoField = new JTextField(5);
 
-            // Check para elegir color (por ejemplo, blancas)
             JCheckBox blancasCheck = new JCheckBox("Jugar con blancas");
 
-            // Panel para organizar los componentes
             JPanel panel = new JPanel();
             panel.add(new JLabel("Tiempo (minutos):"));
             panel.add(tiempoField);
-            panel.add(Box.createHorizontalStrut(15)); // Espacio
+            panel.add(Box.createHorizontalStrut(15));
             panel.add(new JLabel("Incremento (segundos):"));
             panel.add(incrementoField);
             panel.add(Box.createVerticalStrut(15));
             panel.add(blancasCheck);
 
-            // Mostrar el diálogo
             int result = JOptionPane.showConfirmDialog(
-                null, 
-                panel, 
-                "Configura la partida", 
-                JOptionPane.OK_CANCEL_OPTION, 
+                null,
+                panel,
+                "Configura la partida",
+                JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE
             );
-        	
-        	
-        	if (result == JOptionPane.OK_OPTION) {
-            frame.dispose();
-            
-            //Mirar si el usuario es gracioso
-            int tiempo;
-            try {
-                tiempo = Integer.parseInt(tiempoField.getText());
-            } catch (NumberFormatException a) {
-                tiempo = 0;
-            }
 
-            int incremento;
-            try {
-                incremento = Integer.parseInt(incrementoField.getText());
-            } catch (NumberFormatException a) {
-                incremento = 0;
+            if (result == JOptionPane.OK_OPTION) {
+                frame.dispose();
+
+                int tiempo;
+                try {
+                    tiempo = Integer.parseInt(tiempoField.getText());
+                } catch (NumberFormatException a) {
+                    tiempo = 0;
+                }
+
+                int incremento;
+                try {
+                    incremento = Integer.parseInt(incrementoField.getText());
+                } catch (NumberFormatException a) {
+                    incremento = 0;
+                }
+                boolean blancas = blancasCheck.isSelected();
+                frame.dispose();
+
+                TableroAjedrez.crearTipoTablero(true, tiempo, incremento, blancas, "Tablero Ajedrez");
             }
-            boolean blancas = blancasCheck.isSelected();
-        	frame.dispose();
-        	
-        	TableroAjedrez.crearTipoTablero(true,tiempo,incremento,blancas, "Tablero Ajedrez");
-        	}
         });
+
         btnAlguien.addActionListener(e -> {
-        	frame.dispose();
-        	JugarEnLAN.crearJFrameJugarEnLAN();
+            frame.dispose();
+            JugarEnLAN.crearJFrameJugarEnLAN();
         });
+
         btnProblemas.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "¡Has elegido resolver problemas!");
-        } );
+            frame.dispose();
+            TableroAjedrez.crearTipoProblemas(true, 0, 0, true, "Problemas Ajedrez");
+        });
+
+        btnPartida.addActionListener(e -> {
+            frame.dispose();
+            TableroAjedrez.crearTipoGuadar();
+        });
 
         esquinaButton.addActionListener(e -> {
-        	
-        	
-        	
-        	
-        	
             PantallaPrincipalJuego pantallaPrincipalJuego = new PantallaPrincipalJuego();
-			pantallaPrincipalJuego.mostrar();
-        	
+            pantallaPrincipalJuego.mostrar();
         });
-        // Efecto hover para cada botón
-        Botones.addHoverEffect(btnSolo, Colores.CASILLAS_NEGRAS, Colores.CASILLAS_NEGRAS_OSCURO);
-        Botones.addHoverEffect(btnAlguien, Colores.CASILLAS_BLANCAS, Colores.CASILLAS_BLANCAS_OSCURO);
-        Botones.addHoverEffect(btnProblemas, Colores.CASILLAS_NEGRAS_OSCURO, Colores.CASILLAS_NEGRAS_OSCURO);
-        Botones.addHoverEffect(esquinaButton, new Color(44, 36, 24), Colores.CASILLAS_NEGRAS_OSCURO);
 
-        // Añadir los botones al panel
-        panelFondo.add(esquinaButton);
-        panelFondo.add(btnSolo);
-        panelFondo.add(btnAlguien);
-        panelFondo.add(btnProblemas);
         frame.setContentPane(panelFondo);
+        frame.setVisible(true);
     }
-
 }

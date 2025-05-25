@@ -1,6 +1,8 @@
 package Tablero;
 
 import java.awt.Component;
+
+
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -40,16 +42,22 @@ public class ArrastraPieza {
 
     public static String movimientos="";
     public static String posicionDestino;
+    private static boolean verTiempo, verMovimientos, esProblema;
+    
     public ArrastraPieza() {
     	
     }
-    public ArrastraPieza(JPanel panelTablero, JButton[][] casillas, JLabel textoFlotante) {
+    public ArrastraPieza(JPanel panelTablero, JButton[][] casillas, JLabel textoFlotante, boolean verTiempo, 
+    		boolean verMovimientos, boolean esProblema) {
         this.panelTablero = panelTablero;
         this.casillas = casillas;
         this.textoFlotante = textoFlotante;
+        ArrastraPieza.verMovimientos=verMovimientos;
+        ArrastraPieza.verTiempo=verTiempo;
+        ArrastraPieza.esProblema=esProblema;
     }
 
-    class BotonMouseListener extends MouseAdapter {
+    public class BotonMouseListener extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent i) {
             FuncionesVisualesTablero.resetColores(casillas);
@@ -123,7 +131,8 @@ public class ArrastraPieza {
                     JButton botonDestino = (JButton) destino;
                     posicionDestino = obtenerPosicion(botonDestino);
 
-                    MetodosMoverPiezas.moverPiezas(posicionOrigen, posicionDestino, casillas, fichaSeleccionada,movimientos);
+                    MetodosMoverPiezas.moverPiezas(posicionOrigen, posicionDestino, casillas, fichaSeleccionada,movimientos
+                    		,verTiempo,verMovimientos,esProblema);
                     textoFlotante.setVisible(false);
                     textoFlotante.setIcon(null);
                     origen = null;

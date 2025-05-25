@@ -1,4 +1,7 @@
+package CorreoElectronico;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ProblemasAjedrez.PosicionPiezas;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +18,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-public class prueba {
+public class EnviarCorreoElectronico {
     public static void main(String[] args) throws IOException {
     	
     	File prueba = new File("persona.json");
@@ -32,7 +35,7 @@ public class prueba {
     	//Lee el archivo
         try {
             // Lee el archivo JSON y lo convierte en un objeto Persona
-            Persona persona = mapper.readValue(prueba, Persona.class);
+            PosicionPiezas persona = mapper.readValue(prueba, PosicionPiezas.class);
 
             // Imprime los datos de la persona
             System.out.println("Nombre: " + persona.getNombre());
@@ -45,7 +48,7 @@ public class prueba {
         
         
         //Crear JSON
-        Persona p = new Persona("juan", "gomez", 20);
+        PosicionPiezas p = new PosicionPiezas("juan", "gomez", 20);
         try {
             File fichero = new File("persona2.json");
             fichero.createNewFile();

@@ -59,7 +59,7 @@ public class PosicionRepetida {
 		for (int fila = 0; fila < 8; fila++) {
 			for (int columna = 0; columna < 8; columna++) {
 				JButton casilla = new JButton();
-				PonerPiezasTablero.colocarPiezas(casilla, fila, columna);
+				PonerPiezasTablero.colocarPiezasNormal(casilla, fila, columna);
 
 				tablero[fila][columna] = casilla;
 			}

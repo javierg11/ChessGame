@@ -3,6 +3,7 @@ package Partida;
 import java.awt.event.ActionEvent;
 
 
+
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
@@ -12,19 +13,19 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 
 import InterfazGrafica.PantallaPrincipalJuego;
 import Piezas.DetectarJaqueEnPartida;
-import Tablero.CrearTablero;
+import ProblemasAjedrez.CrearTableroProblemas;
+import Tablero.CrearTableroPartida;
 import Tablero.MovimientosPosibles;
-import Tablero.ReiniciarTablero;
+import Tablero.TableroAjedrez;
 
 public class FinPartida {
 	static String texto = "";
-
-	public static void IdentificarFinPartida(JButton[][] casillas, HashMap<Integer, String> jugadas) {
-
+	public static void IdentificarFinPartida(JButton[][] casillas, HashMap<Integer, String> jugadas, boolean esProblema, boolean problemaConseguido) {
+		texto=""; //Si sogo en el juego hay que reiniciar el texto del mensaje
+		if (!esProblema) {
 		if (!MovimientosPosibles.tenerMovimientosPosibles(casillas, CalculosEnPartida.colorAMover())) {
 			// Crea un Timer que espera 1000 ms (1 segundo) antes de ejecutar la acción
 			if (DetectarJaqueEnPartida.mirarReyEnJaque(casillas,
@@ -42,6 +43,16 @@ public class FinPartida {
 		} else if (PosicionRepetida.posicionRepetidaTresVeces(jugadas)) {
 			texto = "<html><b>¡Tablas!</b><br>La posicion se ha repetido tres veces<br><i>Es tablas.</i></html>";
 		}
+		}else {
+			if (problemaConseguido)
+		        texto="Has consiguido el problema";
+			else
+		        texto="Lo siento, has fallado. ¿Quieres intentar de nuevo?";
+
+			mensajeProblemaSiguiente(texto, casillas, esProblema, problemaConseguido);
+			esProblema=false;
+			return;
+		}
 		if (!texto.isEmpty()) {
 			mensajeTerminarPartida(texto, casillas,true);
 			texto = "";
@@ -50,7 +61,7 @@ public class FinPartida {
 	}
 
 	public static void mensajeTerminarPartida(String texto, JButton[][] casillas, boolean mostrarReiniciar) {
-	    TiempoPartida.detenerTiempo();
+	    CrearTableroPartida.getTemporizador().detenerTiempo();
 	    Icon icono = new ImageIcon(FinPartida.class.getResource("/imagesPiezas/wP.png"));
 
 	    // Opciones personalizadas según el contexto
@@ -64,11 +75,6 @@ public class FinPartida {
 	    Timer timer = new Timer(3, new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	            try {
-	                UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-	            } catch (Exception a) {
-	                a.printStackTrace();
-	            }
 
 	            int seleccion = JOptionPane.showOptionDialog(
 	                null, texto, "Fin de la partida",
@@ -78,51 +84,110 @@ public class FinPartida {
 
 	            ((Timer) e.getSource()).stop();
 
-	            // Actúa según la opción elegida
+	            // Lógica de opciones sin repetir código
 	            if (mostrarReiniciar) {
-	                switch (seleccion) {
-	                    case 0: // Volver a jugar
-	                        ReiniciarTablero.reiniciar(casillas);
-	                        break;
-	                    case 1: // Menú principal
-	                        ReiniciarTablero.reiniciar(casillas);
-	                        CrearTablero.getTablero().dispose();
-	                        SwingUtilities.invokeLater(() -> {
-	                            PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();
-	                            pantalla.mostrar();
-	                        });
-	                        break;
-	                    case 2: // Salir del juego
-	                        System.exit(0);
-	                        break;
-	                    default:
-	                        break;
+	                if (seleccion == 0) {
+	                    volverAJugar(casillas);
+	                } else if (seleccion == 1) {
+	                    irAMenuPrincipalPartida();
+	                } else if (seleccion == 2) {
+	                    salirDelJuego();
 	                }
 	            } else {
-	                switch (seleccion) {
-	                    case 0: // Menú principal
-	                        ReiniciarTablero.reiniciar(casillas);
-	                        CrearTablero.getTablero().dispose();
-	                        SwingUtilities.invokeLater(() -> {
-	                            PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();
-	                            pantalla.mostrar();
-	                        });
-	                        break;
-	                    case 1: // Salir del juego
-	                        System.exit(0);
-	                        break;
-	                    default:
-	                        break;
+	                if (seleccion == 0) {
+	                    irAMenuPrincipalPartida();
+	                } else if (seleccion == 1) {
+	                    salirDelJuego();
 	                }
 	            }
+	            // Si selecciona cerrar ventana o cualquier otro caso, no hace nada
 	        }
 	    });
 	    timer.start();
 	}
 
-	
+	public static void mensajeProblemaSiguiente(String texto, JButton[][] casillas, boolean mostrarReiniciar, boolean problemaConseguido) {
+	    Icon icono = new ImageIcon(FinPartida.class.getResource("/imagesPiezas/wP.png"));
 
-	
+	    // Opciones personalizadas según el contexto
+	    String[] opciones;
+	    if (problemaConseguido) {
+	        opciones = new String[] { "Seguiente Problema", "Menú principal", "Salir del juego" };
+	    } else {
+	        opciones = new String[] { "Repetir Problema", "Menú principal", "Salir del juego" };
+	    }
 
+	    Timer timer = new Timer(3, new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            int seleccion = JOptionPane.showOptionDialog(
+	                null, texto, "Problemas",
+	                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icono,
+	                opciones, opciones[0]
+	            );
+
+	            ((Timer) e.getSource()).stop();
+
+	            // Acciones según la opción elegida
+	            if (seleccion == 0) {
+	                if (problemaConseguido) {
+	                    // Siguiente problema
+	                    siguienteProblema();
+	                } else {
+	                    // Repetir problema
+	                    repetirProblema();
+	                }
+	            } else if (seleccion == 1) {
+	                // Menú principal
+	                irAMenuPrincipal();
+	            } else if (seleccion == 2) {
+	                // Salir del juego
+	                salirDelJuego();
+	            }
+	            // Si selecciona cerrar ventana o cualquier otro caso, no hace nada
+	        }
+	    });
+	    timer.start();
+	}
+
+	// Métodos auxiliares para cada acción
+
+	private static void siguienteProblema() {
+	    CrearTableroProblemas.setNumeroNivel(CrearTableroProblemas.getNumeroNivel() + 1);
+	    CrearTableroProblemas.cerrarTablero();
+	    TableroAjedrez.crearTipoProblemas(true, 0, 0, true, "Problemas Ajedrez");
+	}
+
+	private static void repetirProblema() {
+	    CrearTableroProblemas.cerrarTablero();
+	    TableroAjedrez.crearTipoProblemas(true, 0, 0, true, "Problemas Ajedrez");
+	}
+
+	private static void irAMenuPrincipal() {
+	    CrearTableroProblemas.cerrarTablero();
+	    SwingUtilities.invokeLater(() -> {
+	        PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();
+	        pantalla.mostrar();
+	    });
+	}
+
+	private static void salirDelJuego() {
+	    System.exit(0);
+	}
 	
+	private static void volverAJugar(JButton[][] casillas) {
+	    ReiniciarPartida.reiniciar(casillas);
+	}
+
+	private static void irAMenuPrincipalPartida() {
+	    CrearTableroPartida.cerrarTablero();
+	    SwingUtilities.invokeLater(() -> {
+	        PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();
+	        pantalla.mostrar();
+	    });
+	}
 }
+	
+
+	
+

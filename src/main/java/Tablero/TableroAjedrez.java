@@ -1,6 +1,12 @@
 package Tablero;
 
+
+
 import javax.swing.*;
+
+import GuardarPartida.CrearFrame;
+import ProblemasAjedrez.CrearTableroProblemas;
+
 
 
 
@@ -17,21 +23,26 @@ public class TableroAjedrez {
 	public static JButton[][] casillas = null;
 
 	
-	public static void main(String[] args) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-		        //CrearTablero.crearTableroBasico(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante);
-		    }
-		});
-
-		//CrearTablero.crearTableroBasico(tablero, casillas,casilla, casillasFilas,casillasColumnas,textoFlotante);
-	}
 	
 	public static void crearTipoTablero(boolean tipoDeJuego,int tiempo, int incremento, boolean blancas, String nombre) {
-		CrearTablero tarea = new CrearTablero(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante, tiempo, incremento, blancas,nombre);
+		CrearTableroPartida tarea = new CrearTableroPartida(tablero, casillas, casilla, 
+				 textoFlotante, tiempo, incremento,nombre);
 		Thread hilo = new Thread(tarea);
 		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
 	}
+	public static void crearTipoProblemas(boolean tipoDeJuego,int tiempo, int incremento, boolean blancas, String nombre) {
+
+		CrearTableroProblemas tarea = new CrearTableroProblemas(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante);
+		Thread hilo = new Thread(tarea);
+		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
+	}
+	public static void crearTipoGuadar() {
+
+		CrearFrame tarea = new CrearFrame(tablero, casillas, casilla, textoFlotante);
+		Thread hilo = new Thread(tarea);
+		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
+	}
+	
 //	private static class CasillaClickListener implements ActionListener {
 //
 //		@Override

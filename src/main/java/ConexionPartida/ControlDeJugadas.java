@@ -51,7 +51,7 @@ public class ControlDeJugadas {
 //                 String a = inFinal.readLine();
 //                 MetodosMoverPiezas.sensorDeTurnosDosJugadores = Boolean.parseBoolean(a);
 		MetodosMoverPiezas.moverPiezas(origen, destino, Movimientos.getCasillas(), ficha,
-				movimientos);
+				movimientos,true,true,false);
 		FuncionesVisualesTablero.resetColores(Movimientos.getCasillas());
 		FuncionesVisualesTablero.setVerCasillas(true);
 
