@@ -1,15 +1,24 @@
 package GuardarPartida;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 import javax.swing.*;
+import java.util.List;
 
 import ConstantesComunes.Botones;
 import ConstantesComunes.Colores;
+import InterfazGrafica.EmpezarAJugar;
+import Partida.CalculosEnPartida;
+import Partida.PosicionRepetida;
 import Tablero.ArrastraPieza;
 import Tablero.CrearTableroPartida;
 import Tablero.CrearTablreoNormal;
+import Tablero.MetodosMoverPiezas;
 
-public class CrearFrame implements Runnable{
+public class GuardarPartida implements Runnable{
 
 	private static JFrame tablero;
 	private JButton[][] casillas;
@@ -25,7 +34,7 @@ public class CrearFrame implements Runnable{
 	public static ArrastraPieza arrastraPieza;
 	private JPanel panelTablero;
 
-	public CrearFrame(JFrame tablero, JButton[][] casillas, JButton casilla,
+	public GuardarPartida(JFrame tablero, JButton[][] casillas, JButton casilla,
 			JLabel textoFlotante) {
 		CrearTableroPartida.tablero = tablero;
 		this.casillas = casillas;
@@ -145,9 +154,14 @@ public class CrearFrame implements Runnable{
 	    Botones.addHoverEffect(botonGuardar, Colores.CASILLAS_NEGRAS, Colores.CASILLAS_NEGRAS_OSCURO);
 	    botonGuardar.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    botonGuardar.addActionListener(e -> {
-	        // Lógica para guardar la partida
-	        JOptionPane.showMessageDialog(panelGuardar, "¡Partida guardada!");
+	        String nombre = JOptionPane.showInputDialog(panelGuardar, "Introduce el nombre de la partida:");
+	        if (nombre != null && !nombre.trim().isEmpty()) {
+	            HashMap<Integer, String> jugadas = CalculosEnPartida.getJugadas(); 
+	            Guardar_Cargar_Partida_Funciones.guardarPartida(nombre, jugadas);
+	            JOptionPane.showMessageDialog(panelGuardar, "¡Partida guardada!");
+	        }
 	    });
+
 
 	    // Botón Retroceder
 	    JButton botonRetroceder = Botones.crearBotonBasico("Retroceder", Colores.CASILLAS_NEGRAS, Color.WHITE, 17);
@@ -155,7 +169,7 @@ public class CrearFrame implements Runnable{
 	    botonRetroceder.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    botonRetroceder.addActionListener(e -> {
 	        // Lógica para retroceder
-	        JOptionPane.showMessageDialog(panelGuardar, "¡Retroceder pulsado!");
+	        deshacerUltimoMovimiento(CalculosEnPartida.getJugadas(),casillas);
 	    });
 
 	    // Botón Salir (abajo del todo)
@@ -164,7 +178,8 @@ public class CrearFrame implements Runnable{
 	    botonSalir.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    botonSalir.addActionListener(e -> {
 	        // Lógica para salir
-	        System.exit(0);
+            EmpezarAJugar.getFrame().setVisible(true);
+            tablero.dispose();
 	    });
 
 	    // Construcción del panel
@@ -180,6 +195,43 @@ public class CrearFrame implements Runnable{
 
 	    return panelGuardar;
 	}
+	
+	public static void deshacerUltimoMovimiento(HashMap<Integer, String> jugadas, JButton[][] casillas) {
+	    if (jugadas.isEmpty()) return;
+	    CalculosEnPartida.setJugadasTotales(CalculosEnPartida.getJugadasTotales()-1);
+	    // 1. Elimina el último movimiento
+	    int ultimaClave = Collections.max(jugadas.keySet());
+	    jugadas.remove(ultimaClave);
+
+	    // 2. Reinicia el tablero
+	    JButton[][] tableroInicial = PosicionRepetida.crearTableroInicial();
+	    // Copia el estado del tablero inicial al tablero actual
+	    for (int fila = 0; fila < 8; fila++) {
+	        for (int columna = 0; columna < 8; columna++) {
+	            casillas[fila][columna].setText(tableroInicial[fila][columna].getText());
+	            casillas[fila][columna].setIcon(tableroInicial[fila][columna].getIcon());
+	        }
+	    }
+
+	    // 3. Reaplica todos los movimientos restantes en orden
+	    List<Integer> clavesOrdenadas = new ArrayList<>(jugadas.keySet());
+	    Collections.sort(clavesOrdenadas);
+	    for (int clave : clavesOrdenadas) {
+	        String movimiento = jugadas.get(clave);
+	        String[] partes = movimiento.split("-");
+	        if (partes.length != 3) {
+	            System.err.println("Formato de movimiento incorrecto: " + movimiento);
+	            continue;
+	        }
+	        String ficha = partes[0];
+	        String origen = partes[1];
+	        String destino = partes[2];
+	        MetodosMoverPiezas.moverPiezas(origen, destino, casillas, ficha);
+	    }
+
+	}
+
+
 
 
 }

@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 
 import ConstantesComunes.Colores;
 import Piezas.DetectarJaqueEnPartida;
+import Tablero.MetodosMoverPiezas;
 import Tablero.MovimientosPosibles;
 
 public class ConvertirAJugadasAceptables implements Runnable{
@@ -100,6 +101,7 @@ public class ConvertirAJugadasAceptables implements Runnable{
 
 	private static void pasarJugadasParaGuardar(String ficha, String fichaOriginal, JButton[][] casillas, 
 			String destino, String origen, boolean hayPieza) {
+		MetodosMoverPiezas.imprimirTablero(casillas);
 		// Detecta si es JAque para poner un "+" en la lista de movimientos
 		char colorContrario = ficha.charAt(0) == 'w' ? 'b' : 'w';
 		String fichaContraria = "" + colorContrario; // Solo interesa el rey
@@ -129,15 +131,14 @@ public class ConvertirAJugadasAceptables implements Runnable{
 		
 		if (ficha.substring(1, 2).equals("P")) {
 			jugada = destinoAlgebraico;
-		}else if (destino.contains("O-O") || destino.contains("O-O-O")) {
-			jugada=destino;
 		}else if(destino.contains("=")) {
 			jugada = destino;
 		}
 		else {
 			jugada = ficha.substring(1, 2) + destinoAlgebraico;
 		}
-		if(hayPieza) {
+		if(hayPieza && destino!="") {
+			System.out.println(destino+"asd");
 			jugada =ficha.substring(1, 2)+"x"+ destinoAlgebraico;
 		}
 		if(hayPieza && ficha.substring(1, 2).equals("P")) {
@@ -145,6 +146,9 @@ public class ConvertirAJugadasAceptables implements Runnable{
 
 			char columnaLetra = (char) ('a' + col);
 			jugada =columnaLetra+"x"+ destinoAlgebraico;
+		}
+		if (destino.contains("O-O") || destino.contains("O-O-O")) {
+			jugada=destino;
 		}
 		jugadasBonitas.put(CalculosEnPartida.getJugadasTotales(), jugada);
 		//System.out.println(jugadasBonitas);

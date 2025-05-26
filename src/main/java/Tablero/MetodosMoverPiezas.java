@@ -4,7 +4,7 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 import ConexionPartida.Movimientos;
-import GuardarPartida.CrearFrame;
+import GuardarPartida.GuardarPartida;
 import Partida.CalculosEnPartida;
 import Partida.ConvertirAJugadasAceptables;
 import Partida.FinPartida;
@@ -86,6 +86,7 @@ public class MetodosMoverPiezas {
 
 	public static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha,
 			String movimientos, boolean verTiempo, boolean verMovimientos, boolean esProblema) {
+		hayPieza = false;
 		Movimientos.setCasillas(casillas);
 
 		filaOrigen = Integer.parseInt(origen.substring(0, 1));
@@ -109,16 +110,6 @@ public class MetodosMoverPiezas {
 				CalculosEnPartida.guardarMovimientos(origen, destino, ficha);
 
 				// Crea un hilo para realizar la tarea de decorar las jugadas
-				for (int i = 0; i < casillas.length; i++) {
-					for (int j = 0; j < casillas[i].length; j++) {
-						if (casillas[i][j] != null) {
-							System.out.print("\"" + casillas[i][j].getText() + "\"\t");
-						} else {
-							System.out.print("null\t");
-						}
-					}
-					System.out.println(); // Nueva fila
-				}
 				ConvertirAJugadasAceptables tarea = new ConvertirAJugadasAceptables(ficha, fichaOriginal, casillas,
 						destino, origen, hayPieza);
 				Thread hilo = new Thread(tarea);
@@ -139,10 +130,10 @@ public class MetodosMoverPiezas {
 									.actualizarJugadasEnTablero(CrearTableroPartida.getLabelDeMovimientosPartida());
 						});
 					}
-					if (CrearFrame.getLabelDeMovimientosPartida() != null) {
+					if (GuardarPartida.getLabelDeMovimientosPartida() != null) {
 						SwingUtilities.invokeLater(() -> {
 							ConvertirAJugadasAceptables
-									.actualizarJugadasEnTablero(CrearFrame.getLabelDeMovimientosPartida());
+									.actualizarJugadasEnTablero(GuardarPartida.getLabelDeMovimientosPartida());
 						});
 					}
 				}
@@ -164,7 +155,7 @@ public class MetodosMoverPiezas {
 			}
 		}
 		movimientos = "";
-
+		imprimirTablero(casillas);
 	}
 
 	public static boolean mirarMoverEnroque(JButton[][] casillas, int filaOrigen, int colDestino, int colOrigen) {
@@ -206,12 +197,12 @@ public class MetodosMoverPiezas {
 	}
 
 	public static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha) {
-		ficha = JugadaEspecialPeon.coronarPeon(filaDestino, colDestino, ficha, casillas);
 
-		int filaOrigen = Integer.parseInt(origen.substring(0, 1));
-		int colOrigen = Integer.parseInt(origen.substring(1, 2));
-		int filaDestino = Integer.parseInt(destino.substring(0, 1));
-		int colDestino = Integer.parseInt(destino.substring(1, 2));
+		filaOrigen = Integer.parseInt(origen.substring(0, 1));
+		colOrigen = Integer.parseInt(origen.substring(1, 2));
+		filaDestino = Integer.parseInt(destino.substring(0, 1));
+		colDestino = Integer.parseInt(destino.substring(1, 2));
+		ficha = JugadaEspecialPeon.coronarPeon(filaDestino, colDestino, ficha, casillas);
 
 		// Esta parte solo es para ver si se puede comer al paso con el peon (porque
 		// tiene que actualizar otras casillas)

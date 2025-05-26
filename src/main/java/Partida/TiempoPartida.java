@@ -28,7 +28,6 @@ public class TiempoPartida {
         enPartida = true;
         hilo = new Thread(() -> {
             while (enPartida) {
-            	System.out.println(minutosIniciales);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {

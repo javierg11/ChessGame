@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import InterfazGrafica.EmpezarAJugar;
 import InterfazGrafica.PantallaPrincipalJuego;
 import Piezas.DetectarJaqueEnPartida;
 import ProblemasAjedrez.CrearTableroProblemas;
@@ -67,9 +68,9 @@ public class FinPartida {
 	    // Opciones personalizadas según el contexto
 	    String[] opciones;
 	    if (mostrarReiniciar) {
-	        opciones = new String[] { "Volver a jugar", "Menú principal", "Salir del juego" };
+	        opciones = new String[] { "Volver a jugar", "Menú", "Salir del juego" };
 	    } else {
-	        opciones = new String[] { "Menú principal", "Salir del juego" };
+	        opciones = new String[] { "Menú", "Salir del juego" };
 	    }
 
 	    Timer timer = new Timer(3, new ActionListener() {
@@ -112,9 +113,9 @@ public class FinPartida {
 	    // Opciones personalizadas según el contexto
 	    String[] opciones;
 	    if (problemaConseguido) {
-	        opciones = new String[] { "Seguiente Problema", "Menú principal", "Salir del juego" };
+	        opciones = new String[] { "Seguiente Problema", "Menú", "Salir del juego" };
 	    } else {
-	        opciones = new String[] { "Repetir Problema", "Menú principal", "Salir del juego" };
+	        opciones = new String[] { "Repetir Problema", "Menú", "Salir del juego" };
 	    }
 
 	    Timer timer = new Timer(3, new ActionListener() {
@@ -155,20 +156,18 @@ public class FinPartida {
 	private static void siguienteProblema() {
 	    CrearTableroProblemas.setNumeroNivel(CrearTableroProblemas.getNumeroNivel() + 1);
 	    CrearTableroProblemas.cerrarTablero();
-	    TableroAjedrez.crearTipoProblemas(true, 0, 0, true, "Problemas Ajedrez");
+	    TableroAjedrez.crearTipoProblemas(true, 0, 0, "Problemas Ajedrez");
 	}
 
 	private static void repetirProblema() {
 	    CrearTableroProblemas.cerrarTablero();
-	    TableroAjedrez.crearTipoProblemas(true, 0, 0, true, "Problemas Ajedrez");
+	    TableroAjedrez.crearTipoProblemas(true, 0, 0, "Problemas Ajedrez");
 	}
 
 	private static void irAMenuPrincipal() {
 	    CrearTableroProblemas.cerrarTablero();
-	    SwingUtilities.invokeLater(() -> {
-	        PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();
-	        pantalla.mostrar();
-	    });
+        EmpezarAJugar.getFrame().setVisible(true);
+
 	}
 
 	private static void salirDelJuego() {
@@ -181,10 +180,8 @@ public class FinPartida {
 
 	private static void irAMenuPrincipalPartida() {
 	    CrearTableroPartida.cerrarTablero();
-	    SwingUtilities.invokeLater(() -> {
-	        PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();
-	        pantalla.mostrar();
-	    });
+        EmpezarAJugar.getFrame().setVisible(true);
+
 	}
 }
 	

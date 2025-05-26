@@ -4,7 +4,8 @@ package Tablero;
 
 import javax.swing.*;
 
-import GuardarPartida.CrearFrame;
+import GuardarPartida.CargarPartida;
+import GuardarPartida.GuardarPartida;
 import ProblemasAjedrez.CrearTableroProblemas;
 
 
@@ -30,15 +31,21 @@ public class TableroAjedrez {
 		Thread hilo = new Thread(tarea);
 		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
 	}
-	public static void crearTipoProblemas(boolean tipoDeJuego,int tiempo, int incremento, boolean blancas, String nombre) {
+	public static void crearTipoProblemas(boolean tipoDeJuego,int tiempo, int incremento, String nombre) {
 
 		CrearTableroProblemas tarea = new CrearTableroProblemas(tablero, casillas, casilla, casillasFilas, casillasColumnas, textoFlotante);
 		Thread hilo = new Thread(tarea);
 		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
 	}
+	public static void crearTipoCargar() {
+
+		CargarPartida tarea = new CargarPartida(tablero, casillas, casilla, textoFlotante);
+		Thread hilo = new Thread(tarea);
+		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
+	}
 	public static void crearTipoGuadar() {
 
-		CrearFrame tarea = new CrearFrame(tablero, casillas, casilla, textoFlotante);
+		GuardarPartida tarea = new GuardarPartida(tablero, casillas, casilla, textoFlotante);
 		Thread hilo = new Thread(tarea);
 		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
 	}

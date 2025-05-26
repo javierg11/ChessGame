@@ -122,6 +122,13 @@ public class PantallaPrincipalJuego {
     }
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            UIManager.put("OptionPane.background", new java.awt.Color(255, 255, 255));
+            UIManager.put("Panel.background", new java.awt.Color(255, 255, 255));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         SwingUtilities.invokeLater(() -> {
             PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();
             pantalla.mostrar();

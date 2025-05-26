@@ -19,6 +19,7 @@ import ConexionPartida.ClienteSala;
 import ConstantesComunes.Botones;
 import ConstantesComunes.Colores;
 import ConstantesComunes.JFrames;
+import ProblemasAjedrez.CrearTableroProblemas;
 
 public class JugarEnLAN {
 	static final String tipoLetra="Georgia";
@@ -62,8 +63,7 @@ public class JugarEnLAN {
         esquinaButton.addActionListener(e -> {
             // Crear y mostrar el nuevo JFrame
         	frame.dispose();
-            PantallaPrincipalJuego pantallaPrincipalJuego = new PantallaPrincipalJuego();
-            pantallaPrincipalJuego.mostrar();
+            EmpezarAJugar.getFrame().setVisible(true);
 
         });        
         // Cambia el cursor a mano cuando el ratón está sobre el botón de acción

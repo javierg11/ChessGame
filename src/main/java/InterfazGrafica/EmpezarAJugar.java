@@ -143,13 +143,43 @@ public class EmpezarAJugar {
 
         btnProblemas.addActionListener(e -> {
             frame.dispose();
-            TableroAjedrez.crearTipoProblemas(true, 0, 0, true, "Problemas Ajedrez");
+            TableroAjedrez.crearTipoProblemas(true, 0, 0, "Problemas Ajedrez");
         });
 
         btnPartida.addActionListener(e -> {
-            frame.dispose();
-            TableroAjedrez.crearTipoGuadar();
+            // Crear un panel personalizado
+            JPanel panel = new JPanel();
+            panel.setBackground(Color.WHITE);
+
+            JLabel label = new JLabel("¿Qué acción deseas realizar?");
+            label.setBackground(Color.WHITE);
+            label.setOpaque(true);
+            panel.add(label);
+
+            String[] opciones = {"Guardar partida", "Cargar partida", "Cancelar"};
+
+            // Cambiar el fondo de los botones (opcional)
+            UIManager.put("Button.background", new java.awt.Color(200, 200, 255));
+
+            int seleccion = JOptionPane.showOptionDialog(
+                frame,
+                panel,
+                "Partida",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+            );
+
+            if (seleccion == 0) {
+                TableroAjedrez.crearTipoGuadar();
+            } else if (seleccion == 1) {
+                TableroAjedrez.crearTipoCargar();
+            }
         });
+
+
 
         esquinaButton.addActionListener(e -> {
             PantallaPrincipalJuego pantallaPrincipalJuego = new PantallaPrincipalJuego();
@@ -159,4 +189,11 @@ public class EmpezarAJugar {
         frame.setContentPane(panelFondo);
         frame.setVisible(true);
     }
+
+	public static JFrame getFrame() {
+		return frame;
+	}
+    
+    
+    
 }
