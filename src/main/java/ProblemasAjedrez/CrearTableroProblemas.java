@@ -1,6 +1,7 @@
 package ProblemasAjedrez;
 
 import ConstantesComunes.Colores;
+import ConstantesComunes.JFrames;
 import Partida.CalculosEnPartida;
 import Partida.FinPartida;
 import Tablero.ArrastraPieza;
@@ -89,8 +90,9 @@ public class CrearTableroProblemas implements Runnable {
 	    		 CalculosEnPartida.sumarMovimientos();
 	    	 }
 	        
-	    	tablero = new JFrame("Problemas");
-	    	tablero.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    	tablero = new JFrame();
+	    	tablero=new JFrame();
+	        JFrames.crearJFrameBasicos(tablero,"Problemas",600,600);
 	    	tablero.setLayout(new BorderLayout());
 
 
@@ -101,16 +103,15 @@ public class CrearTableroProblemas implements Runnable {
 
 
 	        // Añadir paneles al frame
-	        tablero.add(panelLateral, BorderLayout.WEST);   // <-- Añade esto
+	        tablero.add(panelLateral, BorderLayout.WEST); 
 	        tablero.add(panelTablero, BorderLayout.CENTER);
-	        // Añadir texto flotante al LayeredPane
+	        
 	        tablero.getLayeredPane().setLayout(null);
 	        tablero.getLayeredPane().add(textoFlotante, JLayeredPane.DRAG_LAYER);
 
 	        tablero.pack();
-	        tablero.setLocationRelativeTo(null);
-	        tablero.setResizable(false);
-	        tablero.setVisible(true);
+			tablero.setLocationRelativeTo(null);
+
 	    }
 	    
 

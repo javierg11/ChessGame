@@ -1,14 +1,13 @@
 package GuardarPartida;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.Box;
@@ -23,12 +22,12 @@ import javax.swing.JScrollPane;
 
 import ConstantesComunes.Botones;
 import ConstantesComunes.Colores;
+import ConstantesComunes.JFrames;
 import InterfazGrafica.EmpezarAJugar;
 import Partida.CalculosEnPartida;
-import Partida.PosicionRepetida;
 import Tablero.ArrastraPieza;
 import Tablero.CrearTableroPartida;
-import Tablero.CrearTablreoNormal;
+import Tablero.CrearTableroNormal;
 import Tablero.MetodosMoverPiezas;
 
 public class CargarPartida implements Runnable{
@@ -37,6 +36,9 @@ public class CargarPartida implements Runnable{
 	private JButton casilla;
 	private JLabel textoFlotante;
 	private int indiceActual = 1; // 0 = tablero inicial, 1 = primer movimiento hecho, etc.
+	private static boolean esCargarPartida=false;
+	
+
 	public static void setTiempo(double tiempo) {
 		CrearTableroPartida.tiempo = tiempo;
 	}
@@ -56,14 +58,17 @@ public class CargarPartida implements Runnable{
 
 	@Override
 	public void run() {
+		esCargarPartida=true;
+    	CalculosEnPartida.getJugadas().clear();
+    	CalculosEnPartida.setJugadasTotales(0);
 
 		crearTableroBasico();
 
 	}
 
-	public void crearTableroBasico() {
-	    tablero = new JFrame(nombre);
-	    tablero.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public void crearTableroBasico() {	    
+    	tablero=new JFrame();
+        JFrames.crearJFrameBasicos(tablero,nombre,600,1000);
 	    tablero.setLayout(new BorderLayout());
 
 	    jpanelTablero();
@@ -80,9 +85,8 @@ public class CargarPartida implements Runnable{
 	    tablero.getLayeredPane().add(textoFlotante, JLayeredPane.DRAG_LAYER);
 
 	    tablero.pack();
-	    tablero.setLocationRelativeTo(null);
-	    tablero.setResizable(false);
-	    tablero.setVisible(true);
+		tablero.setLocationRelativeTo(null);
+
 	}
 
 
@@ -117,7 +121,7 @@ public class CargarPartida implements Runnable{
 		textoFlotante = new JLabel();
 		textoFlotante.setVisible(false);
 
-		CrearTablreoNormal crearTableroNormal = new CrearTablreoNormal();
+		CrearTableroNormal crearTableroNormal = new CrearTableroNormal();
 		crearTableroNormal.crearTablero(casillas,casilla,panelTablero,arrastraPieza,textoFlotante,false,true,false);
 	}
 
@@ -148,9 +152,7 @@ public class CargarPartida implements Runnable{
 	}
 
 
-	public static void cerrarTablero() {
-		tablero.dispose();
-	}
+
 	
 	private JPanel crearPanelGuardar() {
 	    JPanel panelGuardar = new JPanel();
@@ -170,7 +172,7 @@ public class CargarPartida implements Runnable{
         	if (indiceActual>1) {
         		
             indiceActual--;
-        	mostrarTableroHasta(CalculosEnPartida.getJugadas(),casillas,indiceActual-1);
+            FuncionesCompartidas.mostrarTableroHasta(CalculosEnPartida.getJugadas(),casillas,indiceActual-1);
         	}
         });
 
@@ -194,7 +196,7 @@ public class CargarPartida implements Runnable{
         botonInicio.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonInicio.addActionListener(e -> {
             indiceActual=1;
-        	mostrarTableroHasta(CalculosEnPartida.getJugadas(),casillas,indiceActual-1);
+            FuncionesCompartidas.mostrarTableroHasta(CalculosEnPartida.getJugadas(),casillas,indiceActual-1);
         });
 
         // Botón Ir al final
@@ -203,7 +205,7 @@ public class CargarPartida implements Runnable{
         botonFinal.setEnabled(false);
         botonFinal.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonFinal.addActionListener(e -> {
-            indiceActual = CalculosEnPartida.getJugadas().size();
+            indiceActual = CalculosEnPartida.getJugadas().size()+1;
             actualizarTableroHasta(indiceActual);
         });
 
@@ -214,6 +216,7 @@ public class CargarPartida implements Runnable{
         botonSalir.addActionListener(e -> {
             // Lógica para salir
             EmpezarAJugar.getFrame().setVisible(true);
+    		esCargarPartida=false;
             tablero.dispose();
         });
 	    
@@ -223,8 +226,9 @@ public class CargarPartida implements Runnable{
 	    botonCargar.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    botonCargar.addActionListener(e -> {
 	    	CalculosEnPartida.getJugadas().clear();
-	    	CalculosEnPartida.setJugadasTotales(0);
-	        List<Partida> partidas = Guardar_Cargar_Partida_Funciones.cargarPartidas();
+        	CalculosEnPartida.setJugadasTotales(0);
+
+	        List<Partida> partidas = Guardar_Cargar_Partida_JSON.cargarPartidas();
 	        if (partidas.isEmpty()) {
 	            JOptionPane.showMessageDialog(panelGuardar, "No hay partidas guardadas.");
 	            return;
@@ -265,11 +269,16 @@ public class CargarPartida implements Runnable{
 	                // Actualiza tu interfaz aquí si es necesario
 	                JOptionPane.showMessageDialog(panelGuardar, "¡Partida cargada!");
 	            }
+	            	CalculosEnPartida.setJugadasTotales(0);
+	                indiceActual=1;
+	                FuncionesCompartidas.mostrarTableroHasta(CalculosEnPartida.getJugadas(),casillas,indiceActual-1);
+
+	    	        botonInicio.setEnabled(true);
+	    	        botonAvanzar.setEnabled(true);
+	    	        botonRetroceder.setEnabled(true);
+	    	        botonFinal.setEnabled(true);
+
 	        }
-	        botonInicio.setEnabled(true);
-	        botonAvanzar.setEnabled(true);
-	        botonRetroceder.setEnabled(true);
-	        botonFinal.setEnabled(true);
 
 
 	    });
@@ -308,42 +317,21 @@ public class CargarPartida implements Runnable{
 	            String ficha = partes[0];
 	            String origen = partes[1];
 	            String destino = partes[2];
+	            if (destino.length()>2) {
+	            	ficha = destino.substring(2, 4); 
+	            }
 	            System.out.println(ficha+""+origen+""+destino);
-	            MetodosMoverPiezas.moverPiezas(origen, destino, casillas, ficha);
+	            MetodosMoverPiezas.moverPiezas(origen, destino, casillas, ficha,false);
 	        }
 	    }
 	    // Aquí puedes refrescar la interfaz si es necesario
 	}
 	
-	public static void mostrarTableroHasta(HashMap<Integer, String> jugadas, JButton[][] casillas, int hasta) {
-	    // 1. Ordena las claves
-	    List<Integer> clavesOrdenadas = new ArrayList<>(jugadas.keySet());
-	    Collections.sort(clavesOrdenadas);
+	
 
-	    // 2. Reinicia el tablero
-	    JButton[][] tableroInicial = PosicionRepetida.crearTableroInicial();
-	    for (int fila = 0; fila < 8; fila++) {
-	        for (int columna = 0; columna < 8; columna++) {
-	            casillas[fila][columna].setText(tableroInicial[fila][columna].getText());
-	            casillas[fila][columna].setIcon(tableroInicial[fila][columna].getIcon());
-	        }
-	    }
-
-	    // 3. Reaplica jugadas desde la primera hasta la número 'hasta' (inclusive)
-	    for (int clave : clavesOrdenadas) {
-	        if (clave > hasta) break;
-	        String movimiento = jugadas.get(clave);
-	        if (movimiento == null) continue;
-	        String[] partes = movimiento.split("-");
-	        if (partes.length != 3) continue;
-	        String ficha = partes[0];
-	        String origen = partes[1];
-	        String destino = partes[2];
-	        MetodosMoverPiezas.moverPiezas(origen, destino, casillas, ficha);
-	    }
+	public static boolean isEsCargarPartida() {
+		return esCargarPartida;
 	}
-
-
 
 
 }

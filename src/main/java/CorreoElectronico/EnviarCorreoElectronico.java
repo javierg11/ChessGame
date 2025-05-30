@@ -1,7 +1,4 @@
 package CorreoElectronico;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ProblemasAjedrez.PosicionPiezas;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,46 +16,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class EnviarCorreoElectronico {
-    public static void main(String[] args) throws IOException {
-    	
-    	File prueba = new File("persona.json");
-        String destinatario =  "javiergutierrezezquerro@gmail.com"; //A quien le quieres escribir.
-        String asunto = "Correo de prueba enviado desde Java";
-        String cuerpo = "Hello..."+prueba;
-
-        //enviarConGMail(destinatario, asunto, cuerpo);
-
-        
-        
-        
-        ObjectMapper mapper = new ObjectMapper();
-    	//Lee el archivo
-        try {
-            // Lee el archivo JSON y lo convierte en un objeto Persona
-            PosicionPiezas persona = mapper.readValue(prueba, PosicionPiezas.class);
-
-            // Imprime los datos de la persona
-            System.out.println("Nombre: " + persona.getNombre());
-            System.out.println("Apellidos: " + persona.getApellidos());
-            System.out.println("Edad: " + persona.getEdad());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //Fin leer archivo
-        
-        
-        //Crear JSON
-        PosicionPiezas p = new PosicionPiezas("juan", "gomez", 20);
-        try {
-            File fichero = new File("persona2.json");
-            fichero.createNewFile();
-            mapper.writeValue(fichero, p);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //Fin de crear JSON
-    }
-      
+    
     
     private static void enviarConGMail(String destinatario, String asunto, String cuerpo) throws IOException {
         //La dirección de correo de envío

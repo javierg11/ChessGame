@@ -2,6 +2,7 @@ package Partida;
 
 
 import java.awt.Color;
+
 import java.util.HashMap;
 
 
@@ -10,7 +11,6 @@ import javax.swing.JLabel;
 
 import ConstantesComunes.Colores;
 import Piezas.DetectarJaqueEnPartida;
-import Tablero.MetodosMoverPiezas;
 import Tablero.MovimientosPosibles;
 
 public class ConvertirAJugadasAceptables implements Runnable{
@@ -22,6 +22,11 @@ public class ConvertirAJugadasAceptables implements Runnable{
     private String origen;
     private boolean hayPieza;
 	private static HashMap<Integer, String> jugadasBonitas = new HashMap<Integer, String>();
+
+	public static void setJugadasBonitas(HashMap<Integer, String> jugadasBonitas) {
+		ConvertirAJugadasAceptables.jugadasBonitas = jugadasBonitas;
+	}
+
 
 	public static HashMap<Integer, String> getJugadasBonitas() {
 		return jugadasBonitas;
@@ -101,7 +106,7 @@ public class ConvertirAJugadasAceptables implements Runnable{
 
 	private static void pasarJugadasParaGuardar(String ficha, String fichaOriginal, JButton[][] casillas, 
 			String destino, String origen, boolean hayPieza) {
-		MetodosMoverPiezas.imprimirTablero(casillas);
+		//MetodosMoverPiezas.imprimirTablero(casillas);
 		// Detecta si es JAque para poner un "+" en la lista de movimientos
 		char colorContrario = ficha.charAt(0) == 'w' ? 'b' : 'w';
 		String fichaContraria = "" + colorContrario; // Solo interesa el rey
@@ -138,7 +143,6 @@ public class ConvertirAJugadasAceptables implements Runnable{
 			jugada = ficha.substring(1, 2) + destinoAlgebraico;
 		}
 		if(hayPieza && destino!="") {
-			System.out.println(destino+"asd");
 			jugada =ficha.substring(1, 2)+"x"+ destinoAlgebraico;
 		}
 		if(hayPieza && ficha.substring(1, 2).equals("P")) {

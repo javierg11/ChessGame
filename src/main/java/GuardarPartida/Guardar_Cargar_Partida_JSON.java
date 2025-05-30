@@ -1,12 +1,12 @@
 package GuardarPartida;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
-import java.io.InputStream;
 import java.util.*;
 
-public class Guardar_Cargar_Partida_Funciones {
+public class Guardar_Cargar_Partida_JSON {
 
 	private static final String ARCHIVO_JSON = "GuardarPartida" + File.separator + "partidas.json";
 

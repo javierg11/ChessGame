@@ -5,8 +5,12 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 public class TiempoPartida {
-    public double tiempoBlancas;
-    public double tiempoNegras;
+    public static double tiempoBlancas;
+   
+
+	
+
+	public static double tiempoNegras;
     private int incremento;
     private volatile boolean enPartida;
     private JLabel label;
@@ -16,8 +20,8 @@ public class TiempoPartida {
 
     public TiempoPartida(JLabel label, double minutosIniciales, JButton[][] casillas, int incremento) {
         this.label = label;
-        this.tiempoBlancas = minutosIniciales * 60;
-        this.tiempoNegras = minutosIniciales * 60;
+        TiempoPartida.tiempoBlancas = minutosIniciales * 60;
+        TiempoPartida.tiempoNegras = minutosIniciales * 60;
         this.casillas = casillas;
         this.incremento = incremento;
         this.enPartida = false;
@@ -52,12 +56,12 @@ public class TiempoPartida {
         hilo.start();
     }
 
-    public void detenerTiempo() {
-        enPartida = false;
-        if (hilo != null) {
-            hilo.interrupt();
-        }
-    }
+	    public void detenerTiempo() {
+	        enPartida = false;
+	        if (hilo != null) {
+	            hilo.interrupt();
+	        }
+	    }
 
     public void aplicarIncremento() {
         // Aplica el incremento al jugador que acaba de mover:
@@ -108,9 +112,22 @@ public class TiempoPartida {
             String texto = "<html><b>¡Victoria!</b><br>El jugador "
                     + (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
                     + " se le ha acabado el tiempo.<br><i>Caida de bandera.</i></html>";
-            FinPartida finPartida = new FinPartida();
-            finPartida.mensajeTerminarPartida(texto, casillas, true);
+            FinPartida.mensajeTerminarPartida(texto, casillas, true);
             
         }
     }
+    public static void setTiempoBlancas(double tiempoBlancas) {
+    	TiempoPartida.tiempoBlancas = tiempoBlancas;
+	}
+
+	public static void setTiempoNegras(double tiempoNegras) {
+		TiempoPartida.tiempoNegras = tiempoNegras;
+	}
+	public static double getTiempoBlancas() {
+		return tiempoBlancas;
+	}
+
+	public static double getTiempoNegras() {
+		return tiempoNegras;
+	}
 }

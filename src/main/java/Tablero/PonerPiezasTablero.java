@@ -48,21 +48,17 @@ public class PonerPiezasTablero {
 		}
 	}
 
-	public static void colocarPiezasProblema() {
-		
-	}
-	public static void crearPieza(JButton casilla, String pieza) {
-		// Piezas de ajedrez diseñadas por Colin M.L. Burnett (cburnett)
-				// Licencia: GNU General Public License v2 (GPLv2)
-				// Más información en: licenses-third-party/GPL-2.0.txt
+	// Piezas de ajedrez diseñadas por Colin M.L. Burnett (cburnett)
+	// Licencia: GNU General Public License v2 (GPLv2)
+	// Más información en: licenses-third-party/GPL-2.0.txt
 
-//				## Créditos
-		//
-//				Este proyecto utiliza las piezas de ajedrez "cburnett", diseñadas por Colin M.L. Burnett.
-//				- Licencia: GNU General Public License v2 (GPLv2)
-//				- Más información: Ver archivo `licenses-third-party/GPL-2.0.txt`
-//				Este proyecto utiliza piezas de ajedrez "cburnett" convertidas de SVG a PNG.
-		
+//	## Créditos
+//
+//	Este proyecto utiliza las piezas de ajedrez "cburnett", diseñadas por Colin M.L. Burnett.
+//	- Licencia: GNU General Public License v2 (GPLv2)
+//	- Más información: Ver archivo `licenses-third-party/GPL-2.0.txt`
+//	Este proyecto utiliza piezas de ajedrez "cburnett" convertidas de SVG a PNG.	
+	public static void crearPieza(JButton casilla, String pieza) {
 		casilla.setText(pieza); // Texto lógico (no visible)
 		casilla.setHorizontalTextPosition(JButton.CENTER); // Alinear texto
 		casilla.setVerticalTextPosition(JButton.CENTER); // en el centro

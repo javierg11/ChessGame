@@ -1,6 +1,11 @@
 package ConstantesComunes;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
+
+import Tablero.TableroAjedrez;
 
 public class JFrames {
 	public static JFrame crearJFrameBasicos(JFrame frame,String titulo, int windth, int height) {
@@ -11,7 +16,9 @@ public class JFrames {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
-		
+        Image icono = Toolkit.getDefaultToolkit().getImage(TableroAjedrez.class.getResource("/logo/logoApp.jpg"));
+        frame.setIconImage(icono);
+
 		return frame;
 	}
 }

@@ -2,7 +2,7 @@ package Partida;
 
 import javax.swing.JButton;
 
-import Tablero.ArrastraPieza;
+
 import Tablero.CrearTableroPartida;
 import Tablero.FuncionesVisualesTablero;
 import Tablero.MetodosMoverPiezas;
@@ -14,46 +14,19 @@ public class ReiniciarPartida {
 		ConvertirAJugadasAceptables.getJugadasBonitas().clear();
 		CalculosEnPartida.getJugadas().clear();
 		CalculosEnPartida.setJugadasTotales(0);
-//		
-//		for (int i = 0; i < casillas.length; i++) {
-//	        for (int j = 0; j < casillas[i].length; j++) {
-//	            if (casillas[i][j] != null) {
-//	                System.out.print("\"" + casillas[i][j].getText() + "\"\t");
-//	            } else {
-//	                System.out.print("null\t");
-//	            }
-//	        }
-//	        System.out.println(); // Nueva fila
-//	    }
-		System.out.println("\n\n\n");
-	    if (casillas != null) {
-	        for (int i = 0; i < 8; i++) {
-	            for (int j = 0; j < 8; j++) {
-	                if (casillas[i][j] != null) {
-	                    casillas[i][j].setText("");
-	                    casillas[i][j].setIcon(null);
-	                }
-	            }
-	        }
-	    }
+		TiempoPartida.setTiempoBlancas(CrearTableroPartida.getTiempo()*60);
+		TiempoPartida.setTiempoNegras(CrearTableroPartida.getTiempo()*60);
 
-
-//	    for (int i = 0; i < casillas.length; i++) {
-//	        for (int j = 0; j < casillas[i].length; j++) {
-//	            if (casillas[i][j] != null) {
-//	                System.out.print("\"" + casillas[i][j].getText() + "\"\t");
-//	            } else {
-//	                System.out.print("null\t");
-//	            }
-//	        }
-//	        System.out.println(); // Nueva fila
-//	    }
 
 		FuncionesVisualesTablero.resetFullColores(casillas);
+		String tiempoReloj = TiempoPartida.tiempoVisual(CrearTableroPartida.getTiempo() * 60);
+		String tiempoRelojHTML = "<span style='color: #FFD700; font-size:28px; font-weight:bold;'>" + tiempoReloj
+				+ " <small style='font-size:14px;'>Blancas</small></span>";
 
+		String html = "<html><div style='text-align:center;'>" + tiempoRelojHTML + "<br>" + tiempoRelojHTML
+				+ "</div></html>";
+		CrearTableroPartida.labelTiempo.setText(html);
 		// MetodosMoverPiezas.setJugando(false);
-		// a.setTemporizador(new
-		// TiempoPartida(a.getLabelTiempo(),a.getTiempo(),casillas,a.getIncremento()));
 		MetodosMoverPiezas.tiempoIniciado = false;
 		for (int fila = 0; fila < 8; fila++) {
 			for (int columna = 0; columna < 8; columna++) {
@@ -76,14 +49,4 @@ public class ReiniciarPartida {
 
 	}
 
-	public void limpiarTablero(JButton[][] casillas) {
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				if (casillas[i][j] != null) {
-					casillas[i][j].setText("");
-					casillas[i][j].setIcon(null);
-				}
-			}
-		}
-	}
 }

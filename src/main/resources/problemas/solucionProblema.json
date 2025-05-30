@@ -1,6 +1,5 @@
 [
   { "nivel": 1, "movimiento": "61", "pieza": "wD" },
-  { "nivel": 1, "movimiento": "60", "pieza": "wD" },
   { "nivel": 2, "movimiento": "77", "pieza": "wR" },
   { "nivel": 3, "movimiento": "77", "pieza": "wD" },
   { "nivel": 4, "movimiento": "75", "pieza": "wD" },

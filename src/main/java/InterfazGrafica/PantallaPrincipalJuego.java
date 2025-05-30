@@ -7,6 +7,10 @@ import ConstantesComunes.Colores;
 import ConstantesComunes.JFrames;
 import Tablero.TableroAjedrez;
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class PantallaPrincipalJuego {
     // Atributos de la clase
@@ -95,8 +99,6 @@ public class PantallaPrincipalJuego {
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
         // Icono de ajedrez
-        Image icono = Toolkit.getDefaultToolkit().getImage(TableroAjedrez.class.getResource("/imagesPiezas/bT.png"));
-        frame.setIconImage(icono);
 
         crearTextoJFrame();
         crearBotonesJFrame();
@@ -122,6 +124,9 @@ public class PantallaPrincipalJuego {
     }
 
     public static void main(String[] args) {
+    	 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+             onExit();
+         }));
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             UIManager.put("OptionPane.background", new java.awt.Color(255, 255, 255));
@@ -133,5 +138,25 @@ public class PantallaPrincipalJuego {
             PantallaPrincipalJuego pantalla = new PantallaPrincipalJuego();
             pantalla.mostrar();
         });
+       
+    }
+    public static void onExit() {
+        String ARCHIVO_JSON = "GuardarPartida" + File.separator + "partidas2.txt";
+        String contenido = "Este es un ejemplo de contenido para guardar en el archivo.";
+
+        // Asegúrate de que la carpeta existe
+        File directorio = new File("GuardarPartida");
+        if (!directorio.exists()) {
+            directorio.mkdirs();
+        }
+
+        // Escribir en el archivo
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_JSON, true))) { // true para agregar al final
+            writer.write(contenido);
+            writer.newLine(); // Salto de línea
+            System.out.println("Contenido escrito correctamente en el archivo.");
+        } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo: " + e.getMessage());
+        }
     }
 }

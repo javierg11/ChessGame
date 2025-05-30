@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import ConstantesComunes.Botones;
 import ConstantesComunes.Colores;
+import ConstantesComunes.CreacionJOptionPanelDialog;
 import ConstantesComunes.JFrames;
 import Partida.CalculosEnPartida;
 import Tablero.TableroAjedrez;
@@ -46,10 +47,10 @@ public class EmpezarAJugar {
         // Espaciador superior
         panelCentral.add(Box.createVerticalStrut(15));
 
-        btnSolo = Botones.crearBotonBasico("Jugar Solo", Colores.CASILLAS_NEGRAS, Color.WHITE, 17);
-        btnAlguien = Botones.crearBotonBasico("Jugar con Alguien", Colores.CASILLAS_BLANCAS, Color.BLACK, 17);
-        btnProblemas = Botones.crearBotonBasico("Problemas", Colores.CASILLAS_NEGRAS, Color.WHITE, 17);
-        btnPartida = Botones.crearBotonBasico("Partida", Colores.CASILLAS_BLANCAS, Color.BLACK, 17);
+        btnSolo = Botones.crearBotonBasico("Jugar Individual", Colores.CASILLAS_NEGRAS, Color.WHITE, 17);
+        btnAlguien = Botones.crearBotonBasico("Jugar en LAN", Colores.CASILLAS_BLANCAS, Color.BLACK, 17);
+        btnProblemas = Botones.crearBotonBasico("Problemas de Ajedrez", Colores.CASILLAS_NEGRAS, Color.WHITE, 17);
+        btnPartida = Botones.crearBotonBasico("Guardar-Cargar Partida", Colores.CASILLAS_BLANCAS, Color.BLACK, 17);
 
         // Tamaño uniforme
         Dimension d = new Dimension(240, 42);
@@ -94,16 +95,12 @@ public class EmpezarAJugar {
             JTextField tiempoField = new JTextField(5);
             JTextField incrementoField = new JTextField(5);
 
-            JCheckBox blancasCheck = new JCheckBox("Jugar con blancas");
-
             JPanel panel = new JPanel();
             panel.add(new JLabel("Tiempo (minutos):"));
             panel.add(tiempoField);
             panel.add(Box.createHorizontalStrut(15));
             panel.add(new JLabel("Incremento (segundos):"));
             panel.add(incrementoField);
-            panel.add(Box.createVerticalStrut(15));
-            panel.add(blancasCheck);
 
             int result = JOptionPane.showConfirmDialog(
                 null,
@@ -119,8 +116,10 @@ public class EmpezarAJugar {
                 int tiempo;
                 try {
                     tiempo = Integer.parseInt(tiempoField.getText());
+                    if (tiempo<=0)
+                    	tiempo=3;
                 } catch (NumberFormatException a) {
-                    tiempo = 0;
+                    tiempo = 3;
                 }
 
                 int incremento;
@@ -129,10 +128,9 @@ public class EmpezarAJugar {
                 } catch (NumberFormatException a) {
                     incremento = 0;
                 }
-                boolean blancas = blancasCheck.isSelected();
                 frame.dispose();
 
-                TableroAjedrez.crearTipoTablero(true, tiempo, incremento, blancas, "Tablero Ajedrez");
+                TableroAjedrez.crearTipoTablero(true, tiempo, incremento, true, "Tablero Ajedrez");
             }
         });
 
@@ -147,41 +145,28 @@ public class EmpezarAJugar {
         });
 
         btnPartida.addActionListener(e -> {
-            // Crear un panel personalizado
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.WHITE);
-
-            JLabel label = new JLabel("¿Qué acción deseas realizar?");
-            label.setBackground(Color.WHITE);
-            label.setOpaque(true);
-            panel.add(label);
 
             String[] opciones = {"Guardar partida", "Cargar partida", "Cancelar"};
 
-            // Cambiar el fondo de los botones (opcional)
-            UIManager.put("Button.background", new java.awt.Color(200, 200, 255));
-
-            int seleccion = JOptionPane.showOptionDialog(
-                frame,
-                panel,
-                "Partida",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                opciones,
-                opciones[0]
-            );
-
-            if (seleccion == 0) {
-                TableroAjedrez.crearTipoGuadar();
-            } else if (seleccion == 1) {
-                TableroAjedrez.crearTipoCargar();
-            }
+           
+            
+            CreacionJOptionPanelDialog.mensajeDeTextoConRetardo("¿Que quieres hacer?", "Partida", opciones, a -> {
+    	        
+    	        if (a == 0) {
+                    frame.dispose();
+                    TableroAjedrez.crearTipoGuadar();
+    	        }
+    	        if (a == 1) {
+                    frame.dispose();
+                    TableroAjedrez.crearTipoCargar();
+    	        }
+    	    });
         });
 
 
 
         esquinaButton.addActionListener(e -> {
+        	frame.dispose();
             PantallaPrincipalJuego pantallaPrincipalJuego = new PantallaPrincipalJuego();
             pantallaPrincipalJuego.mostrar();
         });

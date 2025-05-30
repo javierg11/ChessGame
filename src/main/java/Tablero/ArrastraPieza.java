@@ -3,6 +3,7 @@ package Tablero;
 import java.awt.Component;
 
 
+
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -15,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import ConexionPartida.ClienteSala;
 import ConexionPartida.Movimientos;
 import ConexionPartida.SalaInfo;
 import ConexionPartida.ServidorSala;
@@ -60,6 +60,10 @@ public class ArrastraPieza {
     public class BotonMouseListener extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent i) {
+            // Cambia el cursor a una mano para indicar que se está arrastrando una pieza
+            panelTablero.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            textoFlotante.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
             FuncionesVisualesTablero.resetColores(casillas);
 
             origen = (JButton) i.getSource();
@@ -76,19 +80,16 @@ public class ArrastraPieza {
                 return;
             }
             if (SalaInfo.isColor() != null) {
+                // Si NO es el turno y color correcto, no dejes mover
+                boolean esTurnoBlancas = CalculosEnPartida.colorAMover() && ServidorSala.mov.isColorAJugar() && fichaSeleccionada.contains("w");
+                boolean esTurnoNegras  = !CalculosEnPartida.colorAMover() && !ServidorSala.mov.isColorAJugar() && fichaSeleccionada.contains("b");
 
-//            	System.out.println(ServidorSala.mov.isColorAJugar());
-//            	System.out.println(ClienteSala.mov.isColorAJugar());
-//
-//                if (CalculosEnPartida.colorAMover() != ServidorSala.mov.isColorAJugar()) {
-//                    // No es mi turno
-//                    return;
-//                }
-//                if (CalculosEnPartida.colorAMover() != ClienteSala.mov.isColorAJugar()) {
-//                    // No es mi turno
-//                    return;
-//                }
+                if (!(esTurnoBlancas || esTurnoNegras)) {
+                    // No es mi turno
+                    return;
+                }
             }
+
                 // Aqui se le añade la funcion de poder arrastrar la pieza
             origen.addMouseMotionListener(new BotonMouseMotionListener());
             movimientos=MetodosMoverPiezas.identificarMovimientosDePieza(fichaSeleccionada, posicionOrigen, casillas);
@@ -103,8 +104,12 @@ public class ArrastraPieza {
 
         @Override
         public void mouseReleased(MouseEvent a) {
-            if ((puntoInicialClick == null))
+            if ((puntoInicialClick == null)) {
+                panelTablero.setCursor(Cursor.getDefaultCursor());
+                textoFlotante.setCursor(Cursor.getDefaultCursor());
+
                 return;
+            }
             int dx = Math.abs(a.getX() - puntoInicialClick.x);
             int dy = Math.abs(a.getY() - puntoInicialClick.y);
 
@@ -123,6 +128,9 @@ public class ArrastraPieza {
                 		|| destino==origen){
                 	    // Está fuera del tablero
                     	reiniciarVariables();
+                        panelTablero.setCursor(Cursor.getDefaultCursor());
+                        textoFlotante.setCursor(Cursor.getDefaultCursor());
+
                 	    return;
                 	}
 
@@ -148,18 +156,20 @@ public class ArrastraPieza {
 
             reiniciarVariables();
             panelTablero.setCursor(Cursor.getDefaultCursor());
+            textoFlotante.setCursor(Cursor.getDefaultCursor());
+
         }
     }
 
     private class BotonMouseMotionListener extends MouseMotionAdapter {
         @Override
         public void mouseDragged(MouseEvent c) {
+            // Cambia el cursor a una mano para indicar que se está arrastrando una pieza
+
             // Si no hay origen, el texto está vacío o no se ha registrado el punto inicial del click, salimos del método
             if (origen == null || origen.getText().equals("") || puntoInicialClick == null)
                 return;
 
-            // Cambia el cursor a una mano para indicar que se está arrastrando una pieza
-            panelTablero.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             // Calcula la distancia movida desde el punto inicial del click
             int dx = Math.abs(c.getX() - puntoInicialClick.x);

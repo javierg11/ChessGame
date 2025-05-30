@@ -11,8 +11,9 @@ import javax.swing.JScrollPane;
 
 import ConstantesComunes.Colores;
 
-public class CrearTablreoNormal {
-	public void crearTablero(JButton[][] casillas, JButton casilla,JPanel panelTablero, ArrastraPieza arrastraPieza, JLabel textoFlotante,
+public class CrearTableroNormal {
+	public void crearTablero(JButton[][] casillas, JButton casilla,JPanel panelTablero, 
+			ArrastraPieza arrastraPieza, JLabel textoFlotante,
 			boolean verTiempo, boolean verMovimientos, boolean esProblema) {
 		
 		String nombreCoordenadas = null;

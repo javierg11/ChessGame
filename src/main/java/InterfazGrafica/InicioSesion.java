@@ -117,6 +117,15 @@ public class InicioSesion {
         switchButton=Botones.crearBotonBasico("Regístrate",Colores.CASILLAS_BLANCAS,Color.BLACK,17);
         switchButton.setBorder(BorderFactory.createEmptyBorder(8, 18, 8, 18));
         
+        // --- Botón en la esquina superior izquierda ---
+        esquinaButton=Botones.crearBotonBasico("←",new Color(44, 36, 24),Color.WHITE,18);
+        esquinaButton.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
+
+        // Cambia el cursor a mano cuando el ratón está sobre el botón de acción
+        Botones.addHoverEffect(actionButton, Colores.CASILLAS_NEGRAS, Colores.CASILLAS_NEGRAS_OSCURO);
+        Botones.addHoverEffect(esquinaButton, new Color(44, 36, 24), Colores.CASILLAS_NEGRAS_OSCURO);
+        Botones.addHoverEffect(switchButton, Colores.CASILLAS_BLANCAS, Colores.CASILLAS_BLANCAS_OSCURO);
+
      // Acción del botón principal (solo muestra un mensaje de demostración)
         actionButton.addActionListener(e -> {
             String usuario = userText.getText();
@@ -129,9 +138,6 @@ public class InicioSesion {
                 JOptionPane.showMessageDialog(frame, "¡Registro exitoso para " + usuario + "!\nCorreo: " + correo + "\n(Esto es solo una demostración)");
             }
         });
-        // --- Botón en la esquina superior izquierda ---
-        esquinaButton=Botones.crearBotonBasico("←",new Color(44, 36, 24),Color.WHITE,18);
-        esquinaButton.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
         
         
      
@@ -141,30 +147,8 @@ public class InicioSesion {
             PantallaPrincipalJuego pantallaPrincipalJuego = new PantallaPrincipalJuego();
 			pantallaPrincipalJuego.mostrar();
         });
-     // Cambia el cursor a mano cuando el ratón está sobre el botón de acción
-        Botones.addHoverEffect(actionButton, Colores.CASILLAS_NEGRAS, Colores.CASILLAS_NEGRAS_OSCURO);
-        Botones.addHoverEffect(esquinaButton, new Color(44, 36, 24), Colores.CASILLAS_NEGRAS_OSCURO);
-        Botones.addHoverEffect(switchButton, Colores.CASILLAS_BLANCAS, Colores.CASILLAS_BLANCAS_OSCURO);
 
-     // Añadir botones al panel de botones
-        buttonPanel.add(actionButton);
-        buttonPanel.add(switchButton);
-
-        // Añadir el panel de botones al panel principal
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        backgroundPanel.add(buttonPanel, gbc);
-        
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.weightx = 0;
-        gbc.weighty = 0;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.insets = new Insets(-60, 10, 0, 0); 
-        backgroundPanel.add(esquinaButton, gbc);
+    
 
         // Acción para cambiar entre login y registro
         switchButton.addActionListener(e -> {
@@ -206,7 +190,25 @@ public class InicioSesion {
             emailText.setText("");
         });
 
+        // Añadir botones al panel de botones
+        buttonPanel.add(actionButton);
+        buttonPanel.add(switchButton);
+
+        // Añadir el panel de botones al panel principal
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        backgroundPanel.add(buttonPanel, gbc);
         
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.weightx = 0;
+        gbc.weighty = 0;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.insets = new Insets(-60, 10, 0, 0); 
+        backgroundPanel.add(esquinaButton, gbc);
     }
     public static void crearJFrameInicioSesion() {
     	frame=new JFrame();

@@ -2,6 +2,7 @@ package ConexionPartida;
 
 import java.awt.Component;
 
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.*;
@@ -27,6 +28,11 @@ public class ServidorSala {
 	private ServerSocket serverSocket = null;
 	private static String password = "";
 	private float tiempo;
+	public static boolean jugando=true;
+	BufferedReader in = null;
+	BufferedWriter out = null;
+	int a =0;
+
     public static Movimientos mov = new Movimientos();
 
 	public void crearSala(JPanel Panel, JFrame frame) {
@@ -97,8 +103,8 @@ public class ServidorSala {
 			});
 
 			// Elegir un puerto TCP libre en el rango 10000-10999
-			int puertoTCP;
-			while (true) {
+			int puertoTCP = 0;
+			while (jugando) {
 				puertoTCP = 10000 + (int) (Math.random() * 1000);
 				try {
 					serverSocket = new ServerSocket(puertoTCP);
@@ -141,11 +147,9 @@ public class ServidorSala {
 			System.out.println("Sala '" + nombreSala + "' creada en el puerto TCP " + puertoTCP);
 
 			// Servidor TCP para aceptar conexiones de clientes
-			while (true) {
+			while (jugando) {
 				Socket client = serverSocket.accept();
 				new Thread(() -> {
-					BufferedReader in = null;
-					BufferedWriter out = null;
 					try {
 						in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 						out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
@@ -171,7 +175,7 @@ public class ServidorSala {
 						ControlDeJugadas controlDeJugadas = new ControlDeJugadas();
 
 //	                	    // Es tu turno
-						while (true) {
+						while (jugando) {
 
 							if (mov.isColorAJugar()) {
 								if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
@@ -197,6 +201,8 @@ public class ServidorSala {
 						e.printStackTrace();
 					}
 					finally {
+						System.out.println("Los de arriba");
+
 						try {
 							if (out != null)
 								out.close();
@@ -217,11 +223,48 @@ public class ServidorSala {
 						}
 					}
 				}).start();
+				
+				frame.addWindowListener(new java.awt.event.WindowAdapter() {
+				    @Override
+				    public void windowClosed(java.awt.event.WindowEvent e) {
+				    	System.out.println(a);
+				    	if (a==0) {
+				    		a=9;
+				    		return;
+				    	}
+						System.out.println("asdsadasd");
+
+				        jugando = false; // Esto hará que el hilo termine en el próximo ciclo
+				        try {
+							if (out != null)
+								out.close();
+						} catch (IOException t) {
+							t.printStackTrace();
+						}
+						try {
+							if (in != null)
+								in.close();
+						} catch (IOException n) {
+							n.printStackTrace();
+						}
+						try {
+							if (client != null && !client.isClosed())
+								client.close();
+						} catch (IOException b) {
+							b.printStackTrace();
+						
+				        // Aquí puedes cerrar recursos si quieres hacerlo inmediatamente
+				        // Por ejemplo: cerrar sockets, streams, etc.
+				    }
+				    }
+				});
+
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			System.out.println("Los de abajo");
 			// Cierre de sockets al salir
 			if (socket != null && !socket.isClosed()) {
 				try {

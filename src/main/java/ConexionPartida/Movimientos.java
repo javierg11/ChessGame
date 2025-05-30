@@ -15,11 +15,12 @@ public class Movimientos {
     }
 
 	// Constructor
-    public Movimientos(String origen, String destino, String ficha, String movimientos) {
+    public Movimientos(String origen, String destino, String ficha, String movimientos,JButton[][] casillas) {
         this.origen = origen;
         this.destino = destino;
         this.ficha = ficha;
         this.movimientos = movimientos;
+        this.casillas=casillas;
     }
 
     // Getters

@@ -10,6 +10,9 @@ public class CalculosEnPartida {
 	
 
 	private static int jugadasTotales = 0;
+	
+
+
 	private static HashMap<Integer, String> jugadas = new HashMap<Integer, String>();
 
 	public static boolean colorAMover() {
@@ -35,7 +38,10 @@ public class CalculosEnPartida {
 	public static HashMap<Integer, String> getJugadas() {
 		return jugadas;
 	}
-
+	
+	public static void setJugadas(HashMap<Integer, String> jugadas) {
+		CalculosEnPartida.jugadas = jugadas;
+	}
 	public static void guardarMovimientos(String posInicial, String posDestino, String ficha) {
 		sumarMovimientos();
 		String jugada = ficha + "-" + posInicial + "-" + posDestino; // Con un .split ya tengo un array del nº de

@@ -1,12 +1,14 @@
 package Tablero;
 
-import ConstantesComunes.Colores;
 
-
+import ConstantesComunes.JFrames;
+import Partida.CalculosEnPartida;
 import Partida.TiempoPartida;
 
 import java.awt.*;
 import javax.swing.*;
+
+import ConexionPartida.Movimientos;
 
 
 /**
@@ -23,15 +25,15 @@ public class CrearTableroPartida implements Runnable {
 	private JButton[][] casillas;
 	private JButton casilla;
 	private JLabel textoFlotante;
-	public static void setTiempo(double tiempo) {
-		CrearTableroPartida.tiempo = tiempo;
-	}
+	
 
 	public static double tiempo;
+	
+
 	private int incremento;
 
 	public static JLabel labelDeMovimientosPartida;
-	private JLabel labelTiempo;
+	public static JLabel labelTiempo;
 	private static TiempoPartida temporizador = null;
 	private String nombre = null;
 	public static ArrastraPieza arrastraPieza;
@@ -55,12 +57,11 @@ public class CrearTableroPartida implements Runnable {
 	    }
 
 	    public void crearTableroBasico() {
-	        
-	        tablero = new JFrame(nombre);
-	        tablero.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        tablero.setLayout(new BorderLayout());
+	    	CalculosEnPartida.getJugadas().clear();
+	    	CalculosEnPartida.setJugadasTotales(0);
 
-
+	    	tablero=new JFrame();
+	        JFrames.crearJFrameBasicos(tablero,nombre,600,600);
 	        
 	        jpanelTablero();
 	        jpanelMovimientos();
@@ -78,8 +79,6 @@ public class CrearTableroPartida implements Runnable {
 
 	        tablero.pack();
 	        tablero.setLocationRelativeTo(null);
-	        tablero.setResizable(false);
-	        tablero.setVisible(true);
 	    }
 	    
 	
@@ -99,7 +98,9 @@ public class CrearTableroPartida implements Runnable {
 	public static JLabel getLabelDeMovimientosPartida() {
 		return labelDeMovimientosPartida;
 	}
-
+	public static void setTiempo(double tiempo) {
+		CrearTableroPartida.tiempo = tiempo;
+	}
 	
 
 	
@@ -115,8 +116,10 @@ public class CrearTableroPartida implements Runnable {
 		textoFlotante = new JLabel();
 		textoFlotante.setVisible(false);
 
-		CrearTablreoNormal crearTableroNormal = new CrearTablreoNormal();
+		CrearTableroNormal crearTableroNormal = new CrearTableroNormal();
 		crearTableroNormal.crearTablero(casillas,casilla,panelTablero,arrastraPieza,textoFlotante,true,true,false);
+		Movimientos.setCasillas(casillas);
+
 	}
 
 	private void jpanelMovimientos() {
@@ -151,14 +154,13 @@ public class CrearTableroPartida implements Runnable {
 		if (tiempo < 0)
 			tiempo = 0;
 		// Construye el HTML inicial
-		String tiempoReloj = TiempoPartida.tiempoVisual(tiempo * 60);
-		String tiempoRelojHTML = "<span style='color: #FFD700; font-size:28px; font-weight:bold;'>" + tiempoReloj
-				+ " <small style='font-size:14px;'>Blancas</small></span>";
-
-		String html = "<html><div style='text-align:center;'>" + tiempoRelojHTML + "<br>" + tiempoRelojHTML
-				+ "</div></html>";
-
-		labelTiempo = new JLabel(html, SwingConstants.CENTER);
+		
+		
+		labelTiempo = new JLabel();
+		labelTiempo=crearLabelTiempo(tiempo,labelTiempo);
+		
+		
+		
 		if (!(tiempo == 0)) {
 			// Esto es para ir actualizando el reloj
 			setTemporizador(new TiempoPartida(labelTiempo, tiempo, casillas, incremento));
@@ -176,6 +178,24 @@ public class CrearTableroPartida implements Runnable {
 		CrearTableroPartida.temporizador.tiempoBlancas=tiempo*60;
 		CrearTableroPartida.temporizador.tiempoNegras=tiempo*60;
 	}
+	
+	public static JLabel crearLabelTiempo(double tiempo, JLabel labelTiempo) {
+	    String tiempoReloj = TiempoPartida.tiempoVisual(tiempo * 60);
+	    String tiempoRelojHTMLBlancas = "<span style='color: #FFD700; font-size:28px; font-weight:bold;'>" + tiempoReloj
+	            + " <small style='font-size:14px;'>Blancas</small></span>";
+	    String tiempoRelojHTMLNegras = "<span style='color: #FFD700; font-size:28px; font-weight:bold;'>" + tiempoReloj
+	            + " <small style='font-size:14px;'>Negras</small></span>";
+
+	    // Usar una tabla para centrar el contenido
+	    String html = "<html>"
+	                + "<table width='100%' height='100%'><tr><td align='center' valign='middle'>"
+	                + tiempoRelojHTMLBlancas + "<br>" + tiempoRelojHTMLNegras
+	                + "</td></tr></table></html>";
+
+	    labelTiempo.setText(html);
+	    return labelTiempo;
+	}
+
 
 	public static TiempoPartida getTemporizador() {
 		// TODO Auto-generated method stub
@@ -184,5 +204,8 @@ public class CrearTableroPartida implements Runnable {
 	
 	public static void cerrarTablero() {
 		tablero.dispose();
+	}
+	public static double getTiempo() {
+		return tiempo;
 	}
 }

@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -33,6 +35,8 @@ public class ClienteSala {
     Socket socket = null;
     BufferedReader in = null;
     BufferedWriter out = null;
+	private boolean jugando=true;
+
     public static Movimientos mov = new Movimientos();
     public void refrescarSalas(JPanel PanelFull, JPanel PanelMedio, JFrame frame) {
 	    new Thread(() -> unirseASala(PanelFull,PanelMedio,frame)).start();
@@ -40,10 +44,18 @@ public class ClienteSala {
     public void unirseASala(JPanel PanelFull, JPanel PanelMedio, JFrame frame) {
     	// Llama a esto cuando quieras refrescar la lista de salas
     	
+    	CircularSpinner spinner = new CircularSpinner(350);
+		spinner.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		PanelMedio.add(spinner, gbc);
+		PanelMedio.revalidate();
+		PanelMedio.repaint();
 
     	// Este es el método que contiene tu bloque
     	    List<SalaInfo> salas = new ArrayList<>();
     	    Map<Integer, InetAddress> salaIPs = new HashMap<>();
+			
 
     	    DatagramSocket Datasocket = null;
     	    try {
@@ -58,6 +70,7 @@ public class ClienteSala {
     	        Datasocket.send(packet);
 
     	        Datasocket.setSoTimeout(2000);
+    	        
     	        byte[] buffer = new byte[1024];
     	        while (true) {
     	            try {
@@ -80,8 +93,8 @@ public class ClienteSala {
     	        }
     	    }
     	    System.out.println(salas);
-    	    // Actualiza la interfaz gráfica en el hilo del EDT
     	    SwingUtilities.invokeLater(() -> {
+
     	        if (salas.isEmpty()) {
     	            PanelMedio.removeAll();
     	            PanelMedio.setLayout(new BoxLayout(PanelMedio, BoxLayout.Y_AXIS));
@@ -142,7 +155,6 @@ public class ClienteSala {
     	    });
     	}
 
-    // Método auxiliar para conectar a la sala seleccionada
     private void conectarASala(SalaInfo sala, InetAddress ipServidor, String password, JFrame frame) {
     	mov.setColorAJugar(!SalaInfo.color);
 
@@ -177,7 +189,7 @@ public class ClienteSala {
         			ControlDeJugadas controlDeJugadas = new ControlDeJugadas();
 
 //                        Thread.sleep(50);
-                    while (true) {
+                    while (jugando) {
 
                 	   if (mov.isColorAJugar()) {
 
@@ -199,6 +211,8 @@ public class ClienteSala {
 
 						}
                 } } finally {
+					System.out.println("Los de cliente");
+
 					try {
 						if (out != null)
 							out.close();
@@ -219,6 +233,14 @@ public class ClienteSala {
 					}
 				}
 			}).start();
+            frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			    @Override
+			    public void windowClosing(java.awt.event.WindowEvent e) {
+			        jugando = false; // Esto hará que el hilo termine en el próximo ciclo
+			        // Aquí puedes cerrar recursos si quieres hacerlo inmediatamente
+			        // Por ejemplo: cerrar sockets, streams, etc.
+			    }
+			});
 
         } catch (Exception e) {
             e.printStackTrace();

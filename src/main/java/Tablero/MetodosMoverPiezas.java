@@ -4,6 +4,7 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 import ConexionPartida.Movimientos;
+import GuardarPartida.CargarPartida;
 import GuardarPartida.GuardarPartida;
 import Partida.CalculosEnPartida;
 import Partida.ConvertirAJugadasAceptables;
@@ -27,7 +28,8 @@ public class MetodosMoverPiezas {
 	public static boolean tiempoIniciado = false;
 	private static boolean hayPieza = false;
 	private static int filaOrigen, colOrigen, filaDestino, colDestino;
-
+	private static String fichaOriginal="";
+	private static ConvertirAJugadasAceptables tarea;
 	public static void setJugando(boolean jugando) {
 		MetodosMoverPiezas.jugando = jugando;
 	}
@@ -87,7 +89,6 @@ public class MetodosMoverPiezas {
 	public static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha,
 			String movimientos, boolean verTiempo, boolean verMovimientos, boolean esProblema) {
 		hayPieza = false;
-		Movimientos.setCasillas(casillas);
 
 		filaOrigen = Integer.parseInt(origen.substring(0, 1));
 		colOrigen = Integer.parseInt(origen.substring(1, 2));
@@ -103,17 +104,16 @@ public class MetodosMoverPiezas {
 				// Este metodo sirve para comprobar si un peon ha llegado a su casilla de
 				// coronacion
 				// Si ha llegado cornona si no, no hace nada
-				String fichaOriginal = ficha;
 
-				moverPiezas(origen, destino, casillas, ficha);
+				moverPiezas(origen, destino, casillas, ficha, verMovimientos);
 
-				CalculosEnPartida.guardarMovimientos(origen, destino, ficha);
-
-				// Crea un hilo para realizar la tarea de decorar las jugadas
-				ConvertirAJugadasAceptables tarea = new ConvertirAJugadasAceptables(ficha, fichaOriginal, casillas,
-						destino, origen, hayPieza);
+				
 				Thread hilo = new Thread(tarea);
 				hilo.start();
+				
+
+				// Crea un hilo para realizar la tarea de decorar las jugadas
+				
 
 				FinPartida.IdentificarFinPartida(casillas, CalculosEnPartida.getJugadas(), esProblema,
 						ProblemaConseguido.problemaLogrado(destino, ficha, CrearTableroProblemas.getNumeroNivel()));
@@ -147,15 +147,13 @@ public class MetodosMoverPiezas {
 				}
 				// imprimirTablero(casillas);
 
-				datosDeMovimientos = new Movimientos(origen, destino, ficha, movimientos);
-				Movimientos.setCasillas(casillas);
+				datosDeMovimientos = new Movimientos(origen, destino, ficha, movimientos,casillas);
 				sensorDeTurnosDosJugadores = true;
 				movimientos = "";
 
 			}
 		}
 		movimientos = "";
-		imprimirTablero(casillas);
 	}
 
 	public static boolean mirarMoverEnroque(JButton[][] casillas, int filaOrigen, int colDestino, int colOrigen) {
@@ -196,13 +194,15 @@ public class MetodosMoverPiezas {
 		System.out.println("------------------------");
 	}
 
-	public static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha) {
+	public static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha, boolean jugadasBonitas) {
+		fichaOriginal = ficha;
 
 		filaOrigen = Integer.parseInt(origen.substring(0, 1));
 		colOrigen = Integer.parseInt(origen.substring(1, 2));
 		filaDestino = Integer.parseInt(destino.substring(0, 1));
 		colDestino = Integer.parseInt(destino.substring(1, 2));
-		ficha = JugadaEspecialPeon.coronarPeon(filaDestino, colDestino, ficha, casillas);
+		if (!CargarPartida.isEsCargarPartida()) 
+			ficha = JugadaEspecialPeon.coronarPeon(filaDestino, colDestino, ficha, casillas);
 
 		// Esta parte solo es para ver si se puede comer al paso con el peon (porque
 		// tiene que actualizar otras casillas)
@@ -229,6 +229,18 @@ public class MetodosMoverPiezas {
 		if (!casillas[filaDestino][colDestino].getText().isEmpty())
 			hayPieza = true;
 		PonerPiezasTablero.crearPieza(casilla, ficha);
+		if (!CargarPartida.isEsCargarPartida()) {
+			if (fichaOriginal!=ficha)
+				CalculosEnPartida.guardarMovimientos(origen, destino+""+ficha, ficha);
+			else
+				CalculosEnPartida.guardarMovimientos(origen, destino, ficha);
+			
+			if (jugadasBonitas)
+			tarea = new ConvertirAJugadasAceptables(ficha, fichaOriginal, casillas,
+					destino, origen, hayPieza);
+		}
+		else
+			CalculosEnPartida.sumarMovimientos();
 	}
 
 }

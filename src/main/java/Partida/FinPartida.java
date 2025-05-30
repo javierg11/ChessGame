@@ -1,21 +1,12 @@
 package Partida;
 
-import java.awt.event.ActionEvent;
-
-
-
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
+import ConexionPartida.ServidorSala;
+import ConstantesComunes.CreacionJOptionPanelDialog;
 import InterfazGrafica.EmpezarAJugar;
-import InterfazGrafica.PantallaPrincipalJuego;
 import Piezas.DetectarJaqueEnPartida;
 import ProblemasAjedrez.CrearTableroProblemas;
 import Tablero.CrearTableroPartida;
@@ -26,6 +17,7 @@ public class FinPartida {
 	static String texto = "";
 	public static void IdentificarFinPartida(JButton[][] casillas, HashMap<Integer, String> jugadas, boolean esProblema, boolean problemaConseguido) {
 		texto=""; //Si sogo en el juego hay que reiniciar el texto del mensaje
+		boolean mostrarReiniciar=true;
 		if (!esProblema) {
 		if (!MovimientosPosibles.tenerMovimientosPosibles(casillas, CalculosEnPartida.colorAMover())) {
 			// Crea un Timer que espera 1000 ms (1 segundo) antes de ejecutar la acción
@@ -34,6 +26,16 @@ public class FinPartida {
 				texto = "<html><b>¡Victoria!</b><br>El jugador "
 						+ (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
 						+ " no tiene movimientos posibles.<br><i>Jaque mate.</i></html>";
+				if (ServidorSala.mov.isColorAJugar() == CalculosEnPartida.colorAMover()) {
+					ServidorSala.jugando=false;
+					mostrarReiniciar=false;
+					texto = "<html><b>¡Derrorta!</b><br>El jugador "
+							+ (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
+							+ " no tiene movimientos posibles.<br><i>Jaque mate.</i></html>";
+				}else if (ServidorSala.mov.isColorAJugar() != CalculosEnPartida.colorAMover()) {
+					ServidorSala.jugando=false;
+					mostrarReiniciar=false;
+				}
 			}
 
 			else {
@@ -55,15 +57,15 @@ public class FinPartida {
 			return;
 		}
 		if (!texto.isEmpty()) {
-			mensajeTerminarPartida(texto, casillas,true);
+			mensajeTerminarPartida(texto, casillas,mostrarReiniciar);
 			texto = "";
 		}
 
 	}
 
 	public static void mensajeTerminarPartida(String texto, JButton[][] casillas, boolean mostrarReiniciar) {
-	    CrearTableroPartida.getTemporizador().detenerTiempo();
-	    Icon icono = new ImageIcon(FinPartida.class.getResource("/imagesPiezas/wP.png"));
+		if (CrearTableroPartida.getTemporizador()!=null)
+			CrearTableroPartida.getTemporizador().detenerTiempo();
 
 	    // Opciones personalizadas según el contexto
 	    String[] opciones;
@@ -73,42 +75,31 @@ public class FinPartida {
 	        opciones = new String[] { "Menú", "Salir del juego" };
 	    }
 
-	    Timer timer = new Timer(3, new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-
-	            int seleccion = JOptionPane.showOptionDialog(
-	                null, texto, "Fin de la partida",
-	                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icono,
-	                opciones, opciones[0]
-	            );
-
-	            ((Timer) e.getSource()).stop();
 
 	            // Lógica de opciones sin repetir código
 	            if (mostrarReiniciar) {
-	                if (seleccion == 0) {
-	                    volverAJugar(casillas);
-	                } else if (seleccion == 1) {
-	                    irAMenuPrincipalPartida();
-	                } else if (seleccion == 2) {
-	                    salirDelJuego();
-	                }
+	            	CreacionJOptionPanelDialog.mensajeDeTextoConRetardo(texto, "Fin de la partida", opciones, a -> {
+	        	        if (a == 0)
+	        	        	 volverAJugar(casillas);
+	        	        if (a == 1)
+	        	        	irAMenuPrincipalPartida();
+	        	        if (a == 2)
+	        	        	 salirDelJuego();
+	        	    });
 	            } else {
-	                if (seleccion == 0) {
-	                    irAMenuPrincipalPartida();
-	                } else if (seleccion == 1) {
-	                    salirDelJuego();
-	                }
-	            }
-	            // Si selecciona cerrar ventana o cualquier otro caso, no hace nada
-	        }
-	    });
-	    timer.start();
+	            	//VA mal en el servidor
+	            	CreacionJOptionPanelDialog.mensajeDeTextoConRetardo(texto, "Fin de la partida", opciones, a -> {
+	        	        if (a == 0)
+	        	        	irAMenuPrincipalPartida();
+	        	        if (a == 1)
+	        	        	salirDelJuego();
+
+	        	    });
+	            
 	}
+	        }
 
 	public static void mensajeProblemaSiguiente(String texto, JButton[][] casillas, boolean mostrarReiniciar, boolean problemaConseguido) {
-	    Icon icono = new ImageIcon(FinPartida.class.getResource("/imagesPiezas/wP.png"));
 
 	    // Opciones personalizadas según el contexto
 	    String[] opciones;
@@ -117,38 +108,20 @@ public class FinPartida {
 	    } else {
 	        opciones = new String[] { "Repetir Problema", "Menú", "Salir del juego" };
 	    }
-
-	    Timer timer = new Timer(3, new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            int seleccion = JOptionPane.showOptionDialog(
-	                null, texto, "Problemas",
-	                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, icono,
-	                opciones, opciones[0]
-	            );
-
-	            ((Timer) e.getSource()).stop();
-
-	            // Acciones según la opción elegida
-	            if (seleccion == 0) {
-	                if (problemaConseguido) {
-	                    // Siguiente problema
-	                    siguienteProblema();
-	                } else {
-	                    // Repetir problema
-	                    repetirProblema();
-	                }
-	            } else if (seleccion == 1) {
-	                // Menú principal
-	                irAMenuPrincipal();
-	            } else if (seleccion == 2) {
-	                // Salir del juego
-	                salirDelJuego();
-	            }
-	            // Si selecciona cerrar ventana o cualquier otro caso, no hace nada
+	    
+	    CreacionJOptionPanelDialog.mensajeDeTextoConRetardo(texto, "Problemas", opciones, a -> {
+	        if (a == 0) {
+	        	if (problemaConseguido)
+	        		siguienteProblema();
+	        	else
+	        		repetirProblema();
 	        }
+	        if (a == 1)
+	        	irAMenuPrincipal();
+	        if (a == 2)
+	        	salirDelJuego();
 	    });
-	    timer.start();
+
 	}
 
 	// Métodos auxiliares para cada acción
