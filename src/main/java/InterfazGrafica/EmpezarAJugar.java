@@ -2,6 +2,7 @@ package InterfazGrafica;
 
 import javax.swing.*;
 
+import ConexionBBDD.UsuarioConectado;
 import ConstantesComunes.Botones;
 import ConstantesComunes.Colores;
 import ConstantesComunes.CreacionJOptionPanelDialog;
@@ -166,10 +167,31 @@ public class EmpezarAJugar {
 
 
         esquinaButton.addActionListener(e -> {
-        	frame.dispose();
+            if (UsuarioConectado.usuarioConetado(JFrameInicioSesion.getUsuario())) {
+
+            // Pregunta al usuario si desea cerrar sesión
+            int respuesta = JOptionPane.showConfirmDialog(
+                frame,
+                "¿Desea cerrar sesión?",
+                "Cerrar sesión",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (respuesta == JOptionPane.YES_OPTION) {
+                // Cierra la sesión si el usuario está conectado
+                    UsuarioConectado.cerrar_Iniciar_Sesion(JFrameInicioSesion.getUsuario(), false);
+                
+                // OPCIONAL: Puedes mostrar un mensaje de confirmación
+                // JOptionPane.showMessageDialog(frame, "Sesión cerrada correctamente");
+            }else
+            	return;
+            }
+            // Independientemente de la respuesta, se cierra el frame y se muestra la pantalla principal
+            frame.dispose();
             PantallaPrincipalJuego pantallaPrincipalJuego = new PantallaPrincipalJuego();
             pantallaPrincipalJuego.mostrar();
         });
+
 
         frame.setContentPane(panelFondo);
         frame.setVisible(true);

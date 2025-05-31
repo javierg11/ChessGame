@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import InterfazGrafica.JugarEnLAN;
 import Tablero.FuncionesVisualesTablero;
@@ -82,25 +83,39 @@ public class ServidorSala {
 
 			// --- Aquí añadimos el spinner al panel ---
 			SwingUtilities.invokeLater(() -> {
-				Panel.removeAll();
+			    Panel.removeAll();
+			    // Asegúrate de que el botón esté visible = false inicialmente
+			    Panel.setLayout(new BoxLayout(Panel, BoxLayout.X_AXIS));
+			    JugarEnLAN.esquinaButton.setVisible(false);
+			    Panel.add(JugarEnLAN.esquinaButton);
+			    
+			    JLabel esperandoLabel = new JLabel("Esperando al oponente...");
+			    esperandoLabel.setFont(new Font("Arial", Font.BOLD, 24));
+			    esperandoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-				JLabel esperandoLabel = new JLabel("Esperando al oponente...");
-				esperandoLabel.setFont(new Font("Arial", Font.BOLD, 24));
-				esperandoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			    CircularSpinner spinner = new CircularSpinner(80);
+			    spinner.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-				CircularSpinner spinner = new CircularSpinner(80);
-				spinner.setAlignmentX(Component.CENTER_ALIGNMENT);
+			    Panel.setLayout(new BoxLayout(Panel, BoxLayout.Y_AXIS));
+			    Panel.add(Box.createRigidArea(new Dimension(0, 30)));
+			    Panel.add(esperandoLabel);
+			    Panel.add(Box.createRigidArea(new Dimension(0, 20)));
+			    Panel.add(spinner);
+			    Panel.add(Box.createVerticalGlue());
 
-				Panel.setLayout(new BoxLayout(Panel, BoxLayout.Y_AXIS));
-				Panel.add(Box.createRigidArea(new Dimension(0, 30)));
-				Panel.add(esperandoLabel);
-				Panel.add(Box.createRigidArea(new Dimension(0, 20)));
-				Panel.add(spinner);
-				Panel.add(Box.createVerticalGlue());
+			    Panel.revalidate();
+			    Panel.repaint();
 
-				Panel.revalidate();
-				Panel.repaint();
+			    // Timer para hacer visible el botón después de 10 segundos (10,000 ms)
+			    Timer timer = new Timer(2000, e -> {
+			        JugarEnLAN.esquinaButton.setVisible(true);
+			        Panel.revalidate();
+			        Panel.repaint();
+			    });
+			    timer.setRepeats(false); // Solo se ejecuta una vez
+			    timer.start();
 			});
+
 
 			// Elegir un puerto TCP libre en el rango 10000-10999
 			int puertoTCP = 0;

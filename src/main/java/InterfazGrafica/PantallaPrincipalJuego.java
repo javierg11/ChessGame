@@ -2,6 +2,7 @@ package InterfazGrafica;
 
 import javax.swing.*;
 
+import ConexionBBDD.UsuarioConectado;
 import ConstantesComunes.Botones;
 import ConstantesComunes.Colores;
 import ConstantesComunes.JFrames;
@@ -83,7 +84,7 @@ public class PantallaPrincipalJuego {
      // Acción del botón "IniciarSesion"
         inicioSesionButton.addActionListener(e -> {
             frame.dispose();
-            InicioSesion.crearJFrameInicioSesion();
+            JFrameInicioSesion.crearJFrameInicioSesion();
         });
     }
 
@@ -155,6 +156,8 @@ public class PantallaPrincipalJuego {
             writer.write(contenido);
             writer.newLine(); // Salto de línea
             System.out.println("Contenido escrito correctamente en el archivo.");
+            if (UsuarioConectado.usuarioConetado(JFrameInicioSesion.getUsuario()))
+            		UsuarioConectado.cerrar_Iniciar_Sesion(JFrameInicioSesion.getUsuario(),false);
         } catch (IOException e) {
             System.err.println("Error al escribir en el archivo: " + e.getMessage());
         }

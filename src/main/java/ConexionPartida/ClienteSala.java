@@ -44,13 +44,14 @@ public class ClienteSala {
     public void unirseASala(JPanel PanelFull, JPanel PanelMedio, JFrame frame) {
     	// Llama a esto cuando quieras refrescar la lista de salas
     	
-    	CircularSpinner spinner = new CircularSpinner(350);
+    	PanelMedio.removeAll();
+    	CircularSpinner spinner = new CircularSpinner(150);
 		spinner.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		PanelMedio.add(spinner, gbc);
 		PanelMedio.revalidate();
-		PanelMedio.repaint();
+		PanelMedio.repaint(); 
 
     	// Este es el método que contiene tu bloque
     	    List<SalaInfo> salas = new ArrayList<>();

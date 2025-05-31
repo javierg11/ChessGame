@@ -30,7 +30,7 @@ public class JugarEnLAN {
 		return frame;
 	}
 
-	static JButton esquinaButton,crearPartidaButton,unirsePartidaButton=null;
+	public static JButton esquinaButton,crearPartidaButton,unirsePartidaButton=null;
 	 
     
     
