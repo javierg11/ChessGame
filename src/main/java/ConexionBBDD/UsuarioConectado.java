@@ -6,8 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import InterfazGrafica.JFrameInicioSesion;
+
 public class UsuarioConectado extends DatosBBDD{
 	public static boolean usuarioConetado(String usuario) {
+		if (JFrameInicioSesion.getUsuario()==null) 
+			return false;
 	    boolean conectado = false;
 
 	    try {
@@ -33,6 +37,8 @@ public class UsuarioConectado extends DatosBBDD{
 	}
 	
 	public static void cerrar_Iniciar_Sesion(String usuario, boolean iniciar) {
+		if (JFrameInicioSesion.getUsuario()==null) 
+			return;
 	    try {
 	        Class.forName(driverMysql);
 	        Connection conexion = DriverManager.getConnection(rutaBaseDatos, usuarioBaseDatos, contraBaseDatos);
@@ -43,17 +49,12 @@ public class UsuarioConectado extends DatosBBDD{
 	        	sql = "UPDATE Jugadores SET cuentaIniciada = FALSE WHERE nombre = ?";
 	        PreparedStatement ps = conexion.prepareStatement(sql);
 	        ps.setString(1, usuario);
-	        int filas = ps.executeUpdate();
+	        ps.executeUpdate();
 
 	        ps.close();
 	        conexion.close();
 
-	        // Opcional: Mostrar mensaje de éxito
-	        if (filas > 0) {
-	            System.out.println("Sesión cerrada correctamente para " + usuario);
-	        } else {
-	            System.out.println("No se encontró el usuario " + usuario);
-	        }
+
 	    } catch (ClassNotFoundException | SQLException e) {
 	        e.printStackTrace();
 	    }

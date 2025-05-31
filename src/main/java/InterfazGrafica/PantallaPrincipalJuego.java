@@ -156,10 +156,12 @@ public class PantallaPrincipalJuego {
             writer.write(contenido);
             writer.newLine(); // Salto de línea
             System.out.println("Contenido escrito correctamente en el archivo.");
-            if (UsuarioConectado.usuarioConetado(JFrameInicioSesion.getUsuario()))
+            if (UsuarioConectado.usuarioConetado(JFrameInicioSesion.getUsuario())) {
             		UsuarioConectado.cerrar_Iniciar_Sesion(JFrameInicioSesion.getUsuario(),false);
+            }
         } catch (IOException e) {
             System.err.println("Error al escribir en el archivo: " + e.getMessage());
         }
+        
     }
 }

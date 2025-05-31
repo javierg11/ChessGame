@@ -3,6 +3,7 @@ package Partida;
 import java.util.HashMap;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import ConexionPartida.ServidorSala;
 import ConstantesComunes.CreacionJOptionPanelDialog;
@@ -12,12 +13,14 @@ import ProblemasAjedrez.CrearTableroProblemas;
 import Tablero.CrearTableroPartida;
 import Tablero.MovimientosPosibles;
 import Tablero.TableroAjedrez;
+import guardar_CargarPartida.GuardarPartida;
 
 public class FinPartida {
 	static String texto = "";
 	public static void IdentificarFinPartida(JButton[][] casillas, HashMap<Integer, String> jugadas, boolean esProblema, boolean problemaConseguido) {
 		texto=""; //Si sogo en el juego hay que reiniciar el texto del mensaje
 		boolean mostrarReiniciar=true;
+		
 		if (!esProblema) {
 		if (!MovimientosPosibles.tenerMovimientosPosibles(casillas, CalculosEnPartida.colorAMover())) {
 			// Crea un Timer que espera 1000 ms (1 segundo) antes de ejecutar la acción
@@ -70,9 +73,9 @@ public class FinPartida {
 	    // Opciones personalizadas según el contexto
 	    String[] opciones;
 	    if (mostrarReiniciar) {
-	        opciones = new String[] { "Volver a jugar", "Menú", "Salir del juego" };
+	        opciones = new String[] { "Volver a jugar", "Menú", "Salir del juego","Guardar Partida" };
 	    } else {
-	        opciones = new String[] { "Menú", "Salir del juego" };
+	        opciones = new String[] { "Menú", "Salir del juego","Guardar Partida" };
 	    }
 
 
@@ -85,6 +88,12 @@ public class FinPartida {
 	        	        	irAMenuPrincipalPartida();
 	        	        if (a == 2)
 	        	        	 salirDelJuego();
+	        	        if (a==3) {
+	        	        	irAMenuPrincipalPartida();
+	        	        	JButton botonCualquiera = casillas[0][0]; 
+	        	        	JPanel panelPadre = (JPanel) botonCualquiera.getParent();
+	        	        	GuardarPartida.guardarPartida(panelPadre);
+	        	        }
 	        	    });
 	            } else {
 	            	//VA mal en el servidor
@@ -93,6 +102,12 @@ public class FinPartida {
 	        	        	irAMenuPrincipalPartida();
 	        	        if (a == 1)
 	        	        	salirDelJuego();
+	        	        if (a==2) {
+	        	        	irAMenuPrincipalPartida();
+	        	        	JButton botonCualquiera = casillas[0][0]; 
+	        	        	JPanel panelPadre = (JPanel) botonCualquiera.getParent();
+	        	        	GuardarPartida.guardarPartida(panelPadre);
+	        	        }
 
 	        	    });
 	            

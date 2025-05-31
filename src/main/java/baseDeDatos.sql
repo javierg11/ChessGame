@@ -15,8 +15,9 @@ CREATE TABLE Jugadores (
 CREATE TABLE Partidas (
     Id_partida INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
+    nombrePropio VARCHAR(50) NOT NULL,
     nombreOponente VARCHAR(50) NOT NULL,
     jugadoCon CHAR(1) CHECK (jugadoCon IN ('B', 'N')), -- 'B' para blancas, 'N' para negras
     partidas TEXT, -- Campo extra para información adicional o la partida completa
-    FOREIGN KEY (nombre) REFERENCES Jugadores(nombre)
+    FOREIGN KEY (nombrePropio) REFERENCES Jugadores(nombre)
 );

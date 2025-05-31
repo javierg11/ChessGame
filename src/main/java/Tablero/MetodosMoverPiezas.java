@@ -4,8 +4,6 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 import ConexionPartida.Movimientos;
-import GuardarPartida.CargarPartida;
-import GuardarPartida.GuardarPartida;
 import Partida.CalculosEnPartida;
 import Partida.ConvertirAJugadasAceptables;
 import Partida.FinPartida;
@@ -19,6 +17,8 @@ import Piezas.Piezas;
 import Piezas.Rey;
 import Piezas.Torre;
 import ProblemasAjedrez.ProblemaConseguido;
+import guardar_CargarPartida.CargarPartida;
+import guardar_CargarPartida.GuardarPartida;
 import ProblemasAjedrez.CrearTableroProblemas;
 
 public class MetodosMoverPiezas {

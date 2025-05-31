@@ -1,6 +1,7 @@
 package ConexionBBDD;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +13,6 @@ import javax.swing.JOptionPane;
 import org.mindrot.jbcrypt.BCrypt;
 
 import InterfazGrafica.EmpezarAJugar;
-import InterfazGrafica.JFrameInicioSesion;
 
 
 public class IniciarSesion extends DatosBBDD{

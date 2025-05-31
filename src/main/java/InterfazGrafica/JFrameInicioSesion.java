@@ -1,6 +1,7 @@
 package InterfazGrafica;
 import javax.swing.*;
 
+
 import ConexionBBDD.CrearUsuario;
 import ConexionBBDD.IniciarSesion;
 import ConstantesComunes.Botones;
@@ -19,7 +20,7 @@ public class JFrameInicioSesion {
 	static JFrame frame=null;
 	static JButton esquinaButton,actionButton,switchButton=null;
 
-	private static String usuario="";
+	private static String usuario=null;
     // Estado del formulario: true = login, false = registro
     private static boolean isLogin = true;
 

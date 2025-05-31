@@ -4,9 +4,9 @@ package Tablero;
 
 import javax.swing.*;
 
-import GuardarPartida.CargarPartida;
-import GuardarPartida.GuardarPartida;
 import ProblemasAjedrez.CrearTableroProblemas;
+import guardar_CargarPartida.CargarPartida;
+import guardar_CargarPartida.GuardarPartida;
 
 
 
