@@ -25,6 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import InterfazGrafica.JugarEnLAN;
+import Partida.FinPartida;
+import Tablero.CrearTableroPartida;
 import Tablero.MetodosMoverPiezas;
 import Tablero.TableroAjedrez;
 
@@ -35,7 +37,7 @@ public class ClienteSala {
     Socket socket = null;
     BufferedReader in = null;
     BufferedWriter out = null;
-	private boolean jugando=true;
+	public static boolean jugando=true;
 
     public static Movimientos mov = new Movimientos();
     public void refrescarSalas(JPanel PanelFull, JPanel PanelMedio, JFrame frame) {
@@ -157,8 +159,6 @@ public class ClienteSala {
     	}
 
     private void conectarASala(SalaInfo sala, InetAddress ipServidor, String password, JFrame frame) {
-    	mov.setColorAJugar(!SalaInfo.color);
-
         try {
             socket = new Socket(ipServidor, sala.puerto);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -180,8 +180,13 @@ public class ClienteSala {
             }
             // Aquí continúa la lógica original de unión a la sala
             SwingUtilities.invokeLater(() -> {
+            	//SalaInfo.setColor(SalaInfo.color);
                 JugarEnLAN.getFrame().dispose();
-                TableroAjedrez.crearTipoTablero(true, (int) sala.tiempo, sala.incrementoTiempo, !SalaInfo.color, "Cliente de Partida: " + sala.nombre);
+				SalaInfo.setColor(false);
+				Movimientos.setColorAJugar(false);
+
+                TableroAjedrez.crearTipoTablero(true, (int) sala.tiempo, sala.incrementoTiempo,  "Cliente de Partida: " +
+                sala.nombre);
             });
 
 
@@ -192,6 +197,10 @@ public class ClienteSala {
 //                        Thread.sleep(50);
                     while (jugando) {
 
+                    	if (mov.isColorAJugar() == null) {
+                    		SwingUtilities.invokeLater(() ->
+                            JOptionPane.showMessageDialog(null, "Hubo un error inseperado, por favor reinicie la aplicación.", "Error", JOptionPane.ERROR_MESSAGE));
+                    	}
                 	   if (mov.isColorAJugar()) {
 
                 		   if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
@@ -234,14 +243,7 @@ public class ClienteSala {
 					}
 				}
 			}).start();
-            frame.addWindowListener(new java.awt.event.WindowAdapter() {
-			    @Override
-			    public void windowClosing(java.awt.event.WindowEvent e) {
-			        jugando = false; // Esto hará que el hilo termine en el próximo ciclo
-			        // Aquí puedes cerrar recursos si quieres hacerlo inmediatamente
-			        // Por ejemplo: cerrar sockets, streams, etc.
-			    }
-			});
+            
 
         } catch (Exception e) {
             e.printStackTrace();

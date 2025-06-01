@@ -112,7 +112,7 @@ public class TiempoPartida {
             String texto = "<html><b>¡Victoria!</b><br>El jugador "
                     + (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
                     + " se le ha acabado el tiempo.<br><i>Caida de bandera.</i></html>";
-            FinPartida.mensajeTerminarPartida(texto, casillas, true);
+            FinPartida.mensajeTerminarPartida(texto, casillas, true, false);
             
         }
     }

@@ -2,52 +2,83 @@
   {
     "nivel": 1,
     "piezas": [
-		{ "pieza": "wD", "casilla": "66" },
-		{ "pieza": "wR", "casilla": "50" },
-		{ "pieza": "bR", "casilla": "71" }    ]
+      { "pieza": "wD", "casilla": "66" },
+      { "pieza": "wR", "casilla": "50" },
+      { "pieza": "bR", "casilla": "71" }
+    ]
   },
   {
     "nivel": 2,
     "piezas": [
-      { "pieza": "wA", "casilla": "13" },
       { "pieza": "wT", "casilla": "71" },
-      { "pieza": "wR", "casilla": "22" },
-      { "pieza": "wP", "casilla": "02" },
-      { "pieza": "wP", "casilla": "12" },
-      { "pieza": "wP", "casilla": "22" },
-      { "pieza": "bC", "casilla": "01" },
-      { "pieza": "bT", "casilla": "00" },
-      { "pieza": "bR", "casilla": "77" },
-      { "pieza": "bP", "casilla": "06" },
-      { "pieza": "bP", "casilla": "67" },
-      { "pieza": "bP", "casilla": "77" }
+      { "pieza": "wR", "casilla": "46" },
+      { "pieza": "bR", "casilla": "06" },
+      { "pieza": "bP", "casilla": "16" },
+      { "pieza": "bP", "casilla": "15" },
+      { "pieza": "bP", "casilla": "17" }
     ]
   },
   {
     "nivel": 3,
     "piezas": [
-      { "pieza": "wD", "casilla": "26" },
-      { "pieza": "wP", "casilla": "55" },
-      { "pieza": "wP", "casilla": "57" },
-      { "pieza": "bT", "casilla": "67" }
+      { "pieza": "wC", "casilla": "34" },
+      { "pieza": "wR", "casilla": "77" },
+      { "pieza": "bR", "casilla": "07" },
+      { "pieza": "bT", "casilla": "06" },
+      { "pieza": "bP", "casilla": "16" },
+      { "pieza": "bP", "casilla": "17" }
     ]
   },
   {
     "nivel": 4,
     "piezas": [
-      { "pieza": "wD", "casilla": "54" },
-      { "pieza": "wR", "casilla": "77" },
-      { "pieza": "wP", "casilla": "64" },
-      { "pieza": "bR", "casilla": "75" }
+      { "pieza": "bR", "casilla": "07" },
+      { "pieza": "wR", "casilla": "47" },
+      { "pieza": "wT", "casilla": "57" },
+      { "pieza": "wT", "casilla": "46" }
     ]
   },
   {
     "nivel": 5,
     "piezas": [
-      { "pieza": "wT", "casilla": "70" },
-      { "pieza": "wR", "casilla": "77" },
-      { "pieza": "bR", "casilla": "76" },
-      { "pieza": "bP", "casilla": "75" }
+      { "pieza": "wD", "casilla": "45" },
+      { "pieza": "wA", "casilla": "65" },
+      { "pieza": "wR", "casilla": "60" },
+      { "pieza": "bR", "casilla": "57" }
+    ]
+  },
+  {
+    "nivel": 6,
+    "piezas": [
+      { "pieza": "wC", "casilla": "52" },
+      { "pieza": "wT", "casilla": "00" },
+      { "pieza": "wR", "casilla": "03" },
+      { "pieza": "bR", "casilla": "70" },
+      { "pieza": "bP", "casilla": "60" },
+	  { "pieza": "bT", "casilla": "71" },
+      { "pieza": "bP", "casilla": "61" }
+    ]
+  },
+  {
+    "nivel": 7,
+    "piezas": [
+      { "pieza": "wA", "casilla": "56" },
+      { "pieza": "wR", "casilla": "66" },
+      { "pieza": "bR", "casilla": "02" },
+      { "pieza": "wD", "casilla": "40" },
+      { "pieza": "bT", "casilla": "03" }
+    ]
+  },
+  {
+    "nivel": 8,
+    "piezas": [
+      { "pieza": "wT", "casilla": "76" },
+      { "pieza": "wC", "casilla": "65" },
+      { "pieza": "wR", "casilla": "75" },
+      { "pieza": "bR", "casilla": "67" },
+	  { "pieza": "wT", "casilla": "07" },
+	  { "pieza": "bA", "casilla": "02" },
+      { "pieza": "bP", "casilla": "57" }
     ]
   }
 ]

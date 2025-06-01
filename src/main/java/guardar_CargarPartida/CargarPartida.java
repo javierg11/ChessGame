@@ -78,11 +78,9 @@ public class CargarPartida implements Runnable {
 
 		// Crea y añade los paneles separados
 		JPanel panelIzquierda = crearPanelGuardar();
-		JPanel panelDerecha = crearPanelMovimientos();
 
 		tablero.add(panelTablero, BorderLayout.CENTER);
 		tablero.add(panelIzquierda, BorderLayout.WEST);
-		tablero.add(panelDerecha, BorderLayout.EAST);
 
 		tablero.getLayeredPane().setLayout(null);
 		tablero.getLayeredPane().add(textoFlotante, JLayeredPane.DRAG_LAYER);
@@ -123,38 +121,13 @@ public class CargarPartida implements Runnable {
 				false);
 	}
 
-	private JPanel crearPanelMovimientos() {
-		JPanel panelMovimientos = new JPanel();
-		panelMovimientos.setLayout(new BoxLayout(panelMovimientos, BoxLayout.Y_AXIS));
-		panelMovimientos.setPreferredSize(new Dimension(250, 600));
-
-		labelDeMovimientosPartida = new JLabel("<html>"
-				+ "<center><span style='font-size:20pt; font-weight:bold;'>Jugadas de la Partida</span></center><br>"
-				+ "<table style='font-size:12pt; border-collapse:collapse;'>" + "<tr>"
-				+ "  <th style='padding:8px 16px; border:1px solid #888;'>Mov</th>"
-				+ "  <th style='padding:8px 16px; border:1px solid #888;'>Blancas</th>"
-				+ "  <th style='padding:8px 16px; border:1px solid #888;'>Negras</th>" + "</tr>" + "</table>"
-				+ "</html>");
-		labelDeMovimientosPartida.setAlignmentX(Component.CENTER_ALIGNMENT);
-		labelDeMovimientosPartida.setVerticalAlignment(JLabel.TOP);
-
-		JScrollPane scrollPane = new JScrollPane(labelDeMovimientosPartida);
-		scrollPane.setPreferredSize(new Dimension(400, 300));
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-		panelMovimientos.add(scrollPane);
-		panelMovimientos.add(Box.createVerticalGlue());
-
-		return panelMovimientos;
-	}
 
 	private JPanel crearPanelGuardar() {
 		JPanel panelGuardar = new JPanel();
 		panelGuardar.setLayout(new BoxLayout(panelGuardar, BoxLayout.Y_AXIS));
 		panelGuardar.setPreferredSize(new Dimension(200, 600));
 
-		JLabel tituloGuardar = new JLabel("Guardar Partida");
+		JLabel tituloGuardar = new JLabel("Cargar Partida");
 		tituloGuardar.setFont(new Font("Arial", Font.BOLD, 18));
 		tituloGuardar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -302,7 +275,6 @@ public class CargarPartida implements Runnable {
 				if (destino.length() > 2) {
 					ficha = destino.substring(2, 4);
 				}
-				System.out.println(ficha + "" + origen + "" + destino);
 				MetodosMoverPiezas.moverPiezas(origen, destino, casillas, ficha, false);
 			}
 		}

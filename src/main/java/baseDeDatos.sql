@@ -18,6 +18,6 @@ CREATE TABLE Partidas (
     nombrePropio VARCHAR(50) NOT NULL,
     nombreOponente VARCHAR(50) NOT NULL,
     jugadoCon CHAR(1) CHECK (jugadoCon IN ('B', 'N')), -- 'B' para blancas, 'N' para negras
-    partidas TEXT, -- Campo extra para información adicional o la partida completa
+    partidas TEXT,
     FOREIGN KEY (nombrePropio) REFERENCES Jugadores(nombre)
 );

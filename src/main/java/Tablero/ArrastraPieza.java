@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import ConexionPartida.ClienteSala;
 import ConexionPartida.Movimientos;
 import ConexionPartida.SalaInfo;
 import ConexionPartida.ServidorSala;
@@ -82,7 +83,7 @@ public class ArrastraPieza {
             if (SalaInfo.isColor() != null) {
                 // Si NO es el turno y color correcto, no dejes mover
                 boolean esTurnoBlancas = CalculosEnPartida.colorAMover() && ServidorSala.mov.isColorAJugar() && fichaSeleccionada.contains("w");
-                boolean esTurnoNegras  = !CalculosEnPartida.colorAMover() && !ServidorSala.mov.isColorAJugar() && fichaSeleccionada.contains("b");
+                boolean esTurnoNegras  = !CalculosEnPartida.colorAMover() && ClienteSala.mov.isColorAJugar() && fichaSeleccionada.contains("b");
 
                 if (!(esTurnoBlancas || esTurnoNegras)) {
                     // No es mi turno

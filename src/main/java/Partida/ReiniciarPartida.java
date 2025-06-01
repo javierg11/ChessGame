@@ -44,6 +44,7 @@ public class ReiniciarPartida {
 																				// corresponde
 			}
 		}
+		
 		if (CrearTableroPartida.arrastraPieza != null)
 			CrearTableroPartida.arrastraPieza.reiniciarVariables();
 

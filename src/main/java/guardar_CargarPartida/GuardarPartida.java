@@ -30,7 +30,11 @@ public class GuardarPartida implements Runnable{
 	private JButton[][] casillas;
 	private JButton casilla;
 	private JLabel textoFlotante;
-	private boolean guardandoPartida;
+	private static boolean guardandoPartida;
+
+	public static boolean isGuardandoPartida() {
+		return guardandoPartida;
+	}
 
 	public static void setTiempo(double tiempo) {
 		CrearTableroPartida.tiempo = tiempo;

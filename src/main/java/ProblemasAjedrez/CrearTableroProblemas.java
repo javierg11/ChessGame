@@ -118,7 +118,7 @@ public class CrearTableroProblemas implements Runnable {
 
 	
 
-	public void crearTablero(int nivelActual, List<PosicionPiezas> problemas) {
+	public void crearTablero(List<PosicionPiezas> problemas) {
 	    String nombreCoordenadas = null;
 	    int numeroFila = 0;
 	    char letraColumna = ' ';
@@ -148,7 +148,6 @@ public class CrearTableroProblemas implements Runnable {
 	                else
 	                    casilla.setBackground(Colores.CASILLAS_NEGRAS);
 
-	                // --- Aquí va la lógica de colocar la pieza si corresponde ---
 	                String codCasilla = "" + fila + columna;
 	                for (PosicionPiezas p : problemas) {
 	                    if (p.getCasilla().equals(codCasilla)) {
@@ -188,7 +187,7 @@ public class CrearTableroProblemas implements Runnable {
 	    }
 
 	    if (piezasDelNivel != null) {
-	        crearTablero(nivelActual, piezasDelNivel);
+ 	        crearTablero(piezasDelNivel);
 	    } else {
 	    	FinPartida.mensajeProblemaSiguiente("No hay más problemas disponibles",casillas,false,false);
 	        System.out.println("No se encontró el nivel " + nivelActual);

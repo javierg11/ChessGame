@@ -19,13 +19,13 @@ public class TableroAjedrez {
 
 	
 
-	private static JFrame tablero = null;
+	public static JFrame tablero = null;
 	public static JButton casilla = null;
 	public static JButton[][] casillas = null;
 
 	
 	
-	public static void crearTipoTablero(boolean tipoDeJuego,int tiempo, int incremento, boolean blancas, String nombre) {
+	public static void crearTipoTablero(boolean tipoDeJuego,int tiempo, int incremento, String nombre) {
 		CrearTableroPartida tarea = new CrearTableroPartida(tablero, casillas, casilla, 
 				 textoFlotante, tiempo, incremento,nombre);
 		Thread hilo = new Thread(tarea);

@@ -131,7 +131,7 @@ public class EmpezarAJugar {
                 }
                 frame.dispose();
 
-                TableroAjedrez.crearTipoTablero(true, tiempo, incremento, true, "Tablero Ajedrez");
+                TableroAjedrez.crearTipoTablero(true, tiempo, incremento,  "Tablero Ajedrez");
             }
         });
 

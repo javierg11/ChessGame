@@ -1,8 +1,11 @@
 [
   { "nivel": 1, "movimiento": "61", "pieza": "wD" },
-  { "nivel": 2, "movimiento": "77", "pieza": "wR" },
-  { "nivel": 3, "movimiento": "77", "pieza": "wD" },
-  { "nivel": 4, "movimiento": "75", "pieza": "wD" },
-  { "nivel": 5, "movimiento": "76", "pieza": "wR" }
+  { "nivel": 2, "movimiento": "01", "pieza": "wT" },
+  { "nivel": 3, "movimiento": "15", "pieza": "wC" },
+  { "nivel": 4, "movimiento": "56", "pieza": "wR" },
+  { "nivel": 5, "movimiento": "56", "pieza": "wD" },
+  { "nivel": 6, "movimiento": "60", "pieza": "wT" },
+  { "nivel": 7, "movimiento": "22", "pieza": "wD" },
+  { "nivel": 8, "movimiento": "66", "pieza": "wT" }
 ]
 

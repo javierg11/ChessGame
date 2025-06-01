@@ -40,4 +40,11 @@
   "nombreOponente" : "asd",
   "jugadoCon" : "B",
   "jugadas" : [ "wP-64-44", "bP-14-34", "wD-73-37", "bR-04-14", "wD-37-34" ]
+}, {
+  "idPartida" : 7,
+  "nombre" : "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeessssssssssssssssssdfs",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "sdf",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-62-52", "bP-12-22" ]
 } ]

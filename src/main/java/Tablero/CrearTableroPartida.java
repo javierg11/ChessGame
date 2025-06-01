@@ -9,6 +9,8 @@ import java.awt.*;
 import javax.swing.*;
 
 import ConexionPartida.Movimientos;
+import ConexionPartida.SalaInfo;
+import ConexionPartida.ServidorSala;
 
 
 /**
@@ -145,33 +147,52 @@ public class CrearTableroPartida implements Runnable {
 	}
 
 	public void jpanelTiempo() {
-		
-		panelTiempo = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		panelTiempo.setPreferredSize(new Dimension(250, 600)); // Ampliado
-		
-		JLabel labelIzquierda = new JLabel("Tiempo");
-		labelIzquierda.setFont(new Font("Arial", Font.BOLD, 24)); // Fuente Arial, negrita, tamaño 24
-		if (tiempo < 0)
-			tiempo = 0;
-		// Construye el HTML inicial
-		
-		
-		labelTiempo = new JLabel();
-		labelTiempo=crearLabelTiempo(tiempo,labelTiempo);
-		
-		
-		
-		if (!(tiempo == 0)) {
-			// Esto es para ir actualizando el reloj
-			setTemporizador(new TiempoPartida(labelTiempo, tiempo, casillas, incremento));
-		}
-		panelTiempo.setLayout(new BoxLayout(panelTiempo, BoxLayout.Y_AXIS));
-		panelTiempo.add(labelIzquierda);
-		panelTiempo.add(labelTiempo);
-		System.out.println(tiempo);
+	    panelTiempo = new JPanel();
+	    panelTiempo.setLayout(new BoxLayout(panelTiempo, BoxLayout.Y_AXIS));
+	    panelTiempo.setPreferredSize(new Dimension(250, 600));
 
+	    JLabel labelIzquierda = new JLabel("Tiempo");
+	    labelIzquierda.setFont(new Font("Arial", Font.BOLD, 24));
+
+	    if (tiempo < 0)
+	        tiempo = 0;
+	    labelTiempo = new JLabel();
+	    labelTiempo = crearLabelTiempo(tiempo, labelTiempo);
+
+	    if (!(tiempo == 0)) {
+	        setTemporizador(new TiempoPartida(labelTiempo, tiempo, casillas, incremento));
+	    }
+
+	    // Añade los componentes del tiempo
+	    panelTiempo.add(labelIzquierda);
+	    panelTiempo.add(labelTiempo);
+
+	    // Añade espacio (opcional, para separar el color de los labels)
+	    panelTiempo.add(Box.createVerticalStrut(15));
+
+	    // Panel para mostrar el color de la sala
+	    JPanel panelColorSala = new JPanel();
+	    panelColorSala.setPreferredSize(new Dimension(100, 30)); // Tamaño pequeño
+
+	    // Colorea el panel según la variable de color
+	    Boolean colorSala = SalaInfo.isColor();
+	    System.out.println(colorSala);
+	    if (colorSala != null) {
+	        if (ServidorSala.mov.isColorAJugar()) {
+	            panelColorSala.setBackground(Color.WHITE);
+	        } else {
+	            panelColorSala.setBackground(Color.BLACK);
+	        }
+	    } else {
+	        // Si es null, puedes poner un color por defecto, por ejemplo gris
+	        panelColorSala.setBackground(Color.GRAY);
+	    }
+
+	    // Añade el panel de color al panel principal, en la parte de abajo
+	    panelTiempo.add(panelColorSala);
 
 	}
+
 
 	public void setTemporizador(TiempoPartida temporizador) {
 		CrearTableroPartida.temporizador = temporizador;

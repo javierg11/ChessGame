@@ -4,10 +4,8 @@ public class PosicionPiezas {
     private String pieza;
     private String casilla;
 
-    // Constructor vacío (necesario para Jackson)
     public PosicionPiezas() {}
 
-    // Constructor útil si lo necesitas
     public PosicionPiezas(String pieza, String casilla) {
         this.pieza = pieza;
         this.casilla = casilla;

@@ -1,6 +1,7 @@
 package ConstantesComunes;
 
 import java.awt.Color;
+
 import java.util.function.Consumer;
 
 import javax.swing.Icon;

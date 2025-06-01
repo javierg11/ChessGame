@@ -8,7 +8,7 @@ public class Movimientos {
     private static JButton[][] casillas;
     private String ficha;
     private String movimientos;
-    private boolean colorAJugar;
+    private static Boolean colorAJugar;
 
     public Movimientos() {
     	
@@ -27,7 +27,7 @@ public class Movimientos {
     public String getOrigen() {
         return origen;
     }
-    public boolean isColorAJugar() {
+    public Boolean isColorAJugar() {
 		return colorAJugar;
 	}
 
@@ -56,8 +56,8 @@ public class Movimientos {
     public void setDestino(String destino) {
         this.destino = destino;
     }
-    public void setColorAJugar(boolean colorAJugar) {
-    	this.colorAJugar = colorAJugar;
+    public static void setColorAJugar(boolean colorAJugar) {
+    	Movimientos.colorAJugar = colorAJugar;
 	}
     public static void setCasillas(JButton[][] casillas) {
     	Movimientos.casillas = casillas;

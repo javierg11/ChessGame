@@ -1,13 +1,11 @@
 package Tablero;
 
-import java.awt.Component;
+
 import java.awt.Dimension;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import ConstantesComunes.Colores;
 
@@ -29,12 +27,12 @@ public class CrearTableroNormal {
 				if (fila == 8 && columna == 8)
 					casilla.setEnabled(false);
 				else if (fila == 8) {
-					// casilla.setText(columna+"");
+					//casilla.setText(columna+"");
 					casilla.setEnabled(false);
 					letraColumna = (char) ('A' + columna);
 					casilla.setText("" + letraColumna);
 				} else if (columna == 8) {
-					// casilla.setText(""+fila);
+					//casilla.setText(""+fila);
 					casilla.setEnabled(false);
 					numeroFila = 8 - fila;
 					nombreCoordenadas = "" + numeroFila;

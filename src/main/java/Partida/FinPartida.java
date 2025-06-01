@@ -5,12 +5,14 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import ConexionPartida.ClienteSala;
 import ConexionPartida.ServidorSala;
 import ConstantesComunes.CreacionJOptionPanelDialog;
 import InterfazGrafica.EmpezarAJugar;
 import Piezas.DetectarJaqueEnPartida;
 import ProblemasAjedrez.CrearTableroProblemas;
 import Tablero.CrearTableroPartida;
+import Tablero.FuncionesVisualesTablero;
 import Tablero.MovimientosPosibles;
 import Tablero.TableroAjedrez;
 import guardar_CargarPartida.GuardarPartida;
@@ -29,15 +31,19 @@ public class FinPartida {
 				texto = "<html><b>¡Victoria!</b><br>El jugador "
 						+ (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
 						+ " no tiene movimientos posibles.<br><i>Jaque mate.</i></html>";
-				if (ServidorSala.mov.isColorAJugar() == CalculosEnPartida.colorAMover()) {
-					ServidorSala.jugando=false;
+				mostrarReiniciar=true;
+				if (ServidorSala.mov.isColorAJugar() != null) {
+					if (ServidorSala.mov.isColorAJugar() == CalculosEnPartida.colorAMover()) {
 					mostrarReiniciar=false;
 					texto = "<html><b>¡Derrorta!</b><br>El jugador "
 							+ (CalculosEnPartida.colorAMover() ? "blanco" : "negro")
 							+ " no tiene movimientos posibles.<br><i>Jaque mate.</i></html>";
 				}else if (ServidorSala.mov.isColorAJugar() != CalculosEnPartida.colorAMover()) {
-					ServidorSala.jugando=false;
 					mostrarReiniciar=false;
+				}
+				}
+				if (GuardarPartida.isGuardandoPartida()) {
+					texto = "<html><b>¡Informacion!</b><br>ELa partida ha termiando. <br>¿Qué quieres hacer?.</i></html>";
 				}
 			}
 
@@ -60,53 +66,84 @@ public class FinPartida {
 			return;
 		}
 		if (!texto.isEmpty()) {
-			mensajeTerminarPartida(texto, casillas,mostrarReiniciar);
+			mensajeTerminarPartida(texto, casillas,mostrarReiniciar, GuardarPartida.isGuardandoPartida());
 			texto = "";
 		}
 
 	}
 
-	public static void mensajeTerminarPartida(String texto, JButton[][] casillas, boolean mostrarReiniciar) {
+	public static void mensajeTerminarPartida(String texto, JButton[][] casillas, boolean mostrarReiniciar, boolean guardandoPartida) {
 		if (CrearTableroPartida.getTemporizador()!=null)
 			CrearTableroPartida.getTemporizador().detenerTiempo();
 
 	    // Opciones personalizadas según el contexto
 	    String[] opciones;
 	    if (mostrarReiniciar) {
-	        opciones = new String[] { "Volver a jugar", "Menú", "Salir del juego","Guardar Partida" };
-	    } else {
-	        opciones = new String[] { "Menú", "Salir del juego","Guardar Partida" };
+	        opciones = new String[] { "Volver a jugar", "Guardar Partida", "Salir del juego","Menú" };
+	    } else if (guardandoPartida){
+	    	opciones = new String[] { "Guardar Partida", "Salir del juego", "Menú", };
+	    }
+	    else {
+	        opciones = new String[] { "Guardar Partida", "Salir del juego","Menú" };
 	    }
 
 
 	            // Lógica de opciones sin repetir código
 	            if (mostrarReiniciar) {
+	            	ClienteSala.jugando=false;
+	            	ServidorSala.jugando=false;
 	            	CreacionJOptionPanelDialog.mensajeDeTextoConRetardo(texto, "Fin de la partida", opciones, a -> {
 	        	        if (a == 0)
 	        	        	 volverAJugar(casillas);
-	        	        if (a == 1)
-	        	        	irAMenuPrincipalPartida();
-	        	        if (a == 2)
-	        	        	 salirDelJuego();
-	        	        if (a==3) {
-	        	        	irAMenuPrincipalPartida();
+	        	        else if (a == 1) {
 	        	        	JButton botonCualquiera = casillas[0][0]; 
 	        	        	JPanel panelPadre = (JPanel) botonCualquiera.getParent();
 	        	        	GuardarPartida.guardarPartida(panelPadre);
+	        	        	irAMenuPrincipalPartida();
+	        	        }  	
+	        	        else if (a == 2)
+	        	        	 salirDelJuego();
+	        	        else if (a==3) {
+	        	        	
+	        	        	irAMenuPrincipalPartida();
 	        	        }
 	        	    });
+	            }else if(guardandoPartida) {
+	            		CreacionJOptionPanelDialog.mensajeDeTextoConRetardo(texto, "Fin de la partida", opciones, a -> {
+		        	        if (a == 0) {
+		        	        	JButton botonCualquiera = casillas[0][0]; 
+		        	        	JPanel panelPadre = (JPanel) botonCualquiera.getParent();
+		        	        	GuardarPartida.guardarPartida(panelPadre);
+		        	        }
+		        	        else if (a == 1)
+		        	        	salirDelJuego();
+		        	        else if (a == 2)	 
+		        	        	irAMenuPrincipalPartida();
+		        	    });
+	            	
 	            } else {
-	            	//VA mal en el servidor
+	            	ConvertirAJugadasAceptables.getJugadasBonitas().clear();
+	        		CalculosEnPartida.getJugadas().clear();
+	        		CalculosEnPartida.setJugadasTotales(0);
+	        		TiempoPartida.setTiempoBlancas(CrearTableroPartida.getTiempo()*60);
+	        		TiempoPartida.setTiempoNegras(CrearTableroPartida.getTiempo()*60);
+
+	        		ServidorSala.algo();
+	        		FuncionesVisualesTablero.resetFullColores(casillas);
+	        		if (CrearTableroPartida.arrastraPieza != null)
+	        			CrearTableroPartida.arrastraPieza.reiniciarVariables();
 	            	CreacionJOptionPanelDialog.mensajeDeTextoConRetardo(texto, "Fin de la partida", opciones, a -> {
-	        	        if (a == 0)
-	        	        	irAMenuPrincipalPartida();
-	        	        if (a == 1)
-	        	        	salirDelJuego();
-	        	        if (a==2) {
-	        	        	irAMenuPrincipalPartida();
+	        	        if (a == 0) {
 	        	        	JButton botonCualquiera = casillas[0][0]; 
 	        	        	JPanel panelPadre = (JPanel) botonCualquiera.getParent();
 	        	        	GuardarPartida.guardarPartida(panelPadre);
+	        	        	irAMenuPrincipalPartida();
+	        	        }
+	        	        else if (a == 1)
+	        	        	salirDelJuego();
+	        	        else if (a==2) {
+	        	        	irAMenuPrincipalPartida();
+
 	        	        }
 
 	        	    });
@@ -119,22 +156,24 @@ public class FinPartida {
 	    // Opciones personalizadas según el contexto
 	    String[] opciones;
 	    if (problemaConseguido) {
-	        opciones = new String[] { "Seguiente Problema", "Menú", "Salir del juego" };
+	        opciones = new String[] { "Seguiente Problema", "Salir del juego", "Menú" };
 	    } else {
-	        opciones = new String[] { "Repetir Problema", "Menú", "Salir del juego" };
+	        opciones = new String[] { "Repetir Problema", "Salir del juego", "Menú" };
 	    }
 	    
 	    CreacionJOptionPanelDialog.mensajeDeTextoConRetardo(texto, "Problemas", opciones, a -> {
 	        if (a == 0) {
-	        	if (problemaConseguido)
+	        	if (problemaConseguido) {
 	        		siguienteProblema();
+	        	}
 	        	else
 	        		repetirProblema();
 	        }
 	        if (a == 1)
-	        	irAMenuPrincipal();
-	        if (a == 2)
 	        	salirDelJuego();
+	        if (a == 2)
+	        	irAMenuPrincipal();
+
 	    });
 
 	}

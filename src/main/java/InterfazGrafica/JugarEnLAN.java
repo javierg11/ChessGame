@@ -64,7 +64,7 @@ public class JugarEnLAN {
             // Crear y mostrar el nuevo JFrame
         	frame.dispose();
             EmpezarAJugar.getFrame().setVisible(true);
-
+            
         });        
         // Cambia el cursor a mano cuando el ratón está sobre el botón de acción
         Botones.addHoverEffect(crearPartidaButton, Colores.CASILLAS_NEGRAS, Colores.CASILLAS_NEGRAS_OSCURO);

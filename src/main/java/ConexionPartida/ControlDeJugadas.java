@@ -24,7 +24,7 @@ public class ControlDeJugadas {
 		// out.write(MetodosMoverPiezas.sensorDeTurnosDosJugadores + "\n");
 		out.flush();
 	}catch(SocketException  a) {
-		FinPartida.mensajeTerminarPartida("El oponente se ha retirado",Movimientos.getCasillas(),false) ;
+		FinPartida.mensajeTerminarPartida("El oponente se ha retirado",Movimientos.getCasillas(),false, false) ;
 	} catch(Exception e) {
 		e.printStackTrace();
 	}
@@ -46,7 +46,7 @@ public class ControlDeJugadas {
 		FuncionesVisualesTablero.setVerCasillas(true);
 
 		}catch(SocketException  a) {
-			FinPartida.mensajeTerminarPartida("El oponente se ha retirado",Movimientos.getCasillas(),false) ;
+			FinPartida.mensajeTerminarPartida("El oponente se ha retirado",Movimientos.getCasillas(),false, false) ;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
