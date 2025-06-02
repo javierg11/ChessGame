@@ -61,7 +61,7 @@ public class FinPartida {
 			else
 		        texto="Lo siento, has fallado. ¿Quieres intentar de nuevo?";
 
-			mensajeProblemaSiguiente(texto, casillas, esProblema, problemaConseguido);
+			mensajeProblemaSiguiente(texto, casillas, esProblema, problemaConseguido,false);
 			esProblema=false;
 			return;
 		}
@@ -122,14 +122,6 @@ public class FinPartida {
 		        	    });
 	            	
 	            } else {
-	            	ConvertirAJugadasAceptables.getJugadasBonitas().clear();
-	        		CalculosEnPartida.getJugadas().clear();
-	        		CalculosEnPartida.setJugadasTotales(0);
-	        		TiempoPartida.setTiempoBlancas(CrearTableroPartida.getTiempo()*60);
-	        		TiempoPartida.setTiempoNegras(CrearTableroPartida.getTiempo()*60);
-
-	        		ServidorSala.algo();
-	        		FuncionesVisualesTablero.resetFullColores(casillas);
 	        		if (CrearTableroPartida.arrastraPieza != null)
 	        			CrearTableroPartida.arrastraPieza.reiniciarVariables();
 	            	CreacionJOptionPanelDialog.mensajeDeTextoConRetardo(texto, "Fin de la partida", opciones, a -> {
@@ -145,19 +137,38 @@ public class FinPartida {
 	        	        	irAMenuPrincipalPartida();
 
 	        	        }
+	        	        
 
 	        	    });
-	            
+	            	javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
+	                    ConvertirAJugadasAceptables.getJugadasBonitas().clear();
+	                    CalculosEnPartida.getJugadas().clear();
+	                    CalculosEnPartida.setJugadasTotales(0);
+	                    TiempoPartida.setTiempoBlancas(CrearTableroPartida.getTiempo() * 60);
+	                    TiempoPartida.setTiempoNegras(CrearTableroPartida.getTiempo() * 60);
+
+	                    FuncionesVisualesTablero.resetFullColores(casillas);
+
+	                    ServidorSala.algo();
+	                    // Detenemos el timer para que solo se ejecute una vez
+	                    ((javax.swing.Timer)e.getSource()).stop();
+	                });
+	                timer.setRepeats(false); // Para que solo se ejecute una vez
+	                timer.start();
 	}
 	        }
 
-	public static void mensajeProblemaSiguiente(String texto, JButton[][] casillas, boolean mostrarReiniciar, boolean problemaConseguido) {
+	public static void mensajeProblemaSiguiente(String texto, JButton[][] casillas, boolean mostrarReiniciar, boolean problemaConseguido, boolean sinProblemas) {
 
 	    // Opciones personalizadas según el contexto
 	    String[] opciones;
 	    if (problemaConseguido) {
 	        opciones = new String[] { "Seguiente Problema", "Salir del juego", "Menú" };
-	    } else {
+	    }else if(sinProblemas) {
+	    	 opciones = new String[] { "Menú", "Salir del juego" };
+	    }
+	    
+	    else {
 	        opciones = new String[] { "Repetir Problema", "Salir del juego", "Menú" };
 	    }
 	    
@@ -165,13 +176,15 @@ public class FinPartida {
 	        if (a == 0) {
 	        	if (problemaConseguido) {
 	        		siguienteProblema();
+	        	}else if(sinProblemas) {
+	        		irAMenuPrincipal();
 	        	}
 	        	else
 	        		repetirProblema();
 	        }
-	        if (a == 1)
+	        else if (a == 1)
 	        	salirDelJuego();
-	        if (a == 2)
+	        else if (a == 2)
 	        	irAMenuPrincipal();
 
 	    });

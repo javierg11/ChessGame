@@ -198,8 +198,7 @@ public class ClienteSala {
                     while (jugando) {
 
                     	if (mov.isColorAJugar() == null) {
-                    		SwingUtilities.invokeLater(() ->
-                            JOptionPane.showMessageDialog(null, "Hubo un error inseperado, por favor reinicie la aplicación.", "Error", JOptionPane.ERROR_MESSAGE));
+                    		mov.setColorAJugar(false);
                     	}
                 	   if (mov.isColorAJugar()) {
 

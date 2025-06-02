@@ -5,6 +5,7 @@ import ConstantesComunes.JFrames;
 import Partida.CalculosEnPartida;
 import Partida.FinPartida;
 import Tablero.ArrastraPieza;
+import Tablero.CrearTableroNormal;
 import Tablero.PonerPiezasTablero;
 
 import java.awt.*;
@@ -189,8 +190,10 @@ public class CrearTableroProblemas implements Runnable {
 	    if (piezasDelNivel != null) {
  	        crearTablero(piezasDelNivel);
 	    } else {
-	    	FinPartida.mensajeProblemaSiguiente("No hay más problemas disponibles",casillas,false,false);
-	        System.out.println("No se encontró el nivel " + nivelActual);
+	    	ArrastraPieza arrastraPieza=null;
+			CrearTableroNormal crearTableroNormal = new CrearTableroNormal();
+			crearTableroNormal.crearTablero(casillas, casilla, panelTablero, arrastraPieza, textoFlotante, true, true, false);
+	    	FinPartida.mensajeProblemaSiguiente("No hay más problemas disponibles",casillas,false,false,true);
 	    }
 	}
 
