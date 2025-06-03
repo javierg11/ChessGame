@@ -1,0 +1,8 @@
+[ {
+  "idPartida" : 1,
+  "nombre" : "Prueba",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "Prueba",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-64-44", "bP-14-34", "wA-75-42", "bA-05-32", "wC-76-55", "bC-06-25" ]
+} ]

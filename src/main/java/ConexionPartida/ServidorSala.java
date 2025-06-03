@@ -234,13 +234,13 @@ public class ServidorSala {
 							if (mov.isColorAJugar()) {
 								if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
 									controlDeJugadas.hacerJugadas(out);
-									mov.setColorAJugar(false);
+									Movimientos.setColorAJugar(false);
 									MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
 																							// después de enviar
 								}
 							} else {
 								controlDeJugadas.escucharJugadas(in);
-								mov.setColorAJugar(true);
+								Movimientos.setColorAJugar(true);
 								MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO después
 																						// de enviar
 							}

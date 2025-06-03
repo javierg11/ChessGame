@@ -2,6 +2,7 @@ package ConexionPartida;
 
 import java.awt.Color;
 
+
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -9,7 +10,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -24,8 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import Partida.FinPartida;
-import Tablero.CrearTableroPartida;
 import Tablero.MetodosMoverPiezas;
 import Tablero.TableroAjedrez;
 import interfazGrafica.JugarEnLAN;
@@ -119,7 +117,12 @@ public class ClienteSala {
     	                String texto = String.format("Nombre de Sala: %s", sala.nombre);
 
     	                JButton btn = new JButton(texto) {
-    	                    @Override
+    	                    /**
+							 * 
+							 */
+							private static final long serialVersionUID = 1L;
+
+							@Override
     	                    protected void paintComponent(Graphics g) {
     	                        Graphics2D g2 = (Graphics2D) g.create();
     	                        g2.setColor(new Color(200, 200, 200, 80));
@@ -198,13 +201,13 @@ public class ClienteSala {
                     while (jugando) {
 
                     	if (mov.isColorAJugar() == null) {
-                    		mov.setColorAJugar(false);
+                    		Movimientos.setColorAJugar(false);
                     	}
                 	   if (mov.isColorAJugar()) {
 
                 		   if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
                 			   controlDeJugadas.hacerJugadas(out);
-                			   mov.setColorAJugar(false);
+                			   Movimientos.setColorAJugar(false);
 
 								MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
 								// después de enviar
@@ -213,7 +216,7 @@ public class ClienteSala {
 
 						} else {
 							controlDeJugadas.escucharJugadas(in);
-							mov.setColorAJugar(true);
+							Movimientos.setColorAJugar(true);
  
 							MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
 							// después de enviar

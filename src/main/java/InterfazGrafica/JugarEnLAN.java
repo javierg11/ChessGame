@@ -2,6 +2,7 @@ package interfazGrafica;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GradientPaint;
@@ -16,7 +17,6 @@ import javax.swing.JPanel;
 
 import ConexionPartida.ServidorSala;
 import ConexionPartida.ClienteSala;
-import ProblemasAjedrez.CrearTableroProblemas;
 import UtilsComunes.Botones;
 import UtilsComunes.Colores;
 import UtilsComunes.JFrames;
@@ -106,7 +106,12 @@ public class JugarEnLAN {
     public static void crearCamposJFrame() {
         // Panel de fondo con degradado personalizado
         backgroundPanel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;

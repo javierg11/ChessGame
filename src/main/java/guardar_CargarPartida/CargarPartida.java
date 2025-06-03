@@ -51,11 +51,12 @@ public class CargarPartida implements Runnable {
 	public static ArrastraPieza arrastraPieza;
 	private JPanel panelTablero;
 
-	public CargarPartida(JFrame tablero, JButton[][] casillas, JButton casilla, JLabel textoFlotante) {
+	public CargarPartida(JFrame tablero, JButton[][] casillas, JButton casilla, JLabel textoFlotante, String nombre) {
 		CrearTableroPartida.tablero = tablero;
 		this.casillas = casillas;
 		this.casilla = casilla;
 		this.textoFlotante = textoFlotante;
+		this.nombre=nombre;
 	}
 
 	@Override

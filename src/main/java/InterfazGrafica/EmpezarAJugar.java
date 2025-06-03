@@ -25,7 +25,12 @@ public class EmpezarAJugar {
 
         // Panel personalizado para el fondo degradado
         JPanel panelFondo = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 int w = getWidth();
@@ -106,6 +111,7 @@ public class EmpezarAJugar {
             int result = JOptionPane.showConfirmDialog(
                 null,
                 panel,
+                
                 "Configura la partida",
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE
@@ -177,19 +183,16 @@ public class EmpezarAJugar {
                 JOptionPane.YES_NO_OPTION
             );
 
-            if (respuesta == JOptionPane.YES_OPTION) {
-                // Cierra la sesión si el usuario está conectado
-                    UsuarioConectado.cerrar_Iniciar_Sesion(JFrameInicioSesion.getUsuario(), false);
-                
-                // OPCIONAL: Puedes mostrar un mensaje de confirmación
-                // JOptionPane.showMessageDialog(frame, "Sesión cerrada correctamente");
-            }else
+            if (!(respuesta == JOptionPane.YES_OPTION)) {
             	return;
             }
-            // Independientemente de la respuesta, se cierra el frame y se muestra la pantalla principal
+            }
+           
+            UsuarioConectado.cerrar_Iniciar_Sesion(JFrameInicioSesion.getUsuario(), false);
             frame.dispose();
             PantallaPrincipalJuego pantallaPrincipalJuego = new PantallaPrincipalJuego();
             pantallaPrincipalJuego.mostrar();
+
         });
 
 

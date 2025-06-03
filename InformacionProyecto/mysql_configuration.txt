@@ -1,0 +1,36 @@
+Para instalar mysql en Ubuntu-Debian se tiene que hacer por comandos
+
+sudo apt update
+sudo apt upgrade -y
+sudo apt install mysql-server -y
+sudo mysql_secure_installation
+Sigue las instrucciones para:
+
+    Establecer la contraseña del usuario root de MySQL
+
+    Eliminar usuarios anónimos
+
+    Deshabilitar el acceso remoto de root
+
+    Eliminar la base de datos de test
+
+    Recargar privilegios
+    
+sudo mysql -u root -p
+CREATE USER 'usuario'@'%' IDENTIFIED BY 'your_pass';
+GRANT ALL PRIVILEGES ON *.* TO 'usuario'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+
+En LAN (opcional):
+
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+bind-address = 127.0.0.1 a bind-address = 0.0.0.0
+sudo systemctl restart mysql
+sudo ufw allow from 192.168.0.0/16 to any port 3306
+sudo systemctl status mysql
+
+mysql -u root -p
+
+

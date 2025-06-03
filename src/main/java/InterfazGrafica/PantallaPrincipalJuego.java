@@ -2,6 +2,7 @@ package interfazGrafica;
 
 import javax.swing.*;
 
+
 import ConexionBBDD.UsuarioConectado;
 import Tablero.TableroAjedrez;
 import UtilsComunes.Botones;
@@ -9,10 +10,6 @@ import UtilsComunes.Colores;
 import UtilsComunes.JFrames;
 
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class PantallaPrincipalJuego {
     // Atributos de la clase
@@ -27,7 +24,7 @@ public class PantallaPrincipalJuego {
 
     private void crearTextoJFrame() {
         // Título
-        titleLabel = new JLabel("Juego de Ajedrez");
+        titleLabel = new JLabel("Chess Game");
         titleLabel.setFont(new Font("Helvetica", Font.BOLD, 60));
         titleLabel.setForeground(new Color(245, 245, 220));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -91,7 +88,7 @@ public class PantallaPrincipalJuego {
 
     private void crearPantallaPrincipalJuego() {
     	frame=new JFrame();
-        frame = JFrames.crearJFrameBasicos(frame,"Chess Master",800, 600);
+        frame = JFrames.crearJFrameBasicos(frame,"Chess Game",800, 600);
 
         frame.setLayout(new BorderLayout());
 
@@ -108,7 +105,11 @@ public class PantallaPrincipalJuego {
 
     // Clase interna para panel con imagen de fondo
     private class ImagePanel extends JPanel {
-        private Image backgroundImage;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private Image backgroundImage;
 
         public ImagePanel(ImageIcon imageIcon) {
             this.backgroundImage = imageIcon.getImage();
@@ -144,26 +145,9 @@ public class PantallaPrincipalJuego {
        
     }
     public static void onExit() {
-        String ARCHIVO_JSON = "GuardarPartida" + File.separator + "partidas2.txt";
-        String contenido = "Este es un ejemplo de contenido para guardar en el archivo.";
-
-        // Asegúrate de que la carpeta existe
-        File directorio = new File("GuardarPartida");
-        if (!directorio.exists()) {
-            directorio.mkdirs();
-        }
-
-        // Escribir en el archivo
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_JSON, true))) { // true para agregar al final
-            writer.write(contenido);
-            writer.newLine(); // Salto de línea
-            System.out.println("Contenido escrito correctamente en el archivo.");
             if (UsuarioConectado.usuarioConetado(JFrameInicioSesion.getUsuario())) {
             		UsuarioConectado.cerrar_Iniciar_Sesion(JFrameInicioSesion.getUsuario(),false);
             }
-        } catch (IOException e) {
-            System.err.println("Error al escribir en el archivo: " + e.getMessage());
-        }
         
     }
 }

@@ -1,7 +1,7 @@
 package ConexionBBDD;
 import java.sql.*;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import guardar_CargarPartida.Partida;

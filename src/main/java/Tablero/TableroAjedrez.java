@@ -39,13 +39,13 @@ public class TableroAjedrez {
 	}
 	public static void crearTipoCargar() {
 
-		CargarPartida tarea = new CargarPartida(tablero, casillas, casilla, textoFlotante);
+		CargarPartida tarea = new CargarPartida(tablero, casillas, casilla, textoFlotante,"Cagar Partida");
 		Thread hilo = new Thread(tarea);
 		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
 	}
 	public static void crearTipoGuadar() {
 
-		GuardarPartida tarea = new GuardarPartida(tablero, casillas, casilla, textoFlotante);
+		GuardarPartida tarea = new GuardarPartida(tablero, casillas, casilla, textoFlotante, "Guardar Partida");
 		Thread hilo = new Thread(tarea);
 		hilo.start(); // Esto ejecuta el run() en un hilo independiente	}
 	}

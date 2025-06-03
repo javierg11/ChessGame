@@ -6,7 +6,11 @@ import java.awt.*;
 
 //https://stackoverflow.com/questions/48620030/how-to-make-the-youtubes-rotating-spinner-loading-screen-on-java-swing
 public class CircularSpinner extends JComponent {
-    private int angle = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int angle = 0;
     private Timer timer;
 
     public CircularSpinner(int size) {

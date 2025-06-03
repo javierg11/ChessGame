@@ -20,7 +20,7 @@ public class Movimientos {
         this.destino = destino;
         this.ficha = ficha;
         this.movimientos = movimientos;
-        this.casillas=casillas;
+        Movimientos.casillas=casillas;
     }
 
     // Getters

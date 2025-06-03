@@ -5,21 +5,19 @@ import java.util.HashMap;
 import javax.swing.JButton;
 
 public class EnroqueRey {
+	static boolean torreCortaMovidaBlancas = false;
+	static boolean torreLargaMovidaBlancas = false;
+	static boolean torreCortaMovidaNegras = false;
+	static boolean torreLargaMovidaNegras = false;
+	static boolean reyMovidoBlancas = false;
+	static boolean reyMovidoNegras = false;
+
 	public static String enroque(String ficha, HashMap<Integer, String> jugadas, JButton[][] casillas, String pos, boolean verEnroque) {
 		String movimiento="";
 		if (!verEnroque)
 			return "";
-		boolean torreCortaMovidaBlancas = false;
-		boolean torreLargaMovidaBlancas = false;
-		boolean torreCortaMovidaNegras = false;
-		boolean torreLargaMovidaNegras = false;
-		boolean reyMovidoBlancas = false;
-		boolean reyMovidoNegras = false;
 
 		for (String jugada : jugadas.values()) {
-			System.out.println(jugada);
-			System.out.println(jugada.startsWith("wR"));
-			System.out.println(jugada.startsWith("bR"));
 		    // Torres blancas
 		    if (jugada.startsWith("wT-77-")) torreCortaMovidaBlancas = true;
 		    if (jugada.startsWith("wT-70-")) torreLargaMovidaBlancas = true;
@@ -29,30 +27,41 @@ public class EnroqueRey {
 		    if (jugada.startsWith("bT-00-")) torreLargaMovidaNegras = true;
 
 		    // Reyes
-		    if (jugada.startsWith("wR")) reyMovidoBlancas = true;
-		    if (jugada.startsWith("bR")) reyMovidoNegras = true;
+		    if (jugada.startsWith("wR")) {
+		    	reyMovidoBlancas = true;
+		    }
+		    if (jugada.startsWith("bR")) {
+		    	reyMovidoNegras = true;
+		    }
 		}
 
-		if (!reyMovidoBlancas && !torreLargaMovidaBlancas) {
-		    String movimietoEnroque = enroqueLargo(casillas, ficha, pos);
-		    if (!movimietoEnroque.isEmpty())
-			    movimiento +=movimietoEnroque+" ";
+		// Solo para blancas
+		if (ficha.startsWith("w")) {
+		    if (!reyMovidoBlancas && !torreLargaMovidaBlancas) {
+		        String movimietoEnroque = enroqueLargo(casillas, ficha, pos);
+		        if (!movimietoEnroque.isEmpty())
+		            movimiento += movimietoEnroque + " ";
+		    }
+		    if (!reyMovidoBlancas && !torreCortaMovidaBlancas) {
+		        String movimietoEnroque = enroqueCorto(casillas, ficha, pos);
+		        if (!movimietoEnroque.isEmpty())
+		            movimiento += movimietoEnroque + " ";
+		    }
 		}
-		else if (!reyMovidoNegras && !torreLargaMovidaNegras) {
-		    String movimietoEnroque = enroqueLargo(casillas, ficha, pos);
-		    if (!movimietoEnroque.isEmpty())
-			    movimiento +=movimietoEnroque+" ";
+		// Solo para negras
+		if (ficha.startsWith("b")) {
+		    if (!reyMovidoNegras && !torreLargaMovidaNegras) {
+		        String movimietoEnroque = enroqueLargo(casillas, ficha, pos);
+		        if (!movimietoEnroque.isEmpty())
+		            movimiento += movimietoEnroque + " ";
+		    }
+		    if (!reyMovidoNegras && !torreCortaMovidaNegras) {
+		        String movimietoEnroque = enroqueCorto(casillas, ficha, pos);
+		        if (!movimietoEnroque.isEmpty())
+		            movimiento += movimietoEnroque + " ";
+		    }
 		}
-		if (!reyMovidoBlancas && !torreCortaMovidaBlancas) {
-		    String movimietoEnroque = enroqueCorto(casillas, ficha, pos);
-		    if (!movimietoEnroque.isEmpty())
-			    movimiento +=movimietoEnroque+" ";
-		}
-		else if (!reyMovidoNegras && !torreCortaMovidaNegras) {
-		    String movimietoEnroque = enroqueCorto(casillas, ficha, pos);
-		    if (!movimietoEnroque.isEmpty())
-		    	movimiento +=movimietoEnroque+" ";
-		}
+
 		return movimiento;
 
 	}

@@ -26,7 +26,11 @@ public class JFrameInicioSesion {
 
     // Clase personalizada para campos de texto con bordes redondeados
     public static class JERoundTextField extends JTextField {
-        private int arcw = 20; // Ancho del arco de redondeo
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private int arcw = 20; // Ancho del arco de redondeo
         private int arch = 20; // Alto del arco de redondeo
 
         public JERoundTextField(int columns) {
@@ -69,7 +73,11 @@ public class JFrameInicioSesion {
 
     // Clase personalizada para campos de contraseña con bordes redondeados
     public static class JERoundPasswordField extends JPasswordField {
-        private int arcw = 20;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private int arcw = 20;
         private int arch = 20;
 
         public JERoundPasswordField(int columns) {
@@ -228,7 +236,12 @@ public class JFrameInicioSesion {
     public static void crearCamposJFrame() {
         // Panel de fondo con degradado personalizado
         backgroundPanel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;

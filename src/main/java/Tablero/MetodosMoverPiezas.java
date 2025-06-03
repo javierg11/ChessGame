@@ -1,21 +1,15 @@
 package Tablero;
 
 import javax.swing.JButton;
+
 import javax.swing.SwingUtilities;
 
 import ConexionPartida.Movimientos;
 import Partida.CalculosEnPartida;
 import Partida.ConvertirAJugadasAceptables;
 import Partida.FinPartida;
-import Piezas.Alfil;
-import Piezas.Caballo;
-import Piezas.Dama;
 import Piezas.DetectarJaqueEnPartida;
 import Piezas.JugadaEspecialPeon;
-import Piezas.Peon;
-import Piezas.Piezas;
-import Piezas.Rey;
-import Piezas.Torre;
 import ProblemasAjedrez.ProblemaConseguido;
 import guardar_CargarPartida.CargarPartida;
 import guardar_CargarPartida.GuardarPartida;
@@ -87,7 +81,10 @@ public class MetodosMoverPiezas {
 
 				if (verTiempo) {
 					CrearTableroPartida.getTemporizador().aplicarIncremento();
+					
+					
 					if (!tiempoIniciado) {
+						
 						CrearTableroPartida.getTemporizador().iniciar();
 						tiempoIniciado = true;
 					}

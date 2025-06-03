@@ -12,7 +12,6 @@ import Piezas.Rey;
 import Piezas.Torre;
 
 public class ObtenerMovimientosPiezas {
-	private static boolean jugando = false;
 
 	public static Piezas identificarFuncionPieza(String ficha) {
 		Piezas pieza = null;

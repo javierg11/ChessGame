@@ -4,6 +4,9 @@ import Partida.CalculosEnPartida;
 import Partida.TiempoPartida;
 import UtilsComunes.JFrames;
 
+import static Partida.TiempoPartida.tiempoBlancas;
+import static Partida.TiempoPartida.tiempoNegras;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -188,8 +191,8 @@ public class CrearTableroPartida implements Runnable {
 
 	public void setTemporizador(TiempoPartida temporizador) {
 		CrearTableroPartida.temporizador = temporizador;
-		CrearTableroPartida.temporizador.tiempoBlancas = tiempo * 60;
-		CrearTableroPartida.temporizador.tiempoNegras = tiempo * 60;
+		tiempoBlancas = tiempo * 60;
+		tiempoNegras = tiempo * 60;
 	}
 
 	public static JLabel crearLabelTiempo(double tiempo, JLabel labelTiempo) {

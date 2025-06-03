@@ -2,6 +2,7 @@ package guardar_CargarPartida;
 
 import java.awt.*;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,12 +15,10 @@ import java.util.List;
 
 import Partida.CalculosEnPartida;
 import Partida.PosicionRepetida;
-import Partida.ReiniciarPartida;
 import Tablero.ArrastraPieza;
 import Tablero.CrearTableroPartida;
 import Tablero.CrearTableroNormal;
 import Tablero.MetodosMoverPiezas;
-import Tablero.PonerPiezasTablero;
 import UtilsComunes.Botones;
 import UtilsComunes.Colores;
 import UtilsComunes.JFrames;
@@ -48,11 +47,13 @@ public class GuardarPartida implements Runnable{
 	private JPanel panelTablero;
 
 	public GuardarPartida(JFrame tablero, JButton[][] casillas, JButton casilla,
-			JLabel textoFlotante) {
+			JLabel textoFlotante, String nombre) {
 		CrearTableroPartida.tablero = tablero;
 		this.casillas = casillas;
 		this.casilla = casilla;
 		this.textoFlotante = textoFlotante;
+		this.nombre=nombre;
+
 	}
 
 	@Override
