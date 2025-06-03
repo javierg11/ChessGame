@@ -1,7 +1,7 @@
 package Piezas;
 
-import ConstantesComunes.Colores;
 import Tablero.TableroAjedrez;
+import UtilsComunes.Colores;
 
 import java.awt.Color;
 import java.awt.Component;

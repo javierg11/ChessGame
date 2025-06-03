@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import InterfazGrafica.JFrameInicioSesion;
 import guardar_CargarPartida.Partida;
+import interfazGrafica.JFrameInicioSesion;
 
 public class CargarPartida_BBDD extends DatosBBDD{
 

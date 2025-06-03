@@ -47,4 +47,39 @@
   "nombreOponente" : "sdf",
   "jugadoCon" : "B",
   "jugadas" : [ "wP-62-52", "bP-12-22" ]
+}, {
+  "idPartida" : 8,
+  "nombre" : "aD",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "ASD",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-64-44", "bP-14-34", "wD-73-37", "bR-04-14", "wD-37-34" ]
+}, {
+  "idPartida" : 9,
+  "nombre" : "gtgt",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "t",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-64-44", "bP-14-34" ]
+}, {
+  "idPartida" : 10,
+  "nombre" : "muer",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "asd",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-66-46", "bP-17-37", "wP-67-47", "bP-37-46" ]
+}, {
+  "idPartida" : 11,
+  "nombre" : "765",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "asd",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-63-43", "bP-12-32", "wP-43-32", "bP-11-31", "wP-32-21", "bC-01-22", "wP-21-11", "bC-22-30", "wC-11-00wC" ]
+}, {
+  "idPartida" : 12,
+  "nombre" : "caballo",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "asd",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-63-43", "bP-12-32", "wP-43-32", "bP-11-21", "wP-32-21", "bC-01-22", "wP-21-11", "bC-22-30", "wC-11-00wC" ]
 } ]

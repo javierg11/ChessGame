@@ -5,10 +5,12 @@ package Piezas;
 
 import java.awt.Color;
 
+
 import javax.swing.JButton;
-import ConstantesComunes.Colores;
+
 import Tablero.FuncionesVisualesTablero;
-import Tablero.MetodosMoverPiezas;
+import Tablero.ObtenerMovimientosPiezas;
+import UtilsComunes.Colores;
 
 public class DetectarJaqueEnPartida {
 
@@ -111,7 +113,7 @@ public class DetectarJaqueEnPartida {
 					continue; // Casilla vacía
 
 				// Crear las piezas
-				Piezas piezaObj = MetodosMoverPiezas.identificarFuncionPieza(pieza);
+				Piezas piezaObj = ObtenerMovimientosPiezas.identificarFuncionPieza(pieza);
 				if (piezaObj==null)
 					return;
 				String movimientos = piezaObj.calcularMovimientos(i + "" + j, casillas, pieza,false);

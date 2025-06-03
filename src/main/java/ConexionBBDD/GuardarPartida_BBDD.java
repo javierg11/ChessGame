@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import InterfazGrafica.JFrameInicioSesion;
+import interfazGrafica.JFrameInicioSesion;
 
 public class GuardarPartida_BBDD extends DatosBBDD {
 

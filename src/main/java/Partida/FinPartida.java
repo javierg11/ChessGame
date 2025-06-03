@@ -2,20 +2,21 @@ package Partida;
 
 import java.util.HashMap;
 
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import ConexionPartida.ClienteSala;
 import ConexionPartida.ServidorSala;
-import ConstantesComunes.CreacionJOptionPanelDialog;
-import InterfazGrafica.EmpezarAJugar;
 import Piezas.DetectarJaqueEnPartida;
 import ProblemasAjedrez.CrearTableroProblemas;
 import Tablero.CrearTableroPartida;
 import Tablero.FuncionesVisualesTablero;
 import Tablero.MovimientosPosibles;
 import Tablero.TableroAjedrez;
+import UtilsComunes.CreacionJOptionPanelDialog;
 import guardar_CargarPartida.GuardarPartida;
+import interfazGrafica.EmpezarAJugar;
 
 public class FinPartida {
 	static String texto = "";
@@ -96,6 +97,7 @@ public class FinPartida {
 	        	        if (a == 0)
 	        	        	 volverAJugar(casillas);
 	        	        else if (a == 1) {
+	        	        	volverAJugar(casillas);
 	        	        	JButton botonCualquiera = casillas[0][0]; 
 	        	        	JPanel panelPadre = (JPanel) botonCualquiera.getParent();
 	        	        	GuardarPartida.guardarPartida(panelPadre);
@@ -104,7 +106,7 @@ public class FinPartida {
 	        	        else if (a == 2)
 	        	        	 salirDelJuego();
 	        	        else if (a==3) {
-	        	        	
+	        	        	volverAJugar(casillas);
 	        	        	irAMenuPrincipalPartida();
 	        	        }
 	        	    });
@@ -114,6 +116,7 @@ public class FinPartida {
 		        	        	JButton botonCualquiera = casillas[0][0]; 
 		        	        	JPanel panelPadre = (JPanel) botonCualquiera.getParent();
 		        	        	GuardarPartida.guardarPartida(panelPadre);
+		        	        	
 		        	        }
 		        	        else if (a == 1)
 		        	        	salirDelJuego();
@@ -137,24 +140,26 @@ public class FinPartida {
 	        	        	irAMenuPrincipalPartida();
 
 	        	        }
-	        	        
+	        	        javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
+		                    ConvertirAJugadasAceptables.getJugadasBonitas().clear();
+		                    CalculosEnPartida.getJugadas().clear();
+		                    CalculosEnPartida.setJugadasTotales(0);
+		                    TiempoPartida.setTiempoBlancas(CrearTableroPartida.getTiempo() * 60);
+		                    TiempoPartida.setTiempoNegras(CrearTableroPartida.getTiempo() * 60);
+
+		                    FuncionesVisualesTablero.resetFullColores(casillas);
+		                    ClienteSala.algo();
+
+		                    ServidorSala.algo();
+		                    
+		                    // Detenemos el timer para que solo se ejecute una vez
+		                    ((javax.swing.Timer)e.getSource()).stop();
+		                });
+		                timer.setRepeats(false); // Para que solo se ejecute una vez
+		                timer.start();
 
 	        	    });
-	            	javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
-	                    ConvertirAJugadasAceptables.getJugadasBonitas().clear();
-	                    CalculosEnPartida.getJugadas().clear();
-	                    CalculosEnPartida.setJugadasTotales(0);
-	                    TiempoPartida.setTiempoBlancas(CrearTableroPartida.getTiempo() * 60);
-	                    TiempoPartida.setTiempoNegras(CrearTableroPartida.getTiempo() * 60);
-
-	                    FuncionesVisualesTablero.resetFullColores(casillas);
-
-	                    ServidorSala.algo();
-	                    // Detenemos el timer para que solo se ejecute una vez
-	                    ((javax.swing.Timer)e.getSource()).stop();
-	                });
-	                timer.setRepeats(false); // Para que solo se ejecute una vez
-	                timer.start();
+	            	
 	}
 	        }
 

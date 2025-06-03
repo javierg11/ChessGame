@@ -10,7 +10,7 @@ public class SalaInfo {
     public static Boolean isColor() {
 		return color;
 	}
-    public static void setColor(boolean color) {
+    public static void setColor(Boolean color) {
 		SalaInfo.color = color;
 	}
 	public SalaInfo(String nombre, int puerto, boolean requierePassword, boolean color, float tiempo, int incrementoTiempo) {

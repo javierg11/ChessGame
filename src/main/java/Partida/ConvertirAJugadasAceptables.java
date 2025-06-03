@@ -9,9 +9,9 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import ConstantesComunes.Colores;
 import Piezas.DetectarJaqueEnPartida;
 import Tablero.MovimientosPosibles;
+import UtilsComunes.Colores;
 
 public class ConvertirAJugadasAceptables implements Runnable{
 	

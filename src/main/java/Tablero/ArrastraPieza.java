@@ -4,6 +4,7 @@ import java.awt.Component;
 
 
 
+
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -20,8 +21,8 @@ import ConexionPartida.ClienteSala;
 import ConexionPartida.Movimientos;
 import ConexionPartida.SalaInfo;
 import ConexionPartida.ServidorSala;
-import ConstantesComunes.Colores;
 import Partida.CalculosEnPartida;
+import UtilsComunes.Colores;
 
 public class ArrastraPieza {
 	public static Movimientos asd;
@@ -91,9 +92,10 @@ public class ArrastraPieza {
                 }
             }
 
+
                 // Aqui se le añade la funcion de poder arrastrar la pieza
             origen.addMouseMotionListener(new BotonMouseMotionListener());
-            movimientos=MetodosMoverPiezas.identificarMovimientosDePieza(fichaSeleccionada, posicionOrigen, casillas);
+            movimientos=ObtenerMovimientosPiezas.identificarMovimientosDePieza(fichaSeleccionada, posicionOrigen, casillas);
             puntoInicialClick = i.getPoint();
 
             textoFlotante.setText(null);

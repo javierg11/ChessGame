@@ -1,14 +1,14 @@
-package InterfazGrafica;
+package interfazGrafica;
 
 import javax.swing.*;
 
 import ConexionBBDD.UsuarioConectado;
-import ConstantesComunes.Botones;
-import ConstantesComunes.Colores;
-import ConstantesComunes.CreacionJOptionPanelDialog;
-import ConstantesComunes.JFrames;
 import Partida.CalculosEnPartida;
 import Tablero.TableroAjedrez;
+import UtilsComunes.Botones;
+import UtilsComunes.Colores;
+import UtilsComunes.CreacionJOptionPanelDialog;
+import UtilsComunes.JFrames;
 
 import java.awt.*;
 

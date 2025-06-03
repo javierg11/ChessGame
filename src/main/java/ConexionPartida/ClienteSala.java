@@ -24,19 +24,19 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import InterfazGrafica.JugarEnLAN;
 import Partida.FinPartida;
 import Tablero.CrearTableroPartida;
 import Tablero.MetodosMoverPiezas;
 import Tablero.TableroAjedrez;
+import interfazGrafica.JugarEnLAN;
 
 public class ClienteSala {
     private static final int PUERTO_BROADCAST = 8888;
     SalaInfo sala=null;
     private String password = "";
-    Socket socket = null;
-    BufferedReader in = null;
-    BufferedWriter out = null;
+    private static Socket socket = null;
+    private static BufferedReader in = null;
+    private static BufferedWriter out = null;
 	public static boolean jugando=true;
 
     public static Movimientos mov = new Movimientos();
@@ -220,7 +220,6 @@ public class ClienteSala {
 
 						}
                 } } finally {
-					System.out.println("Los de cliente");
 
 					try {
 						if (out != null)
@@ -249,6 +248,31 @@ public class ClienteSala {
             SwingUtilities.invokeLater(() ->
                     JOptionPane.showMessageDialog(null, "Error al conectar con la sala.", "Error", JOptionPane.ERROR_MESSAGE));
         }
+    }
+    
+    public static void algo() {
+    	try {
+    	    if (out != null) {
+    	        out.write("FIN\n");
+    	        out.flush();
+    	        out.close();
+    	    }
+    	} catch (IOException e) {
+    	    e.printStackTrace();
+    	}
+    	try {
+    	    if (in != null)
+    	        in.close();
+    	} catch (IOException e) {
+    	    e.printStackTrace();
+    	}
+    	try {
+    	    if (socket != null && !socket.isClosed())
+    	        socket.close();
+    	} catch (IOException e) {
+    	    e.printStackTrace();
+    	}
+
     }
 
 }

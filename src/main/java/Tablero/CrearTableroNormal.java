@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import ConstantesComunes.Colores;
+import UtilsComunes.Colores;
 
 public class CrearTableroNormal {
 	public void crearTablero(JButton[][] casillas, JButton casilla,JPanel panelTablero, 

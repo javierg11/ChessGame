@@ -4,6 +4,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+import UtilsComunes.Colores;
+
 public class TiempoPartida {
     public static double tiempoBlancas;
    
@@ -81,16 +83,20 @@ public class TiempoPartida {
         String tiempoBlancasHTML, tiempoNegrasHTML;
 
         if (blancasJuegan) {
-            tiempoBlancasHTML = "<span style='color: #FFD700; font-size:28px; font-weight:bold;'>" 
-                + tiempoBlancasStr + " <small style='font-size:14px;'>Blancas</small></span>";
-            tiempoNegrasHTML = "<span style='color: #888888; font-size:20px;'>" 
-                + tiempoNegrasStr + " <small style='font-size:12px;'>Negras</small></span>";
-        } else {
-            tiempoBlancasHTML = "<span style='color: #888888; font-size:20px;'>" 
-                + tiempoBlancasStr + " <small style='font-size:12px;'>Blancas</small></span>";
-            tiempoNegrasHTML = "<span style='color: #FFD700; font-size:28px; font-weight:bold;'>" 
-                + tiempoNegrasStr + " <small style='font-size:14px;'>Negras</small></span>";
-        }
+        	// Luego úsalas en tus cadenas HTML
+        	    tiempoBlancasHTML = "<span style='color: " + Colores.COLOR_BLANCA + "; font-size:28px; font-weight:bold;'>"
+        	        + tiempoBlancasStr + " <small style='font-size:14px;'>Blancas</small></span>";
+        	    tiempoNegrasHTML = "<span style='color: " + Colores.COLOR_NEGRA + "; font-size:20px;'>"
+        	        + tiempoNegrasStr + " <small style='font-size:12px;'>Negras</small></span>";
+        	} else {
+        	    tiempoBlancasHTML = "<span style='color: " + Colores.COLOR_NEGRA + "; font-size:20px;'>"
+        	        + tiempoBlancasStr + " <small style='font-size:12px;'>Blancas</small></span>";
+        	    tiempoNegrasHTML = "<span style='color: " + Colores.COLOR_BLANCA + "; font-size:28px; font-weight:bold;'>"
+        	        + tiempoNegrasStr + " <small style='font-size:14px;'>Negras</small></span>";
+        	}
+
+        
+    
 
         label.setText(
             "<html><div style='text-align:center;'>" 

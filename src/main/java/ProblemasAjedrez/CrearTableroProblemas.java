@@ -1,12 +1,12 @@
 package ProblemasAjedrez;
 
-import ConstantesComunes.Colores;
-import ConstantesComunes.JFrames;
 import Partida.CalculosEnPartida;
 import Partida.FinPartida;
 import Tablero.ArrastraPieza;
 import Tablero.CrearTableroNormal;
 import Tablero.PonerPiezasTablero;
+import UtilsComunes.Colores;
+import UtilsComunes.JFrames;
 
 import java.awt.*;
 import javax.swing.*;

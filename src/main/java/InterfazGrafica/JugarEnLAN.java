@@ -1,4 +1,4 @@
-package InterfazGrafica;
+package interfazGrafica;
 
 import java.awt.BorderLayout;
 
@@ -16,10 +16,10 @@ import javax.swing.JPanel;
 
 import ConexionPartida.ServidorSala;
 import ConexionPartida.ClienteSala;
-import ConstantesComunes.Botones;
-import ConstantesComunes.Colores;
-import ConstantesComunes.JFrames;
 import ProblemasAjedrez.CrearTableroProblemas;
+import UtilsComunes.Botones;
+import UtilsComunes.Colores;
+import UtilsComunes.JFrames;
 
 public class JugarEnLAN {
 	static final String tipoLetra="Georgia";
@@ -62,6 +62,7 @@ public class JugarEnLAN {
         esquinaButton=Botones.crearBotonBasico("←",new Color(44, 36, 24),Color.WHITE,15);
         esquinaButton.addActionListener(e -> {
             // Crear y mostrar el nuevo JFrame
+        	ServidorSala.algo();
         	frame.dispose();
             EmpezarAJugar.getFrame().setVisible(true);
             

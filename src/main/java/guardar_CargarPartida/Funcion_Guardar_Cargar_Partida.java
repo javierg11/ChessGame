@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ConexionBBDD.CargarPartida_BBDD;
 import ConexionBBDD.GuardarPartida_BBDD;
-import InterfazGrafica.JFrameInicioSesion;
+import interfazGrafica.JFrameInicioSesion;
 
 import java.io.File;
 import java.util.*;
@@ -33,7 +33,7 @@ public class Funcion_Guardar_Cargar_Partida {
 	            mapper.writerWithDefaultPrettyPrinter().writeValue(archivo, listaPartidas);
 	             }
 	    } catch (Exception e) {
-	        e.printStackTrace();
+	        
 	    }
 	    return listaPartidas;
 	}

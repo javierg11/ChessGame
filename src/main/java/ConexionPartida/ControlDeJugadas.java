@@ -10,8 +10,10 @@ import Tablero.FuncionesVisualesTablero;
 import Tablero.MetodosMoverPiezas;
 
 public class ControlDeJugadas {
+	boolean nezuko=true;
 	public void hacerJugadas(BufferedWriter out){
 		try {
+			
 		out.write(MetodosMoverPiezas.datosDeMovimientos.getOrigen() + "\n");
 
 		out.write(MetodosMoverPiezas.datosDeMovimientos.getDestino() + "\n");
@@ -32,8 +34,13 @@ public class ControlDeJugadas {
 	
 	public void escucharJugadas(BufferedReader in){
 		try {
+			
 		FuncionesVisualesTablero.setVerCasillas(false);
 		String origen = in.readLine();
+		if (origen.equals("FIN")) {
+		    nezuko=false;
+		    return;
+		}
 
 		String destino = in.readLine();
 
@@ -46,8 +53,12 @@ public class ControlDeJugadas {
 		FuncionesVisualesTablero.setVerCasillas(true);
 
 		}catch(SocketException  a) {
-			FinPartida.mensajeTerminarPartida("El oponente se ha retirado",Movimientos.getCasillas(),false, false) ;
+			if (nezuko)
+				FinPartida.mensajeTerminarPartida("El oponente se ha retirado",Movimientos.getCasillas(),false, false);
+			else
+				nezuko=true;
 		} catch(Exception e) {
+			if (nezuko)
 			e.printStackTrace();
 		}
 	}

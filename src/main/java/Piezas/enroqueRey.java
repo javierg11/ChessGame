@@ -17,6 +17,9 @@ public class EnroqueRey {
 		boolean reyMovidoNegras = false;
 
 		for (String jugada : jugadas.values()) {
+			System.out.println(jugada);
+			System.out.println(jugada.startsWith("wR"));
+			System.out.println(jugada.startsWith("bR"));
 		    // Torres blancas
 		    if (jugada.startsWith("wT-77-")) torreCortaMovidaBlancas = true;
 		    if (jugada.startsWith("wT-70-")) torreLargaMovidaBlancas = true;
@@ -26,8 +29,8 @@ public class EnroqueRey {
 		    if (jugada.startsWith("bT-00-")) torreLargaMovidaNegras = true;
 
 		    // Reyes
-		    if (jugada.startsWith("wR-")) reyMovidoBlancas = true;
-		    if (jugada.startsWith("bR-")) reyMovidoNegras = true;
+		    if (jugada.startsWith("wR")) reyMovidoBlancas = true;
+		    if (jugada.startsWith("bR")) reyMovidoNegras = true;
 		}
 
 		if (!reyMovidoBlancas && !torreLargaMovidaBlancas) {

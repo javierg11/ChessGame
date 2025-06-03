@@ -1,12 +1,12 @@
-package InterfazGrafica;
+package interfazGrafica;
 import javax.swing.*;
 
 
 import ConexionBBDD.CrearUsuario;
 import ConexionBBDD.IniciarSesion;
-import ConstantesComunes.Botones;
-import ConstantesComunes.Colores;
-import ConstantesComunes.JFrames;
+import UtilsComunes.Botones;
+import UtilsComunes.Colores;
+import UtilsComunes.JFrames;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;

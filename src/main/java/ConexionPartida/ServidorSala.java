@@ -3,6 +3,7 @@ package ConexionPartida;
 import java.awt.Component;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.*;
 import java.net.*;
@@ -18,11 +19,11 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import InterfazGrafica.JugarEnLAN;
 import Partida.FinPartida;
 import Tablero.FuncionesVisualesTablero;
 import Tablero.MetodosMoverPiezas;
 import Tablero.TableroAjedrez;
+import interfazGrafica.JugarEnLAN;
 
 public class ServidorSala {
 	private static final int PUERTO_BROADCAST = 8888;
@@ -36,8 +37,9 @@ public class ServidorSala {
 	private static BufferedWriter out = null;
 	private static Socket client = null;
 	String nombreSala = null;
-
+	private static SalaInfo info = null;
 	public static Movimientos mov = new Movimientos();
+	private static DatagramSocket broadcastSocket = null;
 
 	public void crearSala(JPanel Panel, JFrame frame) {
 		try {
@@ -45,84 +47,81 @@ public class ServidorSala {
 			Icon icono = new ImageIcon(FinPartida.class.getResource("/imagesPiezas/wP.png"));
 
 			// 1. Nombre de la sala
-			nombreSala = (String) JOptionPane.showInputDialog(
-			    null, 
-			    "Nombre de la sala:", 
-			    "Crear sala", 
-			    JOptionPane.QUESTION_MESSAGE, 
-			    icono, 
-			    null, 
-			    ""
-			);
-
+			nombreSala = (String) JOptionPane.showInputDialog(null, "Nombre de la sala:", "Crear sala",
+					JOptionPane.QUESTION_MESSAGE, icono, null, "");
 
 			if (nombreSala == null) { // Si el usuario cancela, puedes manejarlo aquí
-			    nombreSala = "";
+				nombreSala = "";
 			}
 
 			// 2. Tiempo de la partida
 			boolean tiempoValido = false;
 			while (!tiempoValido) {
-			    String tiempoStr = (String) JOptionPane.showInputDialog(null,
-			            "Pon el tiempo de la partida (debe ser superior a 0):",
-			            "Tiempo de la partida", JOptionPane.QUESTION_MESSAGE, icono, null, "");
-			    try {
-			        tiempo = Float.parseFloat(tiempoStr);
-			        if (tiempo > 0) {
-			            tiempoValido = true;
-			        } else {
-			            JOptionPane.showMessageDialog(null, "El tiempo debe ser superior a 0. Inténtalo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE, icono);
-			        }
-			    } catch (Exception e) {
-			        JOptionPane.showMessageDialog(null, "Por favor, introduce un número válido para el tiempo.", "Error", JOptionPane.ERROR_MESSAGE, icono);
-			    }
+				String tiempoStr = (String) JOptionPane.showInputDialog(null,
+						"Pon el tiempo de la partida (debe ser superior a 0):", "Tiempo de la partida",
+						JOptionPane.QUESTION_MESSAGE, icono, null, "");
+				try {
+					tiempo = Float.parseFloat(tiempoStr);
+					if (tiempo > 0) {
+						tiempoValido = true;
+					} else {
+						JOptionPane.showMessageDialog(null, "El tiempo debe ser superior a 0. Inténtalo de nuevo.",
+								"Error", JOptionPane.ERROR_MESSAGE, icono);
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Por favor, introduce un número válido para el tiempo.",
+							"Error", JOptionPane.ERROR_MESSAGE, icono);
+				}
 			}
 
 			// 3. Incremento de la partida
 			boolean incrementoValido = false;
 			while (!incrementoValido) {
-			    String incrementoStr = (String) JOptionPane.showInputDialog(null,
-			            "Pon el incremento de la partida (debe ser un número positivo):",
-			            "Incremento de la partida", JOptionPane.QUESTION_MESSAGE, icono, null, "");
-			    try {
-			        incrementoTiempo = Integer.parseInt(incrementoStr);
-			        if (incrementoTiempo >= 0) {
-			            incrementoValido = true;
-			        } else {
-			            JOptionPane.showMessageDialog(null, "El incremento debe ser un número positivo. Inténtalo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE, icono);
-			        }
-			    } catch (Exception e) {
-			        JOptionPane.showMessageDialog(null, "Por favor, introduce un número válido para el incremento.", "Error", JOptionPane.ERROR_MESSAGE, icono);
-			    }
+				String incrementoStr = (String) JOptionPane.showInputDialog(null,
+						"Pon el incremento de la partida (debe ser un número positivo):", "Incremento de la partida",
+						JOptionPane.QUESTION_MESSAGE, icono, null, "");
+				try {
+					incrementoTiempo = Integer.parseInt(incrementoStr);
+					if (incrementoTiempo >= 0) {
+						incrementoValido = true;
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"El incremento debe ser un número positivo. Inténtalo de nuevo.", "Error",
+								JOptionPane.ERROR_MESSAGE, icono);
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Por favor, introduce un número válido para el incremento.",
+							"Error", JOptionPane.ERROR_MESSAGE, icono);
+				}
 			}
 
-
-			int opcionPassword = JOptionPane.showConfirmDialog(
-				    null,
-				    "¿Requiere contraseña?",
-				    "Contraseña",
-				    JOptionPane.YES_NO_OPTION,
-				    JOptionPane.QUESTION_MESSAGE, // o el tipo de mensaje que quieras
-				    icono // aquí pones tu icono personalizado
-				);
-				boolean requierePassword = (opcionPassword == JOptionPane.YES_OPTION);
+			int opcionPassword = JOptionPane.showConfirmDialog(null, "¿Requiere contraseña?", "Contraseña",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, // o el tipo de mensaje que quieras
+					icono // aquí pones tu icono personalizado
+			);
+			boolean requierePassword = (opcionPassword == JOptionPane.YES_OPTION);
 
 			if (requierePassword) {
 				password = JOptionPane.showInputDialog(null, "Contraseña:");
 			}
 			// Puedes mostrar un resumen de los datos
 			String resumen = "Sala: " + nombreSala + "\nContraseña: " + (requierePassword ? password : "No")
-					+ "\nColor: Blanco\nTiempo: " + tiempo
-					+ "\nIncremento: " + incrementoTiempo;
+					+ "\nColor: Blanco\nTiempo: " + tiempo + "\nIncremento: " + incrementoTiempo;
 			JOptionPane.showMessageDialog(null, resumen);
 
 			// --- Aquí añadimos el spinner al panel ---
 			SwingUtilities.invokeLater(() -> {
 				Panel.removeAll();
-				// Asegúrate de que el botón esté visible = false inicialmente
-				Panel.setLayout(new BoxLayout(Panel, BoxLayout.X_AXIS));
-				JugarEnLAN.esquinaButton.setVisible(false);
-				Panel.add(JugarEnLAN.esquinaButton);
+
+				// Panel auxiliar para la esquina superior izquierda
+				JPanel esquinaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+				esquinaPanel.setOpaque(false); // Para que sea transparente si quieres
+				JugarEnLAN.esquinaButton.setVisible(false); // Asegúrate de que esté oculto al inicio
+				esquinaPanel.add(JugarEnLAN.esquinaButton);
+
+				// Panel principal con BoxLayout en Y_AXIS
+				Panel.setLayout(new BoxLayout(Panel, BoxLayout.Y_AXIS));
+				Panel.add(esquinaPanel);
 
 				JLabel esperandoLabel = new JLabel("Esperando al oponente...");
 				esperandoLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -131,7 +130,6 @@ public class ServidorSala {
 				CircularSpinner spinner = new CircularSpinner(80);
 				spinner.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-				Panel.setLayout(new BoxLayout(Panel, BoxLayout.Y_AXIS));
 				Panel.add(Box.createRigidArea(new Dimension(0, 30)));
 				Panel.add(esperandoLabel);
 				Panel.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -141,7 +139,7 @@ public class ServidorSala {
 				Panel.revalidate();
 				Panel.repaint();
 
-				// Timer para hacer visible el botón después de 10 segundos (10,000 ms)
+				// Timer para hacer visible el botón después de 2 segundos (2,000 ms)
 				Timer timer = new Timer(2000, e -> {
 					JugarEnLAN.esquinaButton.setVisible(true);
 					Panel.revalidate();
@@ -162,13 +160,12 @@ public class ServidorSala {
 					// Puerto en uso, intenta otro
 				}
 			}
-			
-			SalaInfo info = new SalaInfo(nombreSala, puertoTCP, requierePassword, true, tiempo,
-					incrementoTiempo);
+
+			info = new SalaInfo(nombreSala, puertoTCP, requierePassword, true, tiempo, incrementoTiempo);
 
 			// Hilo para responder broadcasts
 			new Thread(() -> {
-				DatagramSocket broadcastSocket = null;
+
 				try {
 					broadcastSocket = new DatagramSocket(PUERTO_BROADCAST, InetAddress.getByName("0.0.0.0"));
 					broadcastSocket.setBroadcast(true);
@@ -228,30 +225,31 @@ public class ServidorSala {
 
 //	                	    // Es tu turno
 						while (jugando) {
+							try {
+								Thread.sleep(100); // Espera 100 milisegundos en cada iteración
+							} catch (InterruptedException e) {
+
+							}
 
 							if (mov.isColorAJugar()) {
 								if (MetodosMoverPiezas.sensorDeTurnosDosJugadores) {
 									controlDeJugadas.hacerJugadas(out);
 									mov.setColorAJugar(false);
 									MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
-									// después de enviar
-
+																							// después de enviar
 								}
-
 							} else {
 								controlDeJugadas.escucharJugadas(in);
 								mov.setColorAJugar(true);
-								MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO
-								// después de enviar
-
+								MetodosMoverPiezas.sensorDeTurnosDosJugadores = false; // Resetea el flag SOLO después
+																						// de enviar
 							}
+
 							FuncionesVisualesTablero.setVerCasillas(true);
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					} finally {
-						System.out.println("Los de arriba");
-
 						try {
 							if (out != null)
 								out.close();
@@ -277,7 +275,6 @@ public class ServidorSala {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("Los de abajo");
 			// Cierre de sockets al salir
 			try {
 				if (client != null && !client.isClosed())
@@ -314,36 +311,52 @@ public class ServidorSala {
 			}
 		}
 	}
-	
+
 	public static void algo() {
-		if (socket != null && !socket.isClosed()) {
-			try {
-				socket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		if (serverSocket != null && !serverSocket.isClosed()) {
-			try {
-				serverSocket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 		try {
-			if (out != null)
-				out.close();
-		} catch (IOException t) {
-			t.printStackTrace();
+			if (!(out == null)) {
+				out.write("FIN\n");
+				out.flush();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		try {
-			if (in != null)
-				in.close();
-		} catch (IOException n) {
-			n.printStackTrace();
+		if (broadcastSocket != null && !broadcastSocket.isClosed()) {
+			broadcastSocket.close();
+			if (socket != null && !socket.isClosed()) {
+				try {
+					socket.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (serverSocket != null && !serverSocket.isClosed()) {
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				if (out != null)
+					out.close();
+			} catch (IOException t) {
+				t.printStackTrace();
+			}
+			try {
+				if (in != null)
+					in.close();
+			} catch (IOException n) {
+				n.printStackTrace();
+			}
+			if (!(info == null)) {
+				info = new SalaInfo(null, 0, false, false, 0, 0);
+				info = null;
+				SalaInfo.setColor(null);
+			}
 		}
 	}
-		
-	
+
 }

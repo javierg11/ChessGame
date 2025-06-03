@@ -15,7 +15,7 @@ public class MovimientosPosibles {
 	                // Comprobar si la ficha es del color que le toca mover
 	                if ((color && ficha.contains("w")) || (!color && ficha.contains("b"))) {
 	                    String posicion = "" + i + j;
-	                    Piezas pieza = MetodosMoverPiezas.identificarFuncionPieza(ficha);
+	                    Piezas pieza = ObtenerMovimientosPiezas.identificarFuncionPieza(ficha);
 	                    String movimientosPosibles = pieza.calcularMovimientos(posicion, casillas, ficha,false);
 	                    String movimientosLegales = DetectarJaqueEnPartida.controlJugadasPorJaque(
 	                        movimientosPosibles, casillas, ficha, posicion, FuncionesVisualesTablero.verCasillas

@@ -23,68 +23,15 @@ import ProblemasAjedrez.CrearTableroProblemas;
 
 public class MetodosMoverPiezas {
 	public static Movimientos datosDeMovimientos;
-	private static boolean jugando = false;
 	public static volatile boolean sensorDeTurnosDosJugadores = false;
 	public static boolean tiempoIniciado = false;
 	private static boolean hayPieza = false;
 	private static int filaOrigen, colOrigen, filaDestino, colDestino;
 	private static String fichaOriginal="";
 	private static ConvertirAJugadasAceptables tarea;
-	public static void setJugando(boolean jugando) {
-		MetodosMoverPiezas.jugando = jugando;
-	}
+	
 
-	public static Piezas identificarFuncionPieza(String ficha) {
-		Piezas pieza = null;
-
-		String tipo = "";
-		if (ficha.length() == 0)
-			return pieza;
-		tipo = ficha.substring(1, 2); // "D", "T", "A", "C", "P", "R"
-
-		switch (tipo) {
-		case "D":
-			pieza = new Dama();
-			break;
-		case "T":
-			pieza = new Torre();
-			break;
-		case "A":
-			pieza = new Alfil();
-			break;
-		case "C":
-			pieza = new Caballo();
-			break;
-		case "P":
-			pieza = new Peon();
-			break;
-		case "R":
-			pieza = new Rey();
-			break;
-		default:
-			break;
-		}
-		return pieza;
-	}
-
-	public static String identificarMovimientosDePieza(String ficha, String posicion, JButton[][] casillas) {
-		if (!jugando) {
-
-			jugando = true;
-		}
-		Piezas pieza = null;
-		pieza = identificarFuncionPieza(ficha);
-
-		String movimientosPosibles = pieza.calcularMovimientos(posicion, casillas, ficha, true); // Aqui consigo todos
-																									// los movimientos
-																									// posibles de la
-																									// pieza
-		String movimientosLegales = DetectarJaqueEnPartida.controlJugadasPorJaque(movimientosPosibles, casillas, ficha,
-				posicion, FuncionesVisualesTablero.verCasillas); // Con esto todos los movimientos legales se pasan a la
-																	// String movimientosLegales
-		return movimientosLegales;
-
-	}
+	
 
 	public static void moverPiezas(String origen, String destino, JButton[][] casillas, String ficha,
 			String movimientos, boolean verTiempo, boolean verMovimientos, boolean esProblema) {

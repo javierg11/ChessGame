@@ -2,10 +2,11 @@ package Tablero;
 
 
 import java.awt.Image;
-import ConstantesComunes.Colores;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import UtilsComunes.Colores;
 
 public class PonerPiezasTablero {
 	public static void colocarPiezasNormal(JButton casilla, int fila, int columna) {

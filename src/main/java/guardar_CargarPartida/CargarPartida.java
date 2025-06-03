@@ -2,6 +2,7 @@ package guardar_CargarPartida;
 
 import java.awt.BorderLayout;
 
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,20 +21,19 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import ConexionBBDD.UsuarioConectado;
-import ConstantesComunes.Botones;
-import ConstantesComunes.Colores;
-import ConstantesComunes.JFrames;
-import InterfazGrafica.EmpezarAJugar;
-import InterfazGrafica.JFrameInicioSesion;
 import Partida.CalculosEnPartida;
 import Partida.PosicionRepetida;
 import Tablero.ArrastraPieza;
 import Tablero.CrearTableroPartida;
 import Tablero.CrearTableroNormal;
 import Tablero.MetodosMoverPiezas;
+import UtilsComunes.Botones;
+import UtilsComunes.Colores;
+import UtilsComunes.JFrames;
+import interfazGrafica.EmpezarAJugar;
+import interfazGrafica.JFrameInicioSesion;
 
 public class CargarPartida implements Runnable {
 	private static JFrame tablero;
@@ -42,7 +42,6 @@ public class CargarPartida implements Runnable {
 	private JLabel textoFlotante;
 	private int indiceActual = 1; // 0 = tablero inicial, 1 = primer movimiento hecho, etc.
 	private static boolean esCargarPartida = false;
-
 	public static void setTiempo(double tiempo) {
 		CrearTableroPartida.tiempo = tiempo;
 	}

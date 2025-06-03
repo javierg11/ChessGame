@@ -12,17 +12,19 @@ import ConexionBBDD.UsuarioConectado;
 
 import java.util.List;
 
-import ConstantesComunes.Botones;
-import ConstantesComunes.Colores;
-import ConstantesComunes.JFrames;
-import InterfazGrafica.EmpezarAJugar;
-import InterfazGrafica.JFrameInicioSesion;
 import Partida.CalculosEnPartida;
 import Partida.PosicionRepetida;
+import Partida.ReiniciarPartida;
 import Tablero.ArrastraPieza;
 import Tablero.CrearTableroPartida;
 import Tablero.CrearTableroNormal;
 import Tablero.MetodosMoverPiezas;
+import Tablero.PonerPiezasTablero;
+import UtilsComunes.Botones;
+import UtilsComunes.Colores;
+import UtilsComunes.JFrames;
+import interfazGrafica.EmpezarAJugar;
+import interfazGrafica.JFrameInicioSesion;
 
 public class GuardarPartida implements Runnable{
 

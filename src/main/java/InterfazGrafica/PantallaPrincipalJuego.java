@@ -1,12 +1,13 @@
-package InterfazGrafica;
+package interfazGrafica;
 
 import javax.swing.*;
 
 import ConexionBBDD.UsuarioConectado;
-import ConstantesComunes.Botones;
-import ConstantesComunes.Colores;
-import ConstantesComunes.JFrames;
 import Tablero.TableroAjedrez;
+import UtilsComunes.Botones;
+import UtilsComunes.Colores;
+import UtilsComunes.JFrames;
+
 import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -125,6 +126,7 @@ public class PantallaPrincipalJuego {
     }
 
     public static void main(String[] args) {
+    	UIManager.put("OptionPane.messageFont", new Font("Palatino Linotype", Font.BOLD, 15));
     	 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
              onExit();
          }));

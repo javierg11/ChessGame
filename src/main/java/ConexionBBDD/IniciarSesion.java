@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import InterfazGrafica.EmpezarAJugar;
+import interfazGrafica.EmpezarAJugar;
 
 
 public class IniciarSesion extends DatosBBDD{

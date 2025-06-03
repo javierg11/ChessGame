@@ -1,7 +1,8 @@
 package Tablero;
 
 import javax.swing.JButton;
-import ConstantesComunes.Colores;
+
+import UtilsComunes.Colores;
 
 
 public class FuncionesVisualesTablero {

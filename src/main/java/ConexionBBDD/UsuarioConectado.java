@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import InterfazGrafica.JFrameInicioSesion;
+import interfazGrafica.JFrameInicioSesion;
 
 public class UsuarioConectado extends DatosBBDD{
 	public static boolean usuarioConetado(String usuario) {
