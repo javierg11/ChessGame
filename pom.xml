@@ -42,7 +42,7 @@
     <configuration>
         <archive>
             <manifest>
-                <mainClass>InterfazGrafica.PantallaPrincipalJuego</mainClass>
+                <mainClass>interfazGrafica.PantallaPrincipalJuego</mainClass>
             </manifest>
         </archive>
         <descriptorRefs>
