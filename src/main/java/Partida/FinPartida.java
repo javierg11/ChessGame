@@ -97,10 +97,11 @@ public class FinPartida {
 	        	        if (a == 0)
 	        	        	 volverAJugar(casillas);
 	        	        else if (a == 1) {
-	        	        	volverAJugar(casillas);
+	        	        	
 	        	        	JButton botonCualquiera = casillas[0][0]; 
 	        	        	JPanel panelPadre = (JPanel) botonCualquiera.getParent();
 	        	        	GuardarPartida.guardarPartida(panelPadre);
+	        	        	volverAJugar(casillas);
 	        	        	irAMenuPrincipalPartida();
 	        	        }  	
 	        	        else if (a == 2)

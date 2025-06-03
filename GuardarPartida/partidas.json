@@ -82,4 +82,32 @@
   "nombreOponente" : "asd",
   "jugadoCon" : "B",
   "jugadas" : [ "wP-63-43", "bP-12-32", "wP-43-32", "bP-11-21", "wP-32-21", "bC-01-22", "wP-21-11", "bC-22-30", "wC-11-00wC" ]
+}, {
+  "idPartida" : 13,
+  "nombre" : "asd",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "",
+  "jugadoCon" : "B",
+  "jugadas" : [ ]
+}, {
+  "idPartida" : 14,
+  "nombre" : "Nose queponer",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "",
+  "jugadoCon" : "B",
+  "jugadas" : [ ]
+}, {
+  "idPartida" : 15,
+  "nombre" : "MAte de",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-64-44", "bP-14-34", "wD-73-37", "bR-04-14", "wD-37-34" ]
+}, {
+  "idPartida" : 16,
+  "nombre" : "Nose",
+  "nombrePropio" : "Anonimo",
+  "nombreOponente" : "",
+  "jugadoCon" : "B",
+  "jugadas" : [ "wP-64-44", "bP-14-34", "wA-75-42", "bA-05-32", "wD-73-37", "bC-06-25", "wD-37-15" ]
 } ]
