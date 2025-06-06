@@ -1,5 +1,27 @@
-Para poder usar este programa es necesario tener java 11
-MySQL es opcional, pero puede ser útil si más de una persona quiere ver y guardar sus partidas de ajedrez en un mismo ordenador
-Y para ejecutarlo hay dos opciones:
-	-Con doble click al archivo ChessGame.jar ya se abrira el programa.
-	-Abriendo un cmd, navegando hasta la carpeta de este archivo y ejecutando el comnado java -jar ChessGame.jar
+# Chess Game – TFG Grado Superior DAM
+
+**Nota del proyecto:** 10
+
+---
+
+## Requisitos
+
+- **Java 11** instalado en el sistema.
+- **MySQL** (opcional): Útil para guardar y visualizar partidas de ajedrez de varios usuarios en un mismo ordenador.
+
+## Instrucciones de ejecución
+
+Hay dos formas de iniciar el programa:
+
+1. **Doble clic:**  
+   Haz doble clic en el archivo `ChessGame.jar` para abrir el programa directamente.
+2. **Desde la terminal:**  
+   Abre una terminal o cmd, navega hasta la carpeta donde se encuentra el archivo y ejecuta el siguiente comando:
+	java -jar ChessGame.jar
+
+**Nota:** Si el archivo de guardado de partidas no funciona correctamente, asegúrate de dar permisos de escritura al archivo `ChessGame.jar`.
+
+## Información adicional
+
+- **Commit de entrega:** 32
+- **Base de datos:** Si decides usar MySQL, asegúrate de configurar la conexión antes de ejecutar el programa.
